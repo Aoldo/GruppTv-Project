@@ -8,6 +8,9 @@ target/*
 .project
 .classpath
 
+#Ignores IntelliJ things
+.idea
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
