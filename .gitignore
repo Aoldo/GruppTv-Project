@@ -1,24 +1,23 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+### OS-specific
+*.DS_Store
+
+### Output
 *.class
+core/build/
+desktop/build/
 
-#Ignores target
-target/*
+### Intellij (uncomment section after cloning)
+# *.iml
+# *.ipr
+# *.iws
+# .idea/
 
-#Ignores Eclipse things
-.settings/*
-.project
-.classpath
-
-#Ignores IntelliJ things
-.idea
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-/target/
+### Eclipse (uncomment section after cloning)
+# desktop/.classpath
+# desktop/.settings
+# desktop/.project
+# core/.classpath
+# core/.settings
+# core/.project
