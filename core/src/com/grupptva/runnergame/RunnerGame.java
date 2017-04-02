@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.character.CharacterController;
+import com.grupptva.runnergame.gamecore.GameCore;
 
 public class RunnerGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	
-	CharacterController cc = new CharacterController();
+	GameCore GC = new GameCore();
 	
 	
 	@Override
@@ -25,8 +26,8 @@ public class RunnerGame extends ApplicationAdapter {
 		
 		batch.begin();
 		
-		cc.update();
-		cc.render(batch);
+		GC.update();
+		GC.render(batch);
 		
 		batch.end();
 	}
