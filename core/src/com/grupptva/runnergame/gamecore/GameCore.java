@@ -13,7 +13,7 @@ public class GameCore {
 	ShapeRenderer testRenderer;
 
 	final short worldGridSize = 25;
-	
+
 	public GameCore() {
 		character = new CharacterModel(0, 200);
 		world = new World();
@@ -26,23 +26,47 @@ public class GameCore {
 	}
 
 	private void testingMethodGround() {
-		if (character.getY() <= 50) {
-			character.collideWithGround(50);
+		int collisionY = testingCollisionGroundPosition();
+
+		if (collisionY != -1) {
+			character.collideWithGround(collisionY);
 		} else {
 			character.setGroundCollision(false);
 		}
 	}
 
+	private int testingCollisionGroundPosition() {
+		for (int i = 0; i < world.grid.length; i++) {
+			for (int u = 0; u < world.grid[0].length; u++) {
+				if (world.grid[i][u] != 0) {//Check if character position is inside of any world square, if it is return top of said square.
+					
+					if (character.box.position.getY() > i * worldGridSize
+							&& character.box.position.getY() < i * worldGridSize + worldGridSize
+							&& character.box.position.getX() > u * worldGridSize
+							&& character.box.position.getX() < u * worldGridSize + worldGridSize) {
+
+						System.out.println((i * worldGridSize) + " < " + character.box.position.getY() + " < "
+								+ (i * worldGridSize + worldGridSize) + "  :  " + i);
+
+						return i * worldGridSize + worldGridSize;
+					}
+				}
+
+			}
+		}
+		return -1;
+
+	}
+
 	//ub3r l33t h4x
 	public void render(SpriteBatch batch) {
 		testRenderer = new ShapeRenderer();
-		testRenderer.begin(ShapeType.Filled);		
-		
+		testRenderer.begin(ShapeType.Filled);
+
 		//Draw world
 		for (int i = 0; i < world.grid.length; i++) {
-			for (int u = 0; u < world.grid[0].length; u++) 
-			{
-				if(world.grid[i][u] != 0)
+			for (int u = 0; u < world.grid[0].length; u++) {
+				if (world.grid[i][u] != 0)
 					testRenderer.rect(u * worldGridSize, i * worldGridSize, worldGridSize, worldGridSize);
 			}
 		}
@@ -50,8 +74,6 @@ public class GameCore {
 		testRenderer.setColor(0f, 0f, 0f, 1f);
 		testRenderer.rect(character.getX(), character.getY(), character.box.dimensions.getX(),
 				character.box.dimensions.getY());
-
-
 
 		testRenderer.end();
 	}
