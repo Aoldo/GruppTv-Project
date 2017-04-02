@@ -5,7 +5,7 @@ public class CharacterModel {
 	public Rectangle box;
 	private Point position;
 
-	private float xVelocity = 1;
+	private float xVelocity = 2;
 
 	/**
 	 * Temporary value for gravity, it is currently a set speed that happens

@@ -15,7 +15,7 @@ public class GameCore {
 	final short worldGridSize = 25;
 
 	public GameCore() {
-		character = new CharacterModel(0, 200);
+		character = new CharacterModel(0, 50);
 		world = new World();
 	}
 
@@ -38,7 +38,9 @@ public class GameCore {
 	private int testingCollisionGroundPosition() {
 		for (int i = 0; i < world.grid.length; i++) {
 			for (int u = 0; u < world.grid[0].length; u++) {
-				if (world.grid[i][u] != 0) {//Check if character position is inside of any world square, if it is return top of said square.
+				if (world.grid[i][u] != 0) {
+					//Check if character position is inside of any world square, if it is return top of said square.
+					//TODO: Actual rectangle collision checks.
 					
 					if (character.box.position.getY() > i * worldGridSize
 							&& character.box.position.getY() < i * worldGridSize + worldGridSize
