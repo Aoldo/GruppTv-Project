@@ -47,8 +47,6 @@ public class GameCore {
 							&& character.box.position.getX() > u * worldGridSize
 							&& character.box.position.getX() < u * worldGridSize + worldGridSize) {
 
-						System.out.println((i * worldGridSize) + " < " + character.box.position.getY() + " < "
-								+ (i * worldGridSize + worldGridSize) + "  :  " + i);
 
 						return i * worldGridSize + worldGridSize;
 					}
