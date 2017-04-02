@@ -12,7 +12,7 @@ public class GameCore {
 	World world;
 	ShapeRenderer testRenderer;
 
-	final short worldGridSize = 26;
+	final short worldGridSize = 25;
 	
 	public GameCore() {
 		character = new CharacterModel(0, 200);
