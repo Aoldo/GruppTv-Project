@@ -16,6 +16,11 @@ public class CharacterModel {
 
 	private float groundCollisionCoordinate = 0;
 
+	private boolean attachedWithHook = false;
+	private Point hookAttachmentPoint;
+	private float hookRadius;
+	
+	
 	public CharacterModel(float x, float y) {
 		box = new Rectangle(x, y, 25, 25);
 		position = box.position;
@@ -30,10 +35,6 @@ public class CharacterModel {
 			position.setX(0);
 		if (position.getY() < -100)
 			position.setY(0);
-
-		//Testing stuff
-		//	if(position.getX() > 240 && position.getX() < 250)
-		//		jump();
 	}
 
 	private void moveRight() {
@@ -41,7 +42,6 @@ public class CharacterModel {
 	}
 
 	private void fall() {
-		//TODO: Gravitation acceleration and stuff.
 		if (!collidingWithGround) {
 			yVelocity += gravityAcceleration;
 
@@ -120,5 +120,4 @@ public class CharacterModel {
 	public void setGroundCollisionCoordinate(float y) {
 		groundCollisionCoordinate = y;
 	}
-
 }
