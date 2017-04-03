@@ -23,13 +23,16 @@ public class GameCore {
 	public void update() {
 		testingMethodGround();
 
-		testingInputJump();
+		testingInput();
 		character.update();
 	}
 
-	private void testingInputJump() {
+	private void testingInput() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			character.jump();
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+			character.initHook();
 		}
 	}
 
@@ -81,6 +84,12 @@ public class GameCore {
 							worldGridSize);
 			}
 		}
+		//Draw player hook circle.
+		if (character.attachedWithHook) {
+			testRenderer.circle(character.hookPoint.getX(), character.hookPoint.getY(),
+					character.hookRadius);
+		}
+
 		//Draw playerCharacter box
 		testRenderer.setColor(0f, 0f, 0f, 1f);
 		testRenderer.rect(character.getX(), character.getY(),

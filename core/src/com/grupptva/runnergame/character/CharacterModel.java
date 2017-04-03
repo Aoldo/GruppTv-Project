@@ -16,11 +16,12 @@ public class CharacterModel {
 
 	private float groundCollisionCoordinate = 0;
 
-	private boolean attachedWithHook = false;
-	private Point hookAttachmentPoint;
-	private float hookRadius;
-	
-	
+	public boolean attachedWithHook = false;
+	private boolean hookExtended = false;
+	public Point hookPoint;
+	private float hookAngle = 1.5f;
+	public float hookRadius = 100;
+
 	public CharacterModel(float x, float y) {
 		box = new Rectangle(x, y, 25, 25);
 		position = box.position;
@@ -30,6 +31,8 @@ public class CharacterModel {
 	public void update() {
 		moveRight();
 		fall();
+
+		hook();
 
 		if (position.getX() > 600)
 			position.setX(0);
@@ -47,7 +50,6 @@ public class CharacterModel {
 
 			position.moveY(yVelocity);
 		}
-
 	}
 
 	public void jump() {
@@ -60,7 +62,48 @@ public class CharacterModel {
 	}
 
 	private void hook() {
-		//TODO: Hooking.
+		if (attachedWithHook) {
+			if (!hookExtended) {
+				if (position.distanceTo(hookPoint) > hookRadius) {
+					hookExtended = true;
+				}
+			} else {
+				float newY = hookGetNewY();
+				if(attachedWithHook)
+				{
+					position.setY(newY);
+				}
+			}
+		}
+	}
+
+	private void stopHook()
+	{
+		attachedWithHook = false;
+	}
+	
+	private float hookGetNewY() {
+		// Circle equation: r^2 = (x-a)^2+(y-b)^2 = x-2ax+a^2+y-2yb+b^2
+		float r = hookRadius;
+		float x = position.getX();
+		float a = hookPoint.getX();
+		float b = hookPoint.getY();
+		float insideSqrt = -(a * a) + 2 * a * x + r * r - (x * x);
+		if (insideSqrt < 0) {
+			System.out.println("Sqrt negative number in hook()!");
+			stopHook();
+			return 0;
+		}
+		//get the lowest solution to y.
+		return (b - Math.sqrt(insideSqrt) < b + Math.sqrt(insideSqrt))
+				? b - (float) Math.sqrt(insideSqrt) : b + (float) Math.sqrt(insideSqrt);
+	}
+
+	public void initHook() {
+		hookPoint = new Point(position);
+		hookPoint.moveInDirection(hookRadius, hookAngle);
+		attachedWithHook = true;
+		hookExtended = false;
 	}
 
 	//-----------------Get methods-----------------------------------------------

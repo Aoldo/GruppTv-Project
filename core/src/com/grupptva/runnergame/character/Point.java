@@ -12,42 +12,62 @@ public class Point {
 		this.y = y;
 	}
 
+	public Point(Point point) {
+		this.x = point.x;
+		this.y = point.y;
+	}
+
 	private float x, y;
-	
+
+	/**
+	 * Calculates the angle between this point and {@param point} in radians.
+	 * 
+	 * @param point the point whose angle to should be calculated.
+	 * @return the angle between the two points
+	 */
+	public float angleBetween(Point point) {
+		//TODO: Make sure it works correctly, might need to *= -1 the variables.
+		return (float) Math.atan2(y - point.y, x - point.x);
+	}
+
 	/**
 	 * Sets the x coordinate.
-	 * @param x 
+	 * 
+	 * @param x
 	 */
-	public void setX(float x)
-	{
+	public void setX(float x) {
 		this.x = x;
 	}
+
 	/**
 	 * Sets the y coordinate.
+	 * 
 	 * @param y
 	 */
-	public void setY(float y)
-	{
+	public void setY(float y) {
 		this.y = y;
 	}
-	
-	
+
 	/**
 	 * Faster method for only moving along the x axis.
-	 * @param distance the distance to move the y coordinate.
+	 * 
+	 * @param distance
+	 *            the distance to move the y coordinate.
 	 */
-	public void moveX(float distance)
-	{
+	public void moveX(float distance) {
 		x += distance;
 	}
+
 	/**
 	 * Faster method for only moving along the y axis.
-	 * @param distance the distance to move the y coordinate.
+	 * 
+	 * @param distance
+	 *            the distance to move the y coordinate.
 	 */
-	public void moveY(float distance)
-	{
+	public void moveY(float distance) {
 		y += distance;
 	}
+
 	/**
 	 * Moves the point {@code distance} towards {@code angle}
 	 * 
