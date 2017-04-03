@@ -6,15 +6,14 @@ public class CharacterModel {
 	private Point position;
 
 	private float xVelocity = 2;
+	private float yVelocity = 0;
 
-	/**
-	 * Temporary value for gravity, it is currently a set speed that happens
-	 * whenever the character isn't on the ground. TODO: Change to be
-	 * accelleration and stuff.
-	 */
-	private float temporaryGravityValue = -1;
+	private float gravityAcceleration = -0.4f;
 
 	private boolean collidingWithGround = false;
+
+	private float jumpInitialVelocity = 10f;
+
 	private float groundCollisionCoordinate = 0;
 
 	public CharacterModel(float x, float y) {
@@ -26,6 +25,15 @@ public class CharacterModel {
 	public void update() {
 		moveRight();
 		fall();
+
+		if (position.getX() > 600)
+			position.setX(0);
+		if (position.getY() < -100)
+			position.setY(0);
+
+		//Testing stuff
+		//	if(position.getX() > 240 && position.getX() < 250)
+		//		jump();
 	}
 
 	private void moveRight() {
@@ -33,14 +41,22 @@ public class CharacterModel {
 	}
 
 	private void fall() {
-		//TODO: Gravitation accelleration and stuff.
+		//TODO: Gravitation acceleration and stuff.
 		if (!collidingWithGround) {
-			position.moveY(temporaryGravityValue);
+			yVelocity += gravityAcceleration;
+
+			position.moveY(yVelocity);
 		}
+
 	}
 
-	private void jump() {
-		//TODO: Jumping.
+	public void jump() {
+		if (collidingWithGround) {
+			//Force character out of the object it is currently standing on.
+			position.moveY(1);
+
+			yVelocity = jumpInitialVelocity;
+		}
 	}
 
 	private void hook() {
@@ -79,7 +95,7 @@ public class CharacterModel {
 	}
 
 	/**
-	 * Sets whether the model is colldiding with the ground currently or not. If
+	 * Sets whether the model is colliding with the ground currently or not. If
 	 * setting to true, consider using {@See collideWithGround} instead since
 	 * this method doesn't update the coordinate that the model is colliding at.
 	 * 
@@ -90,6 +106,7 @@ public class CharacterModel {
 		collidingWithGround = truth;
 		if (truth) {
 			position.setY(groundCollisionCoordinate);
+			yVelocity = 0;
 		}
 	}
 

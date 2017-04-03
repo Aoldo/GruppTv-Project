@@ -1,9 +1,10 @@
 package com.grupptva.runnergame.gamecore;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.grupptva.runnergame.character.CharacterController;
 import com.grupptva.runnergame.character.CharacterModel;
 import com.grupptva.runnergame.world.World;
 
@@ -15,14 +16,21 @@ public class GameCore {
 	final short worldGridSize = 25;
 
 	public GameCore() {
-		character = new CharacterModel(0, 50);
+		character = new CharacterModel(100, 100);
 		world = new World();
 	}
 
 	public void update() {
 		testingMethodGround();
 
+		testingInputJump();
 		character.update();
+	}
+
+	private void testingInputJump() {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			character.jump();
+		}
 	}
 
 	private void testingMethodGround() {
@@ -36,26 +44,28 @@ public class GameCore {
 	}
 
 	private int testingCollisionGroundPosition() {
-		for (int i = 0; i < world.grid.length; i++) {
-			for (int u = 0; u < world.grid[0].length; u++) {
-				if (world.grid[i][u] != 0) {
-					//Check if character position is inside of any world square, if it is return top of said square.
-					//TODO: Actual rectangle collision checks.
-					
-					if (character.box.position.getY() > i * worldGridSize
-							&& character.box.position.getY() < i * worldGridSize + worldGridSize
-							&& character.box.position.getX() > u * worldGridSize
-							&& character.box.position.getX() < u * worldGridSize + worldGridSize) {
+		for (int y = 0; y < world.grid.length; y++) {
+			for (int x = 0; x < world.grid[0].length; x++) {
+				if (world.grid[y][x] != 0) {
 
+					float dx = Math.abs(character.box.getCenterX()
+							- (x * worldGridSize + worldGridSize / 2f));
+					float dy = Math.abs(character.box.getCenterY()
+							- (y * worldGridSize + worldGridSize / 2f));
+					float totalWidth = character.box.getWidth() + worldGridSize;
+					float totalHeight = character.box.getHeight() + worldGridSize;
 
-						return i * worldGridSize + worldGridSize;
+					if (dx * 2 <= totalWidth && dy * 2 <= totalHeight) {
+
+						//TODO: If collision with side => Trigger gameover!
+
+						return y * worldGridSize + worldGridSize;
 					}
 				}
 
 			}
 		}
 		return -1;
-
 	}
 
 	//ub3r l33t h4x
@@ -67,13 +77,14 @@ public class GameCore {
 		for (int i = 0; i < world.grid.length; i++) {
 			for (int u = 0; u < world.grid[0].length; u++) {
 				if (world.grid[i][u] != 0)
-					testRenderer.rect(u * worldGridSize, i * worldGridSize, worldGridSize, worldGridSize);
+					testRenderer.rect(u * worldGridSize, i * worldGridSize, worldGridSize,
+							worldGridSize);
 			}
 		}
 		//Draw playerCharacter box
 		testRenderer.setColor(0f, 0f, 0f, 1f);
-		testRenderer.rect(character.getX(), character.getY(), character.box.dimensions.getX(),
-				character.box.dimensions.getY());
+		testRenderer.rect(character.getX(), character.getY(),
+				character.box.dimensions.getX(), character.box.dimensions.getY());
 
 		testRenderer.end();
 	}
