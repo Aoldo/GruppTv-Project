@@ -69,19 +69,17 @@ public class CharacterModel {
 				}
 			} else {
 				float newY = hookGetNewY();
-				if(attachedWithHook)
-				{
+				if (attachedWithHook) {
 					position.setY(newY);
 				}
 			}
 		}
 	}
 
-	private void stopHook()
-	{
+	private void stopHook() {
 		attachedWithHook = false;
 	}
-	
+
 	private float hookGetNewY() {
 		// Circle equation: r^2 = (x-a)^2+(y-b)^2 = x-2ax+a^2+y-2yb+b^2
 		float r = hookRadius;
@@ -90,7 +88,7 @@ public class CharacterModel {
 		float b = hookPoint.getY();
 		float insideSqrt = -(a * a) + 2 * a * x + r * r - (x * x);
 		if (insideSqrt < 0) {
-			System.out.println("Sqrt negative number in hook()!");
+			//If this happens the characters x value is outside of the hooks radius.
 			stopHook();
 			return 0;
 		}

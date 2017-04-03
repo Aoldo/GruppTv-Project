@@ -84,7 +84,7 @@ public class GameCore {
 							worldGridSize);
 			}
 		}
-		//Draw player hook circle.
+		//Draw player hook circle
 		if (character.attachedWithHook) {
 			testRenderer.circle(character.hookPoint.getX(), character.hookPoint.getY(),
 					character.hookRadius);
