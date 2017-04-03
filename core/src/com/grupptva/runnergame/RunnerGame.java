@@ -55,6 +55,8 @@ public class RunnerGame extends ApplicationAdapter {
 		 * possible to change the speed of the simulation. Game is designed to
 		 * be run at any speed between {@See lowestTimePerLogicFrame} and {@See
 		 * highestTimePerLogicFrame}.
+		 * 
+		 * All game logic except rendering should be handled inside of the loop!
 		 */
 		timeAccumulator += Gdx.graphics.getDeltaTime();
 		while (timeAccumulator > 0) {
