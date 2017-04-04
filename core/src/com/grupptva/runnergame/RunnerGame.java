@@ -36,7 +36,8 @@ public class RunnerGame extends ApplicationAdapter {
 			}
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			if (currentTimePerLogicFrame < highestTimePerLogicFrame) {
+			//if (currentTimePerLogicFrame < highestTimePerLogicFrame) {
+			if (currentTimePerLogicFrame < 50) {
 				currentTimePerLogicFrame += 0.0001f;
 			}
 		}

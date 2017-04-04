@@ -20,13 +20,19 @@ public class GameCore {
 		world = new World();
 	}
 
+	/**
+	 * Updates the game state, should be called once per iteration of the game's
+	 * logic loop.
+	 */
 	public void update() {
-		testingMethodGround();
-
-		testingInput();
 		character.update();
+		testingMethodGround();
+		testingInput();
 	}
 
+	/**
+	 * Reads input and forwards it to the character in the form of method calls.
+	 */
 	private void testingInput() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			character.jump();
@@ -34,15 +40,16 @@ public class GameCore {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
 			character.initHook();
 		}
-		if(character.attachedWithHook)
-		{
-			if(!Gdx.input.isKeyPressed(Input.Keys.X))
-			{
+		if (character.attachedWithHook) {
+			if (!Gdx.input.isKeyPressed(Input.Keys.X)) {
 				character.stopHook();
 			}
 		}
 	}
 
+	/**
+	 * Tells the character if it has collided with anything.
+	 */
 	private void testingMethodGround() {
 		int collisionY = testingCollisionGroundPosition();
 
@@ -53,6 +60,14 @@ public class GameCore {
 		}
 	}
 
+	/**
+	 * Does collision between the character and the world and returns the y
+	 * coordinate that the character should be at in order to collide against
+	 * the ground with one pixel.
+	 * 
+	 * @return the y coordinate one pixel below the top of the object the
+	 *         character is colliding with.
+	 */
 	private int testingCollisionGroundPosition() {
 		for (int y = 0; y < world.grid.length; y++) {
 			for (int x = 0; x < world.grid[0].length; x++) {
@@ -79,6 +94,11 @@ public class GameCore {
 	}
 
 	//ub3r l33t h4x
+	/**
+	 * Renders the world and the character.
+	 * 
+	 * @param batch
+	 */
 	public void render(SpriteBatch batch) {
 		testRenderer = new ShapeRenderer();
 		testRenderer.begin(ShapeType.Filled);

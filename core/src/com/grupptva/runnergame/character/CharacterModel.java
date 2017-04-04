@@ -65,7 +65,7 @@ public class CharacterModel {
 	//-----------------Methods used for gameloop---------------------------------
 	/**
 	 * Updates the characters state, should be called once per iteration of the
-	 * games logic loop.
+	 * game's logic loop.
 	 */
 	public void update() {
 		moveRight();
