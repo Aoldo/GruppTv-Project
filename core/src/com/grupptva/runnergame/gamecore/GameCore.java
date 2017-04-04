@@ -1,5 +1,9 @@
 package com.grupptva.runnergame.gamecore;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,7 +37,7 @@ public class GameCore {
 		character.update();
 		testingMethodGround();
 		testingInput();
-		
+
 		testingMoveGround();
 	}
 
@@ -72,9 +76,19 @@ public class GameCore {
 	}
 
 	private void testingMoveGround() {
-		for (Rectangle obstacle : secondWorld.obstacles) {
+		List<Integer> oobIndexes = new ArrayList<Integer>();
+		
+		Random rng = new Random();
+
+		for (int i = 0; i < secondWorld.obstacles.size(); i++) {
+			Rectangle obstacle = secondWorld.obstacles.get(i);
+
 			obstacle.position.moveX(-character.xVelocity);
+			if (obstacle.position.getX() + obstacle.getWidth() < 0) {
+				secondWorld.obstacles.set(i, new Rectangle(500, rng.nextInt(75), 75, 25));
+			}
 		}
+
 	}
 
 	/**
