@@ -73,8 +73,8 @@ public class CharacterModel {
 
 		hook();
 
-		if (position.getX() > 630)
-			position.setX(0);
+		//		if (position.getX() > 630)
+		//			position.setX(0);
 		if (position.getY() < -100)
 			position.setY(0);
 	}

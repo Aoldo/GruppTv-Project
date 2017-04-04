@@ -14,5 +14,4 @@ public class World {
 		obstacles.add(new Rectangle(300, 0, 75, 25));
 		obstacles.add(new Rectangle(450, 0, 75, 25));
 	}
-
 }

@@ -161,14 +161,18 @@ public class GameCore {
 			testRenderer.rect(obstacle.position.getX(), obstacle.position.getY(),
 					obstacle.getWidth(), obstacle.getHeight());
 		}
-
+		testRenderer.end();
+		testRenderer.begin(ShapeType.Line);
 		//Draw player hook circle
 		if (character.attachedWithHook) {
 			testRenderer.circle(character.hookPoint.getX() - character.getX() + 50,
 					character.hookPoint.getY(), character.hookRadius);
 		}
 
+		testRenderer.end();
+		testRenderer.begin(ShapeType.Filled);
 		//Draw playerCharacter box
+
 		testRenderer.setColor(0f, 0f, 0f, 1f);
 		testRenderer.rect(50, character.getY(), character.box.dimensions.getX(),
 				character.box.dimensions.getY());
