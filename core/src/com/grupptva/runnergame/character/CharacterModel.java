@@ -12,7 +12,7 @@ public class CharacterModel {
 	 */
 	private Point position;
 
-	private float xVelocity = 2.2f;
+	public float xVelocity = 2.2f;
 	private float yVelocity = 0;
 
 	private float gravityAcceleration = -0.4f;

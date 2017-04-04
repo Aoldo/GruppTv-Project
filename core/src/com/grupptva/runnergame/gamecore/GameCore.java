@@ -33,6 +33,8 @@ public class GameCore {
 		character.update();
 		testingMethodGround();
 		testingInput();
+		
+		testingMoveGround();
 	}
 
 	/**
@@ -69,6 +71,12 @@ public class GameCore {
 		}
 	}
 
+	private void testingMoveGround() {
+		for (Rectangle obstacle : secondWorld.obstacles) {
+			obstacle.position.moveX(-character.xVelocity);
+		}
+	}
+
 	/**
 	 * Does collision between the character and the world and returns the y
 	 * coordinate that the character should be at in order to collide against
@@ -80,7 +88,8 @@ public class GameCore {
 	private int testingCollisionGroundPosition() {
 		//Not grid collision
 		for (Rectangle obstacle : secondWorld.obstacles) {
-			float dx = Math.abs(character.box.getCenterX() - obstacle.getCenterX());
+			float dx = Math.abs(character.box.getCenterX() - character.getX() + 50
+					- obstacle.getCenterX());
 			float dy = Math.abs(character.box.getCenterY() - obstacle.getCenterY());
 			float totalWidth = character.box.getWidth() + obstacle.getWidth();
 			float totalHeight = character.box.getHeight() + obstacle.getHeight();
@@ -91,7 +100,6 @@ public class GameCore {
 
 				return (int) (obstacle.position.getY() + obstacle.getHeight());
 			}
-
 		}
 
 		//GridWorld collision
@@ -142,14 +150,14 @@ public class GameCore {
 
 		//Draw player hook circle
 		if (character.attachedWithHook) {
-			testRenderer.circle(character.hookPoint.getX()-character.getX()+50, character.hookPoint.getY(),
-					character.hookRadius);
+			testRenderer.circle(character.hookPoint.getX() - character.getX() + 50,
+					character.hookPoint.getY(), character.hookRadius);
 		}
 
 		//Draw playerCharacter box
 		testRenderer.setColor(0f, 0f, 0f, 1f);
-		testRenderer.rect(50, character.getY(),
-				character.box.dimensions.getX(), character.box.dimensions.getY());
+		testRenderer.rect(50, character.getY(), character.box.dimensions.getX(),
+				character.box.dimensions.getY());
 
 		testRenderer.end();
 	}
