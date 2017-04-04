@@ -142,13 +142,13 @@ public class GameCore {
 
 		//Draw player hook circle
 		if (character.attachedWithHook) {
-			testRenderer.circle(character.hookPoint.getX(), character.hookPoint.getY(),
+			testRenderer.circle(character.hookPoint.getX()-character.getX()+50, character.hookPoint.getY(),
 					character.hookRadius);
 		}
 
 		//Draw playerCharacter box
 		testRenderer.setColor(0f, 0f, 0f, 1f);
-		testRenderer.rect(character.getX(), character.getY(),
+		testRenderer.rect(50, character.getY(),
 				character.box.dimensions.getX(), character.box.dimensions.getY());
 
 		testRenderer.end();
