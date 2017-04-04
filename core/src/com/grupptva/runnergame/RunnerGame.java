@@ -27,7 +27,7 @@ public class RunnerGame extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-		Gdx.graphics.setTitle(String.valueOf(Gdx.graphics.getFramesPerSecond()));
+		Gdx.graphics.setTitle(String.valueOf(Gdx.graphics.getFramesPerSecond()) + "  :  " + currentTimePerLogicFrame);
 
 		//Temporary code to change execution speed.
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {

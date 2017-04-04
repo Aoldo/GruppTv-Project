@@ -12,7 +12,7 @@ public class CharacterModel {
 	 */
 	private Point position;
 
-	private float xVelocity = 2.5f;
+	private float xVelocity = 2.2f;
 	private float yVelocity = 0;
 
 	private float gravityAcceleration = -0.4f;
@@ -73,7 +73,7 @@ public class CharacterModel {
 
 		hook();
 
-		if (position.getX() > 600)
+		if (position.getX() > 630)
 			position.setX(0);
 		if (position.getY() < -100)
 			position.setY(0);

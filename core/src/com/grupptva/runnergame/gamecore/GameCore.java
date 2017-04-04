@@ -6,18 +6,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.character.CharacterModel;
+import com.grupptva.runnergame.character.Rectangle;
+import com.grupptva.runnergame.world.GridWorld;
 import com.grupptva.runnergame.world.World;
 
 public class GameCore {
 	CharacterModel character;
-	World world;
+	GridWorld world;
+	World secondWorld;
 	ShapeRenderer testRenderer;
 
 	final short worldGridSize = 25;
 
 	public GameCore() {
 		character = new CharacterModel(100, 100);
-		world = new World();
+		world = new GridWorld();
+
+		secondWorld = new World();
 	}
 
 	/**
@@ -45,6 +50,10 @@ public class GameCore {
 				character.stopHook();
 			}
 		}
+		if (Gdx.input.isButtonPressed(0)) {
+			secondWorld.obstacles.add(new Rectangle(Gdx.input.getX(),
+					Gdx.graphics.getHeight() - Gdx.input.getY(), 25, 25));
+		}
 	}
 
 	/**
@@ -69,31 +78,44 @@ public class GameCore {
 	 *         character is colliding with.
 	 */
 	private int testingCollisionGroundPosition() {
-		for (int y = 0; y < world.grid.length; y++) {
-			for (int x = 0; x < world.grid[0].length; x++) {
-				if (world.grid[y][x] != 0) {
+		//Not grid collision
+		for (Rectangle obstacle : secondWorld.obstacles) {
+			float dx = Math.abs(character.box.getCenterX() - obstacle.getCenterX());
+			float dy = Math.abs(character.box.getCenterY() - obstacle.getCenterY());
+			float totalWidth = character.box.getWidth() + obstacle.getWidth();
+			float totalHeight = character.box.getHeight() + obstacle.getHeight();
 
-					float dx = Math.abs(character.box.getCenterX()
-							- (x * worldGridSize + worldGridSize / 2f));
-					float dy = Math.abs(character.box.getCenterY()
-							- (y * worldGridSize + worldGridSize / 2f));
-					float totalWidth = character.box.getWidth() + worldGridSize;
-					float totalHeight = character.box.getHeight() + worldGridSize;
+			if (dx * 2 <= totalWidth && dy * 2 <= totalHeight) {
 
-					if (dx * 2 <= totalWidth && dy * 2 <= totalHeight) {
+				//TODO: If collision with side => Trigger gameover!
 
-						//TODO: If collision with side => Trigger gameover!
-
-						return y * worldGridSize + worldGridSize;
-					}
-				}
-
+				return (int) (obstacle.position.getY() + obstacle.getHeight());
 			}
+
 		}
+
+		//GridWorld collision
+		/*
+		 * for (int y = 0; y < world.grid.length; y++) { for (int x = 0; x <
+		 * world.grid[0].length; x++) { if (world.grid[y][x] != 0) {
+		 * 
+		 * float dx = Math.abs(character.box.getCenterX() - (x * worldGridSize +
+		 * worldGridSize / 2f)); float dy = Math.abs(character.box.getCenterY()
+		 * - (y * worldGridSize + worldGridSize / 2f)); float totalWidth =
+		 * character.box.getWidth() + worldGridSize; float totalHeight =
+		 * character.box.getHeight() + worldGridSize;
+		 * 
+		 * if (dx * 2 <= totalWidth && dy * 2 <= totalHeight) {
+		 * 
+		 * //TODO: If collision with side => Trigger gameover!
+		 * 
+		 * return y * worldGridSize + worldGridSize; } }
+		 * 
+		 * } } return -1;
+		 */
 		return -1;
 	}
 
-	//ub3r l33t h4x
 	/**
 	 * Renders the world and the character.
 	 * 
@@ -103,14 +125,21 @@ public class GameCore {
 		testRenderer = new ShapeRenderer();
 		testRenderer.begin(ShapeType.Filled);
 
-		//Draw world
-		for (int i = 0; i < world.grid.length; i++) {
-			for (int u = 0; u < world.grid[0].length; u++) {
-				if (world.grid[i][u] != 0)
-					testRenderer.rect(u * worldGridSize, i * worldGridSize, worldGridSize,
-							worldGridSize);
-			}
+		//Draw grid world
+		/*
+		 * for (int i = 0; i < world.grid.length; i++) { for (int u = 0; u <
+		 * world.grid[0].length; u++) { if (world.grid[i][u] != 0)
+		 * testRenderer.rect(u * worldGridSize, i * worldGridSize,
+		 * worldGridSize, worldGridSize); } }
+		 */
+
+		//Draw not grid world
+
+		for (Rectangle obstacle : secondWorld.obstacles) {
+			testRenderer.rect(obstacle.position.getX(), obstacle.position.getY(),
+					obstacle.getWidth(), obstacle.getHeight());
 		}
+
 		//Draw player hook circle
 		if (character.attachedWithHook) {
 			testRenderer.circle(character.hookPoint.getX(), character.hookPoint.getY(),
