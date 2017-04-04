@@ -5,7 +5,7 @@ public class CharacterModel {
 	public Rectangle box;
 	private Point position;
 
-	private float xVelocity = 2;
+	private float xVelocity = 2.5f;
 	private float yVelocity = 0;
 
 	private float gravityAcceleration = -0.4f;
@@ -19,7 +19,7 @@ public class CharacterModel {
 	public boolean attachedWithHook = false;
 	private boolean hookExtended = false;
 	public Point hookPoint;
-	private float hookAngle = 1.5f;
+	private float hookAngle = 1f;
 	public float hookRadius = 100;
 
 	public CharacterModel(float x, float y) {
@@ -76,12 +76,16 @@ public class CharacterModel {
 		}
 	}
 
-	private void stopHook() {
+	public void stopHook() {
 		attachedWithHook = false;
+		float angleToHook = position.angleBetween(hookPoint);
+		//Arbitrary value
+		yVelocity = (float)Math.sin(angleToHook + Math.PI / 2) * 10;
 	}
 
 	private float hookGetNewY() {
-		// Circle equation: r^2 = (x-a)^2+(y-b)^2 = x-2ax+a^2+y-2yb+b^2
+		//Circle equation: r^2 = (x-a)^2+(y-b)^2 = x-2ax+a^2+y-2yb+b^2
+		//TODO: Remove and use actual variables instead of new versions
 		float r = hookRadius;
 		float x = position.getX();
 		float a = hookPoint.getX();

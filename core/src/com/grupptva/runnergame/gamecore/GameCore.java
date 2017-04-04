@@ -34,6 +34,13 @@ public class GameCore {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
 			character.initHook();
 		}
+		if(character.attachedWithHook)
+		{
+			if(!Gdx.input.isKeyPressed(Input.Keys.X))
+			{
+				character.stopHook();
+			}
+		}
 	}
 
 	private void testingMethodGround() {
