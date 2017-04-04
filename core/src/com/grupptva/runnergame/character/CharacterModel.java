@@ -1,10 +1,17 @@
 package com.grupptva.runnergame.character;
 
 public class CharacterModel {
-
+	/**
+	 * The box representing the character's shape. Contains the character's
+	 * position, width and height.
+	 */
 	public Rectangle box;
+	/**
+	 * A reference to the character's box's position. Used to make changing the
+	 * position easier.
+	 */
 	private Point position;
-
+	
 	private float xVelocity = 2.5f;
 	private float yVelocity = 0;
 
@@ -12,14 +19,39 @@ public class CharacterModel {
 
 	private boolean collidingWithGround = false;
 
+	/**
+	 * This is the initival velocity that the character's yVelocity gets sets to
+	 * when initiating a jump.
+	 */
 	private float jumpInitialVelocity = 10f;
-
+	/**
+	 * This coordinate represents the y coordinate the character has to be at in
+	 * order to collide with the flor with a single pixel. This is used to put
+	 * the character on top of the floor and to prevent the stuttering that
+	 * happens if the character were to be put just above the floor.
+	 */
 	private float groundCollisionCoordinate = 0;
 
+	/**
+	 * True if the character has started using the hook. While true the
+	 * character will do things related to the hook, like check if the hook has
+	 * been fully extended, and when it has been, start swinging with it.
+	 */
 	public boolean attachedWithHook = false;
+	/**
+	 * True if the character has fully extended the hook. While true the
+	 * character will be swinging with the hook.
+	 */
 	private boolean hookExtended = false;
+	/**
+	 * The attachment point of the hook.
+	 */
 	public Point hookPoint;
+	/**
+	 * The angle that the hook is thrown at.
+	 */
 	private float hookAngle = 1f;
+
 	public float hookRadius = 100;
 
 	public CharacterModel(float x, float y) {
@@ -80,7 +112,7 @@ public class CharacterModel {
 		attachedWithHook = false;
 		float angleToHook = position.angleBetween(hookPoint);
 		//Arbitrary value
-		yVelocity = (float)Math.sin(angleToHook + Math.PI / 2) * 10;
+		yVelocity = (float) Math.sin(angleToHook + Math.PI / 2) * 10;
 	}
 
 	private float hookGetNewY() {
