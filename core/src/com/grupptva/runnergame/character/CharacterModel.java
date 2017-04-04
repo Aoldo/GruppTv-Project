@@ -11,7 +11,7 @@ public class CharacterModel {
 	 * position easier.
 	 */
 	private Point position;
-	
+
 	private float xVelocity = 2.5f;
 	private float yVelocity = 0;
 
@@ -52,6 +52,9 @@ public class CharacterModel {
 	 */
 	private float hookAngle = 1f;
 
+	/**
+	 * Represents the length of the hook when it is fully extended.
+	 */
 	public float hookRadius = 100;
 
 	public CharacterModel(float x, float y) {
@@ -60,6 +63,10 @@ public class CharacterModel {
 	}
 
 	//-----------------Methods used for gameloop---------------------------------
+	/**
+	 * Updates the characters state, should be called once per iteration of the
+	 * games logic loop.
+	 */
 	public void update() {
 		moveRight();
 		fall();
@@ -72,10 +79,17 @@ public class CharacterModel {
 			position.setY(0);
 	}
 
+	/**
+	 * Moves the character to the right.
+	 */
 	private void moveRight() {
 		position.moveX(xVelocity);
 	}
 
+	/**
+	 * Accelerates the character downwards and then updates its y coordinate, if
+	 * it is currently falling.
+	 */
 	private void fall() {
 		if (!collidingWithGround) {
 			yVelocity += gravityAcceleration;
@@ -84,6 +98,9 @@ public class CharacterModel {
 		}
 	}
 
+	/**
+	 * Initiates a jump if the character is currently on ground.
+	 */
 	public void jump() {
 		if (collidingWithGround) {
 			//Force character out of the object it is currently standing on.
@@ -93,6 +110,9 @@ public class CharacterModel {
 		}
 	}
 
+	/**
+	 * Does the logic for the character's hook, if it is currently in use.
+	 */
 	private void hook() {
 		if (attachedWithHook) {
 			if (!hookExtended) {
@@ -108,6 +128,11 @@ public class CharacterModel {
 		}
 	}
 
+	/**
+	 * Detaches the hook by setting attachedWithHook to false. Also causes the
+	 * character to "jump" a bit as it releases the hook, velocity depending on
+	 * the angle between the hook and character.
+	 */
 	public void stopHook() {
 		attachedWithHook = false;
 		float angleToHook = position.angleBetween(hookPoint);
@@ -115,6 +140,13 @@ public class CharacterModel {
 		yVelocity = (float) Math.sin(angleToHook + Math.PI / 2) * 10;
 	}
 
+	/**
+	 * Returns the bottom y coordinate in the circle that is built up by
+	 * {@See hookPoint} and {@See hookRadius}, depending on the character's
+	 * current x coordinate.
+	 * 
+	 * @return
+	 */
 	private float hookGetNewY() {
 		//Circle equation: r^2 = (x-a)^2+(y-b)^2 = x-2ax+a^2+y-2yb+b^2
 		//TODO: Remove and use actual variables instead of new versions
@@ -133,6 +165,11 @@ public class CharacterModel {
 				? b - (float) Math.sqrt(insideSqrt) : b + (float) Math.sqrt(insideSqrt);
 	}
 
+	/**
+	 * Initiates the characters hook by attaching it to a point to the top right
+	 * of the character, and setting {@See attachWithHook} to true. TODO: Make
+	 * it attach to world object instead of a point in the sky.
+	 */
 	public void initHook() {
 		hookPoint = new Point(position);
 		hookPoint.moveInDirection(hookRadius, hookAngle);
@@ -141,16 +178,34 @@ public class CharacterModel {
 	}
 
 	//-----------------Get methods-----------------------------------------------
+	/**
+	 * Returns the x coordinate of the bottom left corner of the character's
+	 * box.
+	 * 
+	 * @return the characters x coordinate.
+	 */
 	public float getX() {
 		return position.getX();
 	}
 
+	/**
+	 * Returns the x coordinate of the bottom left corner of the character's
+	 * box.
+	 * 
+	 * @return the characters x coordinate.
+	 */
 	public float getY() {
 		return position.getY();
 	}
 
 	//-----------------Public methods used for controlling the model-------------
 
+	/**
+	 * Sets the characters x velocity.
+	 * 
+	 * @param velocity
+	 *            the velocity that the character should move at.
+	 */
 	public void setXVelocity(float velocity) {
 		xVelocity = velocity;
 	}
