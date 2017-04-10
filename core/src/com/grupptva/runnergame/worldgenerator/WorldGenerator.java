@@ -92,10 +92,13 @@ public class WorldGenerator {
 		 * Keep crawling forward step by step until the end of the chunk has
 		 * been reached. Inside this loop is where the magic happens.
 		 */
-		//while (currentTile[0] != chunk[0].length - 1) {
-
-		//	chunkLog.add(deepCopyChunk(chunk));
-		//}
+		while (currentTile[0] != chunk[0].length - 1) {
+			currentTile[0]++;
+			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+			
+			
+			chunkLog.add(deepCopyChunk(chunk));
+		}
 
 		return chunkLog;
 	}
