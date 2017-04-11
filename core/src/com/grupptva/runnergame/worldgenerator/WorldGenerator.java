@@ -63,6 +63,47 @@ public class WorldGenerator {
 		jumpOffsets.add(new Integer[] { 3, -2 });
 		jumpOffsets.add(new Integer[] { 4, -2 });
 
+		hookAttachOffsets.add(new Integer[] { 2, 4 });
+
+		//TODO: is in relation to the attachment point currently, change?
+		hookJumpOffsets.add(new Integer[] { 0, -5 });
+		hookJumpOffsets.add(new Integer[] { 1, -5 });
+		hookJumpOffsets.add(new Integer[] { 2, -5 });
+		hookJumpOffsets.add(new Integer[] { 3, -5 });
+		hookJumpOffsets.add(new Integer[] { 4, -5 });
+		hookJumpOffsets.add(new Integer[] { 5, -5 });
+		hookJumpOffsets.add(new Integer[] { 6, -5 });
+		hookJumpOffsets.add(new Integer[] { 7, -5 });
+		hookJumpOffsets.add(new Integer[] { 8, -5 });
+		hookJumpOffsets.add(new Integer[] { 9, -5 });
+		
+		hookJumpOffsets.add(new Integer[] { 3, -4 });
+		hookJumpOffsets.add(new Integer[] { 4, -4 });
+		hookJumpOffsets.add(new Integer[] { 5, -4 });
+		hookJumpOffsets.add(new Integer[] { 6, -4 });
+		hookJumpOffsets.add(new Integer[] { 7, -4 });
+		hookJumpOffsets.add(new Integer[] { 8, -4 });
+		hookJumpOffsets.add(new Integer[] { 9, -4 });
+
+		hookJumpOffsets.add(new Integer[] { 5, -3 });
+		hookJumpOffsets.add(new Integer[] { 6, -3 });
+		hookJumpOffsets.add(new Integer[] { 7, -3 });
+		hookJumpOffsets.add(new Integer[] { 8, -3 });
+
+		hookJumpOffsets.add(new Integer[] { 5, -2 });
+		hookJumpOffsets.add(new Integer[] { 6, -2 });
+		hookJumpOffsets.add(new Integer[] { 7, -2 });
+		
+		hookJumpOffsets.add(new Integer[] { 5, -1 });
+		hookJumpOffsets.add(new Integer[] { 6, -1 });
+		hookJumpOffsets.add(new Integer[] { 7, -1 });
+
+		hookJumpOffsets.add(new Integer[] { 6, 0 });
+		hookJumpOffsets.add(new Integer[] { 6, 1 });
+		
+		
+		
+		
 		this.hookAttachOffsets = hookAttachOffsets;
 		this.jumpOffsets = jumpOffsets;
 		this.hookJumpOffsets = hookJumpOffsets;
