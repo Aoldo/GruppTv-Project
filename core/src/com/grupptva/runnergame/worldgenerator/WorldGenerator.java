@@ -87,7 +87,7 @@ public class WorldGenerator {
 
 		//This is used to "crawl" through the possible paths inside of the chunk to the end of it.
 		//x, y
-		int[] currentTile = { 0, initY};
+		int[] currentTile = { 0, initY };
 
 		//Add a tile for the player to stand on at the start of the chunk.
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
@@ -117,15 +117,17 @@ public class WorldGenerator {
 					validJumpIndexes.add(i);
 				}
 			}
-			if(validJumpIndexes.size() == 0)
+			if (validJumpIndexes.size() == 0)
 				break;
-			
+
 			Integer[] offset = jumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
 			currentTile[0] += offset[0];
 			currentTile[1] += offset[1];
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
+		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+		chunkLog.add(deepCopyChunk(chunk));
 		return chunkLog;
 	}
 
