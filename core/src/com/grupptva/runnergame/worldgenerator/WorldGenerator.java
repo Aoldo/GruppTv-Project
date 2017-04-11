@@ -51,6 +51,18 @@ public class WorldGenerator {
 	 */
 	public WorldGenerator(List<Integer[]> hookAttachOffsets, List<Integer[]> jumpOffsets,
 			List<Integer[]> hookJumpOffsets, Long seed) {
+
+		//Temporary solution to possible offsets
+		jumpOffsets.add(new Integer[] { 1, 0 });
+		jumpOffsets.add(new Integer[] { 2, 2 });
+		jumpOffsets.add(new Integer[] { 3, 2 });
+		jumpOffsets.add(new Integer[] { 3, 1 });
+		jumpOffsets.add(new Integer[] { 3, 0 });
+		jumpOffsets.add(new Integer[] { 3, -1 });
+		jumpOffsets.add(new Integer[] { 4, -1 });
+		jumpOffsets.add(new Integer[] { 3, -2 });
+		jumpOffsets.add(new Integer[] { 4, -2 });
+
 		this.hookAttachOffsets = hookAttachOffsets;
 		this.jumpOffsets = jumpOffsets;
 		this.hookJumpOffsets = hookJumpOffsets;
@@ -95,12 +107,23 @@ public class WorldGenerator {
 		while (currentTile[0] != chunk[0].length - 1) {
 			currentTile[0]++;
 			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-			
-			
+
+			for (Integer[] offset : jumpOffsets) {
+				if (currentTile[1] + offset[1] < chunkHeight && currentTile[0] + offset[0] < chunkWidth) {
+					chunk[currentTile[1] + offset[1]][currentTile[0] + offset[0]] = Tile.POSSIBLESTAND;
+				}
+			}
+
 			chunkLog.add(deepCopyChunk(chunk));
 		}
 
 		return chunkLog;
+	}
+
+	private boolean isValidIndex(Integer[] index) {
+		if (index[1] < chunkHeight && index[0] < chunkWidth)
+			return true;
+		return false;
 	}
 
 	/**
