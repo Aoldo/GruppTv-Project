@@ -70,7 +70,7 @@ public class WorldGenerator {
 	}
 
 	public Tile[][] generateChunk(int y) {
-
+		
 		return null;
 	}
 
