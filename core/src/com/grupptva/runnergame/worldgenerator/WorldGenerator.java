@@ -70,7 +70,7 @@ public class WorldGenerator {
 	}
 
 	public Tile[][] generateChunk(int y) {
-		
+
 		return null;
 	}
 
@@ -87,7 +87,7 @@ public class WorldGenerator {
 
 		//This is used to "crawl" through the possible paths inside of the chunk to the end of it.
 		//x, y
-		int[] currentTile = { 0, initY };
+		int[] currentTile = { 0, initY};
 
 		//Add a tile for the player to stand on at the start of the chunk.
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
@@ -105,24 +105,34 @@ public class WorldGenerator {
 		 * been reached. Inside this loop is where the magic happens.
 		 */
 		while (currentTile[0] != chunk[0].length - 1) {
-			currentTile[0]++;
 			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+			List<Integer> validJumpIndexes = new ArrayList<Integer>();
 
-			for (Integer[] offset : jumpOffsets) {
-				if (currentTile[1] + offset[1] < chunkHeight && currentTile[0] + offset[0] < chunkWidth) {
-					chunk[currentTile[1] + offset[1]][currentTile[0] + offset[0]] = Tile.POSSIBLESTAND;
+			for (int i = 0; i < jumpOffsets.size(); i++) {
+				int x = jumpOffsets.get(i)[0] + currentTile[0];
+				int y = jumpOffsets.get(i)[1] + currentTile[1];
+
+				if (isValidIndex(x, y)) {
+					chunk[y][x] = Tile.POSSIBLESTAND;
+					validJumpIndexes.add(i);
 				}
 			}
+			if(validJumpIndexes.size() == 0)
+				break;
+			
+			Integer[] offset = jumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+			currentTile[0] += offset[0];
+			currentTile[1] += offset[1];
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
-
 		return chunkLog;
 	}
 
-	private boolean isValidIndex(Integer[] index) {
-		if (index[1] < chunkHeight && index[0] < chunkWidth)
+	private boolean isValidIndex(int x, int y) {
+		if (y < chunkHeight && x < chunkWidth && x >= 0 && y >= 0) {
 			return true;
+		}
 		return false;
 	}
 
