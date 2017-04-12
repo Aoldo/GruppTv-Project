@@ -159,7 +159,26 @@ public class WorldGenerator {
 	
 	private void hookStep(Tile[][] chunk, Integer[] currentTile)
 	{		
-
+		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
+		
+		for(Integer index: validHookAttachIndexes)
+		{
+			int x = jumpOffsets.get(index)[0] + currentTile[0];
+			int y = jumpOffsets.get(index)[1] + currentTile[1];
+			
+			chunk[y][x] = Tile.POSSIBLESTAND;
+		}
+	}
+	
+	private void setValidOffsetsToValue(Tile[][] chunk, List<Integer[]> offsets, List<Integer> validIndexes, Integer[] currentTile, Tile value)
+	{
+		for(Integer index: validIndexes)
+		{
+			int x = offsets.get(index)[0] + currentTile[0];
+			int y = offsets.get(index)[1] + currentTile[1];
+			
+			chunk[y][x] = value;
+		}
 	}
 	
 	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile)
@@ -187,14 +206,7 @@ public class WorldGenerator {
 	{
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
 
-		for(Integer index: validJumpIndexes)
-		{
-			int x = jumpOffsets.get(index)[0] + currentTile[0];
-			int y = jumpOffsets.get(index)[1] + currentTile[1];
-			
-			chunk[y][x] = Tile.POSSIBLESTAND;
-		}
-		
+		setValidOffsetsToValue(chunk, jumpOffsets, validJumpIndexes, currentTile, Tile.POSSIBLESTAND);
 		
 		if (validJumpIndexes.size() == 0)
 			return;
