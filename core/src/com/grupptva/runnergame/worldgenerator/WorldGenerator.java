@@ -76,7 +76,7 @@ public class WorldGenerator {
 		hookJumpOffsets.add(new Integer[] { 7, -5 });
 		hookJumpOffsets.add(new Integer[] { 8, -5 });
 		hookJumpOffsets.add(new Integer[] { 9, -5 });
-		
+
 		hookJumpOffsets.add(new Integer[] { 3, -4 });
 		hookJumpOffsets.add(new Integer[] { 4, -4 });
 		hookJumpOffsets.add(new Integer[] { 5, -4 });
@@ -93,17 +93,14 @@ public class WorldGenerator {
 		hookJumpOffsets.add(new Integer[] { 5, -2 });
 		hookJumpOffsets.add(new Integer[] { 6, -2 });
 		hookJumpOffsets.add(new Integer[] { 7, -2 });
-		
+
 		hookJumpOffsets.add(new Integer[] { 5, -1 });
 		hookJumpOffsets.add(new Integer[] { 6, -1 });
 		hookJumpOffsets.add(new Integer[] { 7, -1 });
 
 		hookJumpOffsets.add(new Integer[] { 6, 0 });
 		hookJumpOffsets.add(new Integer[] { 6, 1 });
-		
-		
-		
-		
+
 		this.hookAttachOffsets = hookAttachOffsets;
 		this.jumpOffsets = jumpOffsets;
 		this.hookJumpOffsets = hookJumpOffsets;
@@ -148,68 +145,49 @@ public class WorldGenerator {
 		while (currentTile[0] != chunk[0].length - 1) {
 			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 
+			//hookStep(chunk, currentTile);
 			jumpStep(chunk,currentTile);
-			
+
 			chunkLog.add(deepCopyChunk(chunk));
 		}
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 		chunkLog.add(deepCopyChunk(chunk));
 		return chunkLog;
 	}
-	
-	private void hookStep(Tile[][] chunk, Integer[] currentTile)
-	{		
+
+	private void hookStep(Tile[][] chunk, Integer[] currentTile) {
 		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
-		
-		for(Integer index: validHookAttachIndexes)
-		{
-			int x = jumpOffsets.get(index)[0] + currentTile[0];
-			int y = jumpOffsets.get(index)[1] + currentTile[1];
-			
-			chunk[y][x] = Tile.POSSIBLESTAND;
+		if (validHookAttachIndexes.size() == 0) {
+			//Failsafe to prevent infinte loop
+			//TODO: Better solution.
+			currentTile[0] = chunkWidth - 1;
+			return;
 		}
-	}
-	
-	private void setValidOffsetsToValue(Tile[][] chunk, List<Integer[]> offsets, List<Integer> validIndexes, Integer[] currentTile, Tile value)
-	{
-		for(Integer index: validIndexes)
-		{
-			int x = offsets.get(index)[0] + currentTile[0];
-			int y = offsets.get(index)[1] + currentTile[1];
-			
-			chunk[y][x] = value;
-		}
-	}
-	
-	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile)
-	{
-		List<Integer> validIndexes = new ArrayList<Integer>();
+		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes, currentTile, Tile.POSSIBLEHOOK);
 
-		for (int i = 0; i < offsets.size(); i++) {
-			int x = offsets.get(i)[0] + currentTile[0];
-			int y = offsets.get(i)[1] + currentTile[1];
+		Integer[] offset = hookAttachOffsets
+				.get(validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
 
-			if (isValidIndex(x, y)) {
-				validIndexes.add(i);
-			}
-		}
-		return validIndexes;
+		currentTile[0] += offset[0];
+		currentTile[1] += offset[1];
 	}
-	
+
 	/**
-	 * Called if the current step in generation is a jump.
-	 * TODO: Better doc
-	 * @param chunk 
+	 * Called if the current step in generation is a jump. TODO: Better doc
+	 * 
+	 * @param chunk
 	 * @param currentTile
 	 */
-	private void jumpStep(Tile[][] chunk, Integer[] currentTile)
-	{
+	private void jumpStep(Tile[][] chunk, Integer[] currentTile) {
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
+		if (validJumpIndexes.size() == 0) {
+			//Failsafe to prevent infinte loop
+			//TODO: Better solution.
+			currentTile[0] = chunkWidth - 1;
 
-		setValidOffsetsToValue(chunk, jumpOffsets, validJumpIndexes, currentTile, Tile.POSSIBLESTAND);
-		
-		if (validJumpIndexes.size() == 0)
 			return;
+		}
+		setValidOffsetsToValue(chunk, jumpOffsets, validJumpIndexes, currentTile, Tile.POSSIBLESTAND);
 
 		Integer[] offset = jumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
 		currentTile[0] += offset[0];
@@ -221,6 +199,30 @@ public class WorldGenerator {
 			return true;
 		}
 		return false;
+	}
+
+	private void setValidOffsetsToValue(Tile[][] chunk, List<Integer[]> offsets, List<Integer> validIndexes,
+			Integer[] currentTile, Tile value) {
+		for (Integer index : validIndexes) {
+			int x = offsets.get(index)[0] + currentTile[0];
+			int y = offsets.get(index)[1] + currentTile[1];
+
+			chunk[y][x] = value;
+		}
+	}
+
+	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile) {
+		List<Integer> validIndexes = new ArrayList<Integer>();
+
+		for (int i = 0; i < offsets.size(); i++) {
+			int x = offsets.get(i)[0] + currentTile[0];
+			int y = offsets.get(i)[1] + currentTile[1];
+
+			if (isValidIndex(x, y)) {
+				validIndexes.add(i);
+			}
+		}
+		return validIndexes;
 	}
 
 	/**
