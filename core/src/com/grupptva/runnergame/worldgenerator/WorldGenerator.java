@@ -186,17 +186,7 @@ public class WorldGenerator {
 	private void jumpStep(Tile[][] chunk, Integer[] currentTile)
 	{
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
-		/*List<Integer> validJumpIndexes = new ArrayList<Integer>();
 
-		for (int i = 0; i < jumpOffsets.size(); i++) {
-			int x = jumpOffsets.get(i)[0] + currentTile[0];
-			int y = jumpOffsets.get(i)[1] + currentTile[1];
-
-			if (isValidIndex(x, y)) {
-				chunk[y][x] = Tile.POSSIBLESTAND;
-				validJumpIndexes.add(i);
-			}
-		}*/
 		for(Integer index: validJumpIndexes)
 		{
 			int x = jumpOffsets.get(index)[0] + currentTile[0];
