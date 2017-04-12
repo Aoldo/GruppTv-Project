@@ -197,6 +197,15 @@ public class WorldGenerator {
 				validJumpIndexes.add(i);
 			}
 		}*/
+		for(Integer index: validJumpIndexes)
+		{
+			int x = jumpOffsets.get(index)[0] + currentTile[0];
+			int y = jumpOffsets.get(index)[1] + currentTile[1];
+			
+			chunk[y][x] = Tile.POSSIBLESTAND;
+		}
+		
+		
 		if (validJumpIndexes.size() == 0)
 			return;
 
