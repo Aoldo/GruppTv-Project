@@ -157,6 +157,26 @@ public class WorldGenerator {
 		return chunkLog;
 	}
 	
+	private void hookStep(Tile[][] chunk, Integer[] currentTile)
+	{		
+
+	}
+	
+	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile)
+	{
+		List<Integer> validIndexes = new ArrayList<Integer>();
+
+		for (int i = 0; i < offsets.size(); i++) {
+			int x = offsets.get(i)[0] + currentTile[0];
+			int y = offsets.get(i)[1] + currentTile[1];
+
+			if (isValidIndex(x, y)) {
+				validIndexes.add(i);
+			}
+		}
+		return validIndexes;
+	}
+	
 	/**
 	 * Called if the current step in generation is a jump.
 	 * TODO: Better doc
@@ -165,7 +185,8 @@ public class WorldGenerator {
 	 */
 	private void jumpStep(Tile[][] chunk, Integer[] currentTile)
 	{
-		List<Integer> validJumpIndexes = new ArrayList<Integer>();
+		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
+		/*List<Integer> validJumpIndexes = new ArrayList<Integer>();
 
 		for (int i = 0; i < jumpOffsets.size(); i++) {
 			int x = jumpOffsets.get(i)[0] + currentTile[0];
@@ -175,7 +196,7 @@ public class WorldGenerator {
 				chunk[y][x] = Tile.POSSIBLESTAND;
 				validJumpIndexes.add(i);
 			}
-		}
+		}*/
 		if (validJumpIndexes.size() == 0)
 			return;
 
