@@ -158,7 +158,7 @@ public class WorldGenerator {
 	private void hookStep(Tile[][] chunk, Integer[] currentTile) {
 		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
 		if (validHookAttachIndexes.size() == 0) {
-			//Failsafe to prevent infinte loop
+			//Failsafe to prevent infinite loop
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 			return;
@@ -181,7 +181,7 @@ public class WorldGenerator {
 	private void jumpStep(Tile[][] chunk, Integer[] currentTile) {
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
 		if (validJumpIndexes.size() == 0) {
-			//Failsafe to prevent infinte loop
+			//Failsafe to prevent infinite loop
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 
