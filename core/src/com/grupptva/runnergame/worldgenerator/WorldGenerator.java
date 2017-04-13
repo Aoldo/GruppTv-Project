@@ -2,17 +2,14 @@ package com.grupptva.runnergame.worldgenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
-
-import com.badlogic.gdx.utils.Array;
 
 public class WorldGenerator {
 	final int chunkWidth = 65;
 	final int chunkHeight = 65;
 	Random rng;
-	
+
 	int jumpStepChance = 100;
 	int hookStepChance = 30;
 	int runnerStepChance = 0;
@@ -69,7 +66,6 @@ public class WorldGenerator {
 
 		hookAttachOffsets.add(new Integer[] { 2, 4 });
 
-		//TODO: is in relation to the attachment point currently, change?
 		hookJumpOffsets.add(new Integer[] { 0, -5 });
 		hookJumpOffsets.add(new Integer[] { 1, -5 });
 		hookJumpOffsets.add(new Integer[] { 2, -5 });
@@ -116,6 +112,14 @@ public class WorldGenerator {
 		return null;
 	}
 
+	/**
+	 * Generates a chunk, but unlike generateChunk this method returns every
+	 * single iteration of said chunks generation. Used for visualization
+	 * purposes, should NOT be called in the game.
+	 * 
+	 * @param initY The Y value of the leftmost tile, the starting point.
+	 * @return A list containing every iteration of the generated chunk.
+	 */
 	public List<Tile[][]> generateChunkLog(int initY) {
 		List<Tile[][]> chunkLog = new ArrayList<Tile[][]>();
 
@@ -137,8 +141,8 @@ public class WorldGenerator {
 		/*
 		 * This line creates a copy of the current state of the chunk for
 		 * visualization purposes. TODO: Remove every instance of this line and
-		 * then copy the entire method to generateChunk, and then return the final
-		 * version of the chunk instead of the log.
+		 * then copy the entire method to generateChunk, and then return the
+		 * final version of the chunk instead of the log.
 		 */
 		//chunkLog.add(deepCopyChunk(chunk));
 
@@ -152,12 +156,12 @@ public class WorldGenerator {
 			chunkLog.add(deepCopyChunk(chunk));
 			clearPossibilities(chunk); //Used for visualization only!
 
-			int stepValue = rng.nextInt(jumpStepChance+hookStepChance);
-			
-			if(stepValue < jumpStepChance)
+			int stepValue = rng.nextInt(jumpStepChance + hookStepChance);
+
+			if (stepValue < jumpStepChance)
 				jumpStep(chunk, currentTile);
-			else if(stepValue < jumpStepChance+hookStepChance)
-				hookStep(chunk, currentTile,chunkLog);
+			else if (stepValue < jumpStepChance + hookStepChance)
+				hookStep(chunk, currentTile, chunkLog);
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
@@ -166,6 +170,20 @@ public class WorldGenerator {
 		return chunkLog;
 	}
 
+	/**
+	 * Called if the next step of generation is a step where the character has
+	 * to hook a tile and then jump to another. Detects all possible locations
+	 * the character can attach it's hook to, from {@param currentTile}. This is
+	 * followed by selecting one of them and detecting every location the
+	 * character can jump to, from the selected tile, and finally selecting one
+	 * of those. Updates {@param chunk} to include all possible hook locations
+	 * and landing locations. Sets {@param currentTile} to the final select
+	 * tile, the one the character lands on after the hook.
+	 * 
+	 * @param chunk
+	 *            The chunk currently being generated.
+	 * @param currentTile
+	 */
 	private void hookStep(Tile[][] chunk, Integer[] currentTile) {
 		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
 
@@ -199,9 +217,16 @@ public class WorldGenerator {
 
 		currentTile[0] = currentTileCopy[0] + offset[0];
 		currentTile[1] = currentTileCopy[1] + offset[1];
-	}	
-	
-	
+	}
+
+	/**
+	 * A copy of hookStep that is used for visualization, only difference is
+	 * that it updates chunkLog in the middle of the method for a better
+	 * visualization compared to only updating it afterwards.
+	 * 
+	 * @see hookStep
+	 * @param chunkLog
+	 */
 	private void hookStep(Tile[][] chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
 		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
 
@@ -239,10 +264,13 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * Sets all tiles that aren't FULL or POSSIBLEHOOK to EMPTY, used to clear previous
-	 * possibilities for the visualization.
-	 * TODO: Change POSSIBLEHOOK to HOOKTARGET or something IF there are multiple hook possibilities.
+	 * Sets all tiles that aren't FULL or POSSIBLEHOOK to EMPTY, used to clear
+	 * previous possibilities for the visualization. TODO: Change POSSIBLEHOOK
+	 * to HOOKTARGET or something IF there are multiple hook possibilities,
+	 * currently pointless since only one target.
+	 * 
 	 * @param chunk
+	 *            The chunk currently being generated.
 	 */
 	private void clearPossibilities(Tile[][] chunk) {
 		for (int y = 0; y < chunk.length; y++) {
@@ -255,9 +283,13 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * Called if the current step in generation is a jump. TODO: Better doc
+	 * Called if the current step in generation is a jump. Detects all viable
+	 * positions for the character to jump to, from the currentTile, and
+	 * randomly selects on of them. Updates {@param chunk} with all the
+	 * possiblities and changes {@param currentTile} to the select tile.
 	 * 
 	 * @param chunk
+	 *            The chunk currently being generated.
 	 * @param currentTile
 	 */
 	private void jumpStep(Tile[][] chunk, Integer[] currentTile) {
@@ -276,13 +308,39 @@ public class WorldGenerator {
 		currentTile[1] += offset[1];
 	}
 
+	/**
+	 * Checks if a given index, x & y coordinate, is inside of the bounds of
+	 * chunkHeight & chunkWidth.
+	 * 
+	 * @param x
+	 *            the x coordinate of the index (second dimension).
+	 * @param y
+	 *            the y coordinate of the index (first dimension).
+	 * @return True if the given index is inside of the chunks bounds, otherwise
+	 *         false.
+	 */
 	private boolean isValidIndex(int x, int y) {
-		if (y < chunkHeight && x < chunkWidth && x >= 0 && y >= 0) {
-			return true;
-		}
-		return false;
+		return (y < chunkHeight && x < chunkWidth && x >= 0 && y >= 0);
 	}
 
+	/**
+	 * Takes every valid index from {@param offsets}, listed in
+	 * {@param validIndexes}, individually adds them to {@param currentTile} and
+	 * then changes the new index, represented by said sum, inside of
+	 * {@param chunk} to {@param value}.
+	 * 
+	 * @param chunk
+	 *            The chunk whose values should be changed.
+	 * @param offsets
+	 *            A list containing offsets in relation to {@param currentTile}.
+	 * @param validIndexes
+	 *            A list containing every index inside {@param offsets} that is
+	 *            valid, and should be used.
+	 * @param currentTile
+	 *            The position that every offset should be in relation to.
+	 * @param value
+	 *            The type of tile to set every valid chunk index to.
+	 */
 	private void setValidOffsetsToValue(Tile[][] chunk, List<Integer[]> offsets, List<Integer> validIndexes,
 			Integer[] currentTile, Tile value) {
 		for (Integer index : validIndexes) {
@@ -293,6 +351,18 @@ public class WorldGenerator {
 		}
 	}
 
+	/**
+	 * Returns a list of integers containing every the index of every offset, in
+	 * relation to {@param currentTile}, that is inside the bounds of the
+	 * WorldGenerator's chunk size.
+	 * 
+	 * @See chunkWidth, chunkHeight
+	 * @param offsets
+	 *            A list of offsets whose validity should be checked.
+	 * @param currentTile
+	 *            The position that the offsets are in relation to.
+	 * @return An integer list with the index of every valid offset.
+	 */
 	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile) {
 		List<Integer> validIndexes = new ArrayList<Integer>();
 
