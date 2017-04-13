@@ -22,9 +22,9 @@ public class GeneratorVisualizer {
 		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets, 2l);
+		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets, 1l);
 
-		chunkLog = generator.generateChunkLog(5);
+		chunkLog = generator.generateChunkLog(20);
 	}
 
 	public void update() {

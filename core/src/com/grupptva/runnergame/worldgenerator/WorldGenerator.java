@@ -9,9 +9,13 @@ import java.util.Random;
 import com.badlogic.gdx.utils.Array;
 
 public class WorldGenerator {
-	final int chunkWidth = 50;
-	final int chunkHeight = 20;
+	final int chunkWidth = 65;
+	final int chunkHeight = 65;
 	Random rng;
+	
+	int jumpStepChance = 100;
+	int hookStepChance = 30;
+	int runnerStepChance = 0;
 
 	public enum Tile {
 		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND;
@@ -133,8 +137,8 @@ public class WorldGenerator {
 		/*
 		 * This line creates a copy of the current state of the chunk for
 		 * visualization purposes. TODO: Remove every instance of this line and
-		 * then copy the entire to generateChunk, and then return the final
-		 * version of the chunk.
+		 * then copy the entire method to generateChunk, and then return the final
+		 * version of the chunk instead of the log.
 		 */
 		//chunkLog.add(deepCopyChunk(chunk));
 
@@ -148,10 +152,12 @@ public class WorldGenerator {
 			chunkLog.add(deepCopyChunk(chunk));
 			clearPossibilities(chunk); //Used for visualization only!
 
-			if(rng.nextInt(2) == 1)
-				hookStep(chunk, currentTile,chunkLog);
-			else
+			int stepValue = rng.nextInt(jumpStepChance+hookStepChance);
+			
+			if(stepValue < jumpStepChance)
 				jumpStep(chunk, currentTile);
+			else if(stepValue < jumpStepChance+hookStepChance)
+				hookStep(chunk, currentTile,chunkLog);
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
