@@ -56,7 +56,7 @@ public class GeneratorVisualizer {
 						sr.setColor(0.2f, .2f, 1f, 1);
 						break;
 					case POSSIBLEHOOK:
-						sr.setColor(.6f, .2f, .2f, 1);
+						sr.setColor(.6f, .2f, .9f, 1);
 						break;
 					default:
 						sr.setColor(1,0,1,1);

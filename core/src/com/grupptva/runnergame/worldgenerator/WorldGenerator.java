@@ -148,8 +148,10 @@ public class WorldGenerator {
 			chunkLog.add(deepCopyChunk(chunk));
 			clearPossibilities(chunk); //Used for visualization only!
 
-			hookStep(chunk, currentTile,chunkLog);
-			jumpStep(chunk, currentTile);
+			if(rng.nextInt(2) == 1)
+				hookStep(chunk, currentTile,chunkLog);
+			else
+				jumpStep(chunk, currentTile);
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
