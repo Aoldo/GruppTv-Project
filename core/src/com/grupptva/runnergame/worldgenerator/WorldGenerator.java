@@ -136,7 +136,7 @@ public class WorldGenerator {
 		 * then copy the entire to generateChunk, and then return the final
 		 * version of the chunk.
 		 */
-		chunkLog.add(deepCopyChunk(chunk));
+		//chunkLog.add(deepCopyChunk(chunk));
 
 		/*
 		 * Keep crawling forward step by step until the end of the chunk has
@@ -144,9 +144,14 @@ public class WorldGenerator {
 		 */
 		while (currentTile[0] != chunk[0].length - 1) {
 			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-
+			
+			chunkLog.add(deepCopyChunk(chunk));
+			clearPossibilities(chunk); //Used for visualization only!
+			
+			
 			//hookStep(chunk, currentTile);
-			jumpStep(chunk,currentTile);
+			jumpStep(chunk, currentTile);
+			
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
@@ -157,19 +162,50 @@ public class WorldGenerator {
 
 	private void hookStep(Tile[][] chunk, Integer[] currentTile) {
 		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
+
+		//In order to prevent changes to currentTile in case there is no valid path after the hook attachment point has been set.
+		Integer[] currentTileCopy = new Integer[] { currentTile[0], currentTile[1] };
+
 		if (validHookAttachIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 			return;
 		}
-		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes, currentTile, Tile.POSSIBLEHOOK);
+		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
 
 		Integer[] offset = hookAttachOffsets
 				.get(validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
 
-		currentTile[0] += offset[0];
-		currentTile[1] += offset[1];
+		currentTileCopy[0] += offset[0];
+		currentTileCopy[1] += offset[1];
+		
+		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets, currentTileCopy);
+		if (validJumpIndexes.size() == 0) {
+			//Failsafe to prevent infinite loop
+			//TODO: Better solution.
+			currentTile[0] = chunkWidth - 1;
+			return;
+		}
+		
+		
+		
+	}
+
+	/**
+	 * Sets all tiles that aren't FULL to EMPTY, used to clear previous
+	 * possibilities for the visualization.
+	 * 
+	 * @param chunk
+	 */
+	private void clearPossibilities(Tile[][] chunk) {
+		for (int y = 0; y < chunk.length; y++) {
+			for (int x = 0; x < chunk[0].length; x++) {
+				if (chunk[y][x] != Tile.FULL) {
+					chunk[y][x] = Tile.EMPTY;
+				}
+			}
+		}
 	}
 
 	/**
