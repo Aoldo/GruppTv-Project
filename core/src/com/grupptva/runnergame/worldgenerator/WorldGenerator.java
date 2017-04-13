@@ -148,8 +148,8 @@ public class WorldGenerator {
 			chunkLog.add(deepCopyChunk(chunk));
 			clearPossibilities(chunk); //Used for visualization only!
 
-			hookStep(chunk, currentTile);
-			//jumpStep(chunk, currentTile);
+			hookStep(chunk, currentTile,chunkLog);
+			jumpStep(chunk, currentTile);
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
@@ -171,6 +171,43 @@ public class WorldGenerator {
 			return;
 		}
 		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
+
+		Integer[] offset = hookAttachOffsets
+				.get(validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
+
+		currentTileCopy[0] += offset[0];
+		currentTileCopy[1] += offset[1];
+
+		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets, currentTileCopy);
+		if (validJumpIndexes.size() == 0) {
+			//Failsafe to prevent infinite loop
+			//TODO: Better solution.
+			currentTile[0] = chunkWidth - 1;
+			return;
+		}
+		setValidOffsetsToValue(chunk, hookJumpOffsets, validJumpIndexes, currentTileCopy, Tile.POSSIBLESTAND);
+
+		offset = hookJumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+
+		currentTile[0] = currentTileCopy[0] + offset[0];
+		currentTile[1] = currentTileCopy[1] + offset[1];
+	}	
+	
+	
+	private void hookStep(Tile[][] chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
+		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
+
+		//In order to prevent changes to currentTile in case there is no valid path after the hook attachment point has been set.
+		Integer[] currentTileCopy = new Integer[] { currentTile[0], currentTile[1] };
+
+		if (validHookAttachIndexes.size() == 0) {
+			//Failsafe to prevent infinite loop
+			//TODO: Better solution.
+			currentTile[0] = chunkWidth - 1;
+			return;
+		}
+		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
+		chunkLog.add(deepCopyChunk(chunk));
 
 		Integer[] offset = hookAttachOffsets
 				.get(validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
