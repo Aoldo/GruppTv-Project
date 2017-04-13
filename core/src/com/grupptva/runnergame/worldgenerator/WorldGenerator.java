@@ -144,14 +144,12 @@ public class WorldGenerator {
 		 */
 		while (currentTile[0] != chunk[0].length - 1) {
 			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-			
+
 			chunkLog.add(deepCopyChunk(chunk));
 			clearPossibilities(chunk); //Used for visualization only!
-			
-			
-			//hookStep(chunk, currentTile);
-			jumpStep(chunk, currentTile);
-			
+
+			hookStep(chunk, currentTile);
+			//jumpStep(chunk, currentTile);
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
@@ -179,7 +177,7 @@ public class WorldGenerator {
 
 		currentTileCopy[0] += offset[0];
 		currentTileCopy[1] += offset[1];
-		
+
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets, currentTileCopy);
 		if (validJumpIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop
@@ -187,21 +185,24 @@ public class WorldGenerator {
 			currentTile[0] = chunkWidth - 1;
 			return;
 		}
-		
-		
-		
+		setValidOffsetsToValue(chunk, hookJumpOffsets, validJumpIndexes, currentTileCopy, Tile.POSSIBLESTAND);
+
+		offset = hookJumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+
+		currentTile[0] = currentTileCopy[0] + offset[0];
+		currentTile[1] = currentTileCopy[1] + offset[1];
 	}
 
 	/**
-	 * Sets all tiles that aren't FULL to EMPTY, used to clear previous
+	 * Sets all tiles that aren't FULL or POSSIBLEHOOK to EMPTY, used to clear previous
 	 * possibilities for the visualization.
-	 * 
+	 * TODO: Change POSSIBLEHOOK to HOOKTARGET or something IF there are multiple hook possibilities.
 	 * @param chunk
 	 */
 	private void clearPossibilities(Tile[][] chunk) {
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
-				if (chunk[y][x] != Tile.FULL) {
+				if (chunk[y][x] != Tile.FULL && chunk[y][x] != Tile.POSSIBLEHOOK) {
 					chunk[y][x] = Tile.EMPTY;
 				}
 			}
