@@ -15,7 +15,7 @@ public class WorldGenerator {
 	int runnerStepChance = 0;
 
 	int currentTileExtraBuffer = 3;
-	
+
 	public enum BufferPresets {
 		NONE, SMALL, MEDIUM, HUGE;
 	}
@@ -159,14 +159,14 @@ public class WorldGenerator {
 		 */
 		while (currentTile[0] != chunk[0].length - 1) {
 			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-
+			
 			chunkLog.add(deepCopyChunk(chunk));
 			clearPossibilities(chunk); //Used for visualization only!
 
 			int stepValue = rng.nextInt(jumpStepChance + hookStepChance);
 
 			if (stepValue < jumpStepChance)
-				jumpStep(chunk, currentTile);
+				jumpStep(chunk, currentTile, chunkLog);
 			else if (stepValue < jumpStepChance + hookStepChance)
 				hookStep(chunk, currentTile, chunkLog);
 
@@ -291,6 +291,7 @@ public class WorldGenerator {
 
 	/**
 	 * Sets the left and right buffer sizes to a preset.
+	 * 
 	 * @param size
 	 */
 	private void setBufferSize(BufferPresets size) {
@@ -320,7 +321,7 @@ public class WorldGenerator {
 	 *            The chunk currently being generated.
 	 * @param currentTile
 	 */
-	private void jumpStep(Tile[][] chunk, Integer[] currentTile) {
+	private void jumpStep(Tile[][] chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
 		if (validJumpIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop
@@ -334,6 +335,32 @@ public class WorldGenerator {
 		Integer[] offset = jumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
 		currentTile[0] += offset[0];
 		currentTile[1] += offset[1];
+
+		chunkLog.add(deepCopyChunk(chunk));
+		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+		chunkLog.add(deepCopyChunk(chunk));
+
+		if (currentTileExtraBuffer > 0) {
+			int extraOffset = rng.nextInt(currentTileExtraBuffer) + 1;
+			for (int i = 0; i <= extraOffset; i++) {
+				if (isValidIndex(currentTile[0] + i, currentTile[1])) {
+					chunk[currentTile[1]][currentTile[0] + i] = Tile.FULL;
+				}
+			}
+			if (isValidIndex(currentTile[0] + extraOffset, currentTile[1])) {
+				currentTile[0] += extraOffset;
+				chunk[currentTile[1]][currentTile[0]] = Tile.POSSIBLEHOOK;
+
+				chunkLog.add(deepCopyChunk(chunk));
+				
+				extraOffset = rng.nextInt(currentTileExtraBuffer)+1;
+				for (int i = 1; i <= extraOffset; i++) {
+					if (isValidIndex(currentTile[0] + i, currentTile[1])) {
+						chunk[currentTile[1]][currentTile[0] + i] = Tile.FULL;
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -375,7 +402,8 @@ public class WorldGenerator {
 			int x = offsets.get(index)[0] + currentTile[0];
 			int y = offsets.get(index)[1] + currentTile[1];
 
-			chunk[y][x] = value;
+			if(chunk[y][x] != Tile.FULL)
+				chunk[y][x] = value;
 		}
 	}
 
