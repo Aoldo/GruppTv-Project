@@ -14,6 +14,12 @@ public class WorldGenerator {
 	int hookStepChance = 30;
 	int runnerStepChance = 0;
 
+	int currentTileExtraBuffer = 3;
+	
+	public enum BufferPresets {
+		NONE, SMALL, MEDIUM, HUGE;
+	}
+
 	public enum Tile {
 		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND;
 	}
@@ -117,7 +123,8 @@ public class WorldGenerator {
 	 * single iteration of said chunks generation. Used for visualization
 	 * purposes, should NOT be called in the game.
 	 * 
-	 * @param initY The Y value of the leftmost tile, the starting point.
+	 * @param initY
+	 *            The Y value of the leftmost tile, the starting point.
 	 * @return A list containing every iteration of the generated chunk.
 	 */
 	public List<Tile[][]> generateChunkLog(int initY) {
@@ -279,6 +286,27 @@ public class WorldGenerator {
 					chunk[y][x] = Tile.EMPTY;
 				}
 			}
+		}
+	}
+
+	/**
+	 * Sets the left and right buffer sizes to a preset.
+	 * @param size
+	 */
+	private void setBufferSize(BufferPresets size) {
+		switch (size) {
+		case SMALL:
+			currentTileExtraBuffer = 1;
+			break;
+		case MEDIUM:
+			currentTileExtraBuffer = 3;
+			break;
+		case HUGE:
+			currentTileExtraBuffer = 5;
+			break;
+		default:
+			currentTileExtraBuffer = 0;
+			break;
 		}
 	}
 
