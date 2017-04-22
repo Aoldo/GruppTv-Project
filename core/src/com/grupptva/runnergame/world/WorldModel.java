@@ -96,4 +96,15 @@ public class WorldModel {
 		return getWorldPart(grid, startIndex, worldLength);
 	}
 	
+	/**
+	 * Increments the {@link #startIndex} with a given value. Increments causing the
+	 * startIndex to go beyond the end of the grid will cause the startIndex to wrap
+	 * around to the beginning again.
+	 *
+	 * @param n the amount which the startIndex should be incremented with
+	 */
+	public void incrementStartIndexWith(int n) {
+		setStartIndex((getStartIndex() + n) % getGridWidth());
+	}
+	
 }
