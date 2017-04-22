@@ -1,6 +1,8 @@
 package com.grupptva.runnergame.world;
 
 
+import java.util.Arrays;
+
 /**
  * Created by karlwikstrom on 2017-04-03.
  *
@@ -57,5 +59,30 @@ public class WorldModel {
 	
 	public WorldModel(int width, int height) {
 		this(width, height, new Position());
+	}
+	
+	/**
+	 * Returns a part of a world that wraps around the end of the array to the beginning.
+	 * <p>
+	 * An example would be:
+	 * <p>
+	 * world = [1, 2, 3, 4]
+	 * startIndex = 2
+	 * length = 3
+	 * returns -> [3, 4, 1]
+	 *
+	 * @param world      the world that the part is taken from
+	 * @param startIndex the index at which the part should start
+	 * @param length     the length of the part of the world
+	 * @return a part of the world starting at startIndex wrapping around the end
+	 */
+	private int[][] getWorldPart(int[][] world, int startIndex, int length) {
+		int[][] worldPart = new int[length][world.length];
+		int index;
+		for (int i = 0; i < length; i++) {
+			index = (startIndex + i) % world.length;
+			worldPart[i] = Arrays.copyOf(world[index], world[index].length);
+		}
+		return worldPart;
 	}
 }
