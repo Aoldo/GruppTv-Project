@@ -85,4 +85,15 @@ public class WorldModel {
 		}
 		return worldPart;
 	}
+	
+	/**
+	 * Runs {@link #getWorldPart(int[][], int, int)} with {@link #grid},
+	 * {@link #startIndex} and {@link #worldLength} in respective order.
+	 *
+	 * @return a part of the world starting at the set startIndex wrapping around the end
+	 */
+	public int[][] getWorldPart() {
+		return getWorldPart(grid, startIndex, worldLength);
+	}
+	
 }
