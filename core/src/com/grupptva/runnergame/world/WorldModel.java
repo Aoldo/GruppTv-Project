@@ -107,4 +107,13 @@ public class WorldModel {
 		setStartIndex((getStartIndex() + n) % getGridWidth());
 	}
 	
+	/**
+	 * Increments the {@link #startIndex}. If the startIndex points at last element in
+	 * the grid when this method is called the startIndex will end up pointing to the
+	 * first element.
+	 */
+	public void incrementStartIndex() {
+		incrementStartIndexWith(1);
+	}
+	
 }
