@@ -44,4 +44,18 @@ public class WorldModel {
 	 */
 	private int speed = 10;
 	
+	public WorldModel() {
+		this(1, 1, new Position());
+	}
+	
+	public WorldModel(int width, int height, Position position) {
+		gridWidth = width;
+		gridHeight = height;
+		grid = new int[gridWidth][gridHeight];
+		this.position = position;
+	}
+	
+	public WorldModel(int width, int height) {
+		this(width, height, new Position());
+	}
 }
