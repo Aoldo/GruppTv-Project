@@ -116,4 +116,35 @@ public class WorldModel {
 		incrementStartIndexWith(1);
 	}
 	
+	
+	// Getters and setters
+	
+	public Position getPosition() {
+		return position;
+	}
+	
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+	
+	private int getStartIndex() {
+		return startIndex;
+	}
+	
+	private void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+	
+	private int getGridWidth() {
+		return gridWidth;
+	}
+	
+	public int getSpeed() {
+		return speed;
+	}
+	
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
 }
