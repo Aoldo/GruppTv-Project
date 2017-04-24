@@ -9,4 +9,6 @@ package com.grupptva.runnergame.world;
  * @author Karl 'NaN' Wikström
  */
 public enum Tile {
+	EMPTY,
+	OBSTACLE
 }
