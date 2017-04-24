@@ -12,6 +12,8 @@ public class Chunk {
 	
 	private Tile[][] tiles;
 	
+	private int width;
+	
 	public Chunk(Tile[][] tiles) {
 		setTiles(tiles);
 	}
