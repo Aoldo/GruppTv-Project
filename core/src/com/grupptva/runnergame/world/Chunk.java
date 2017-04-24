@@ -38,7 +38,7 @@ public class Chunk {
 		return width;
 	}
 	
-	public void setWidth(int width) {
+	private void setWidth(int width) {
 		this.width = width;
 	}
 	
