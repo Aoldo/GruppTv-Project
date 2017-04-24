@@ -1,6 +1,7 @@
 package com.grupptva.runnergame.world;
 
 
+import java.awt.*;
 import java.util.Arrays;
 
 /**
@@ -33,7 +34,7 @@ public class WorldModel {
 	/**
 	 * The position of the grid
 	 */
-	private Position position;
+	private Point position;
 	
 	/**
 	 * Points to the element in the grid which should act as the first element in the
@@ -52,10 +53,10 @@ public class WorldModel {
 	private int speed = 10;
 	
 	public WorldModel() {
-		this(1, 1, new Position());
+		this(1, 1, new Point());
 	}
 	
-	public WorldModel(int width, int height, Position position) {
+	public WorldModel(int width, int height, Point position) {
 		gridWidth = width;
 		gridHeight = height;
 		grid = new int[gridWidth][gridHeight];
@@ -63,7 +64,7 @@ public class WorldModel {
 	}
 	
 	public WorldModel(int width, int height) {
-		this(width, height, new Position());
+		this(width, height, new Point());
 	}
 	
 	/**
@@ -124,11 +125,11 @@ public class WorldModel {
 	
 	// Getters and setters
 	
-	public Position getPosition() {
+	public Point getPosition() {
 		return position;
 	}
 	
-	public void setPosition(Position position) {
+	public void setPosition(Point position) {
 		this.position = position;
 	}
 	
