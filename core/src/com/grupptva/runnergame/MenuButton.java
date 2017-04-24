@@ -19,9 +19,9 @@ public class MenuButton{
     }
 
     public static void renderAllMenuButtons(ShapeRenderer sr){
-    	menuButtons.forEach(item -> {
-            item.render(sr);
-        });
+    	//menuButtons.forEach(item -> {
+        //    item.render(sr);
+        //});
     }
 
 }
