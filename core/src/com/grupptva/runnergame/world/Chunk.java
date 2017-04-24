@@ -20,6 +20,12 @@ public class Chunk {
 		setTiles(tiles);
 	}
 	
+	public Chunk(int width, int height) {
+		setWidth(width);
+		setHeight(height);
+		setTiles(new Tile[getWidth()][getHeight()]);
+	}
+	
 	public Tile[][] getTiles() {
 		return tiles;
 	}
