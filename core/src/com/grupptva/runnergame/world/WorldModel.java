@@ -135,14 +135,6 @@ public class WorldModel {
 		return gridWidth;
 	}
 	
-	public int getSpeed() {
-		return speed;
-	}
-	
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
-	
 	private Chunk[] getChunks() {
 		return chunks;
 	}
