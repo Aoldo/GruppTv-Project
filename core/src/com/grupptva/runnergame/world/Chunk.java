@@ -12,6 +12,10 @@ public class Chunk {
 	
 	private Tile[][] tiles;
 	
+	public Chunk(Tile[][] tiles) {
+		setTiles(tiles);
+	}
+	
 	public Tile[][] getTiles() {
 		return tiles;
 	}
