@@ -53,18 +53,12 @@ public class WorldModel {
 	private int speed = 10;
 	
 	public WorldModel() {
-		this(1, 1, new Point());
+		this(new Chunk[3], new Point(0, 0));
 	}
 	
-	public WorldModel(int width, int height, Point position) {
-		gridWidth = width;
-		gridHeight = height;
-		grid = new int[gridWidth][gridHeight];
-		this.position = position;
-	}
-	
-	public WorldModel(int width, int height) {
-		this(width, height, new Point());
+	private WorldModel(Chunk[] chunks, Point position) {
+		setChunks(chunks);
+		setPosition(position);
 	}
 	
 	/**
