@@ -25,4 +25,12 @@ public class Chunk {
 	public void setTiles(Tile[][] tiles) {
 		this.tiles = tiles;
 	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public void setWidth(int width) {
+		this.width = width;
+	}
 }
