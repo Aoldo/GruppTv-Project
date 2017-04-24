@@ -31,13 +31,13 @@ public class RunnerGame extends ApplicationAdapter {
 		while (timeAccumulator > 0) {
 			timeAccumulator -= currentTimeStep;
 
-			//TODO: Do logic in this loop.
+			//--------------------Do logic here-------------------
 		}
 
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		//batch.draw(img, 0, 0);
+		//--------------------Do SpriteBatch rendering here----------------------
 		batch.end();
 	}
 
