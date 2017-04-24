@@ -32,6 +32,8 @@ public class Chunk {
 	
 	public void setTiles(Tile[][] tiles) {
 		this.tiles = tiles;
+		setWidth(tiles.length);
+		setHeight(tiles[0].length);
 	}
 	
 	public int getWidth() {
