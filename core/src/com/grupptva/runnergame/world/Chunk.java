@@ -10,6 +10,6 @@ package com.grupptva.runnergame.world;
  */
 public class Chunk {
 	
-
+	private Tile[][] tiles;
 	
 }
