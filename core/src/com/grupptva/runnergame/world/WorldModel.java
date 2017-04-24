@@ -13,7 +13,7 @@ public class WorldModel {
 	/**
 	 * The container which contains the world.
 	 */
-	private int[][] grid;
+	private int[][] grid; // Should be replaced by chunks at some point
 	
 	/**
 	 * The container which contains the world separated into {@link Chunk}s.
