@@ -16,6 +16,11 @@ public class WorldModel {
 	private int[][] grid;
 	
 	/**
+	 * The container which contains the world separated into {@link Chunk}s.
+	 */
+	private Chunk[] chunks;
+	
+	/**
 	 * The width of the grid
 	 */
 	private int gridWidth;
