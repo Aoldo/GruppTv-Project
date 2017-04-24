@@ -153,4 +153,11 @@ public class WorldModel {
 		this.speed = speed;
 	}
 	
+	private Chunk[] getChunks() {
+		return chunks;
+	}
+	
+	private void setChunks(Chunk[] chunks) {
+		this.chunks = chunks;
+	}
 }
