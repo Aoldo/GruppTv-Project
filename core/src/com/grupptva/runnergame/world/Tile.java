@@ -8,7 +8,7 @@ package com.grupptva.runnergame.world;
  *
  * @author Karl 'NaN' Wikström
  */
-public class Tile {
+public abstract class Tile {
 	
 
 	
