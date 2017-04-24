@@ -46,7 +46,7 @@ public class Chunk {
 		return height;
 	}
 	
-	public void setHeight(int height) {
+	private void setHeight(int height) {
 		this.height = height;
 	}
 }
