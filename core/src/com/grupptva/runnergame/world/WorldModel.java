@@ -47,10 +47,6 @@ public class WorldModel {
 	 */
 	private int worldLength = 8; // Debugging variable
 	
-	/**
-	 * The speed of the world
-	 */
-	private int speed = 10;
 	
 	public WorldModel() {
 		this(new Chunk[3], new Point(0, 0));
