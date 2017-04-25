@@ -439,7 +439,7 @@ public class WorldGenerator {
 	 * @param chunk
 	 * @return
 	 */
-	private Tile[][] deepCopyChunk(Tile[][] chunk) {
+	Tile[][] deepCopyChunk(Tile[][] chunk) {
 		Tile[][] newChunk = new Tile[chunk.length][chunk[0].length];
 		for (int y = 0; y < chunk.length; y++) {
 			newChunk[y] = Arrays.copyOf(chunk[y], chunk[y].length);
