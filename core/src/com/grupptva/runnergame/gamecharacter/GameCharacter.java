@@ -10,6 +10,7 @@ public class GameCharacter {
 	public Rectangle box;
 	private double gravity = 0.4;
 	private double yVelocity;
+	private double jumpInitialVelocity = 10;
 
 	public Point getPosition() {
 		return position;
@@ -25,5 +26,9 @@ public class GameCharacter {
 
 	private void setyVelocity(double yVelocity) {
 		this.yVelocity = yVelocity;
+	}
+
+	public double getJumpInitialVelocity() {
+		return jumpInitialVelocity;
 	}
 }
