@@ -11,6 +11,7 @@ public class GameCharacter {
 	private double gravity = 0.4;
 	private double yVelocity;
 	private double jumpInitialVelocity = 10;
+	private boolean collidingWithGround = false;
 
 	public Point getPosition() {
 		return position;
@@ -30,5 +31,13 @@ public class GameCharacter {
 
 	public double getJumpInitialVelocity() {
 		return jumpInitialVelocity;
+	}
+
+	public boolean isCollidingWithGround() {
+		return collidingWithGround;
+	}
+
+	public void setCollidingWithGround(boolean collidingWithGround) {
+		this.collidingWithGround = collidingWithGround;
 	}
 }
