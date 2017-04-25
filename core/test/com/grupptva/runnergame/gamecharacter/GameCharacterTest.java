@@ -32,5 +32,13 @@ public class GameCharacterTest {
 		Assert.assertTrue(gameCharacter.position.getY() == y + yVelocity); 
 	}
 
-	 
+	@Test
+	public void testJump() { 
+		double x = gameCharacter.position.getX(); 
+		double yvelocity = gameCharacter.getyVelocity(); 
+		double jumpVelocity = gameCharacter.getJumpInitialVelocity(); gameCharacter.jump(); 
+		double newX = gameCharacter.position.getX(); 
+		Assert.assertTrue(gameCharacter.getyVelocity() == yvelocity + jumpVelocity); 
+		Assert.assertTrue(x == newX); 
+	} 
 }
