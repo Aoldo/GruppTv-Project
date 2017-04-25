@@ -23,6 +23,13 @@ public class GameCharacter {
 		position.setLocation(position.getX(), newY); 
 	}
 
+	public void fall() { 
+		if (!collidingWithGround) {
+			 yVelocity += gravity; 
+		} 
+		moveY(yVelocity);
+	 }
+
 	public Point getPosition() {
 		return position;
 	}
