@@ -10,4 +10,11 @@ public class GameCharacter {
 	public Rectangle box;
 
 
+	public Point getPosition() {
+		return position;
+	}
+
+	private void setPosition(Point position) {
+		this.position = position;
+	}
 }
