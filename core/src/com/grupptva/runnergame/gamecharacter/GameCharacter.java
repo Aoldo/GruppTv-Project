@@ -7,5 +7,7 @@ import java.awt.*;
  */
 public class GameCharacter {
 	private Point position; 
+	public Rectangle box;
+
 
 }
