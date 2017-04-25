@@ -18,7 +18,8 @@ public class MenuButton{
     }
 
     public void render(ShapeRenderer sr){
-        sr.rect(x,y,x+width, y+height);
+        sr.rect(x,y,width, height);
+        sr.setColor(0.3f, 0.6f, 1f, 1);
         //.setCenter(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
     }
 
