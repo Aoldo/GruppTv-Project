@@ -18,6 +18,11 @@ public class GameCharacter {
 		 position = box.getLocation(); 
 	}
 
+	public void moveY(double distance) { 
+		double newY = position.getY() + distance; 
+		position.setLocation(position.getX(), newY); 
+	}
+
 	public Point getPosition() {
 		return position;
 	}
