@@ -61,4 +61,9 @@ public class GameCharacter {
 	public void setCollidingWithGround(boolean collidingWithGround) {
 		this.collidingWithGround = collidingWithGround;
 	}
+
+	public double getGravity() {
+		return gravity;
+	}
+
 }
