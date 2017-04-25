@@ -30,6 +30,10 @@ public class GameCharacter {
 		moveY(yVelocity);
 	 }
 
+	public void jump() { 
+		yVelocity += jumpInitialVelocity; 
+	}
+
 	public Point getPosition() {
 		return position;
 	}
