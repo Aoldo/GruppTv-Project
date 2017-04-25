@@ -8,4 +8,9 @@ import org.junit.Test;
  */
 public class GameCharacterTest {
 	private GameCharacter gameCharacter;
+
+	@Before
+	 public void setUp() { 
+		gameCharacter = new GameCharacter(0, 0); 
+	}
 }
