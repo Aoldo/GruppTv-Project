@@ -8,7 +8,7 @@ import java.awt.*;
 public class GameCharacter {
 	private Point position; 
 	public Rectangle box;
-
+	private double gravity = 0.4;
 
 	public Point getPosition() {
 		return position;
