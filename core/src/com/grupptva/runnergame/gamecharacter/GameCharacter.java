@@ -6,12 +6,17 @@ import java.awt.*;
  * Created by agnesmardh on 2017-04-21.
  */
 public class GameCharacter {
-	private Point position; 
+	private Point position;
 	public Rectangle box;
 	private double gravity = 0.4;
 	private double yVelocity;
 	private double jumpInitialVelocity = 10;
 	private boolean collidingWithGround = false;
+
+	public GameCharacter(int x, int y) { 
+		box = new Rectangle(x, y, 25, 25);
+		 position = box.getLocation(); 
+	}
 
 	public Point getPosition() {
 		return position;
