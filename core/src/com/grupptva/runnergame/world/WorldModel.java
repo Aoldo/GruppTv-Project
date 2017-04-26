@@ -10,53 +10,53 @@ import java.util.Arrays;
  * @author Karl 'NaN' Wikström
  */
 public class WorldModel {
-	
+
 	/**
 	 * The container which contains the world.
 	 */
 	private int[][] grid; // Should be replaced by chunks at some point
-	
+
 	/**
 	 * The container which contains the world separated into {@link Chunk}s.
 	 */
 	private Chunk[] chunks;
-	
+
 	/**
 	 * The width of the grid
 	 */
 	private int gridWidth;
-	
+
 	/**
 	 * The height of the grid
 	 */
 	private int gridHeight;
-	
+
 	/**
 	 * The position of the grid
 	 */
 	private Point position;
-	
+
 	/**
 	 * Points to the element in the grid which should act as the first element in the
 	 * world.
 	 */
 	private int startIndex = 0;
-	
+
 	/**
 	 * The length of the world. <b>Not to be confused with the width of the grid!</b>
 	 */
 	private int worldLength = 8; // Debugging variable
-	
-	
+
+
 	public WorldModel() {
 		this(new Chunk[3], new Point(0, 0));
 	}
-	
+
 	private WorldModel(Chunk[] chunks, Point position) {
 		setChunks(chunks);
 		setPosition(position);
 	}
-	
+
 	/**
 	 * Returns a part of a world that wraps around the end of the array to the beginning.
 	 * <p>
@@ -70,6 +70,7 @@ public class WorldModel {
 	 * @param world      the world that the part is taken from
 	 * @param startIndex the index at which the part should start
 	 * @param length     the length of the part of the world
+	 *
 	 * @return a part of the world starting at startIndex wrapping around the end
 	 */
 	private int[][] getWorldPart(int[][] world, int startIndex, int length) {
@@ -81,7 +82,7 @@ public class WorldModel {
 		}
 		return worldPart;
 	}
-	
+
 	/**
 	 * Runs {@link #getWorldPart(int[][], int, int)} with {@link #grid},
 	 * {@link #startIndex} and {@link #worldLength} in respective order.
@@ -91,7 +92,7 @@ public class WorldModel {
 	public int[][] getWorldPart() {
 		return getWorldPart(grid, startIndex, worldLength);
 	}
-	
+
 	/**
 	 * Increments the {@link #startIndex} with a given value. Increments causing the
 	 * startIndex to go beyond the end of the grid will cause the startIndex to wrap
@@ -102,7 +103,7 @@ public class WorldModel {
 	public void incrementStartIndexWith(int n) {
 		setStartIndex((getStartIndex() + n) % getGridWidth());
 	}
-	
+
 	/**
 	 * Increments the {@link #startIndex}. If the startIndex points at last element in
 	 * the grid when this method is called the startIndex will end up pointing to the
@@ -112,41 +113,46 @@ public class WorldModel {
 		incrementStartIndexWith(1);
 	}
 
-	public Chunk[] getChunksInRightOrder(){
+	/**
+	 * Gets the chunks in the order they're supposed to be shown.
+	 *
+	 * @return an array with the chunks starting with the chunk at {@link #startIndex}.
+	 */
+	public Chunk[] getChunksInRightOrder() {
 		Chunk[] tempArr = new Chunk[getChunks().length];
-		for(int i = 0; i < getChunks().length; i++){
+		for (int i = 0; i < getChunks().length; i++) {
 			tempArr[i] = getChunks()[(i + startIndex) % getChunks().length];
 		}
 		return tempArr;
 	}
-	
-	
+
+
 	// Getters and setters
-	
+
 	public Point getPosition() {
 		return position;
 	}
-	
+
 	public void setPosition(Point position) {
 		this.position = position;
 	}
-	
+
 	private int getStartIndex() {
 		return startIndex;
 	}
-	
+
 	private void setStartIndex(int startIndex) {
 		this.startIndex = startIndex;
 	}
-	
+
 	private int getGridWidth() {
 		return gridWidth;
 	}
-	
+
 	private Chunk[] getChunks() {
 		return chunks;
 	}
-	
+
 	private void setChunks(Chunk[] chunks) {
 		this.chunks = chunks;
 	}
