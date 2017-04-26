@@ -18,7 +18,7 @@ public class WorldModel {
 	/**
 	 * The position of the grid.
 	 */
-	private Point position;
+	private float position;
 
 	/**
 	 * Points to the element in the grid which should act as the first element in the
@@ -68,14 +68,13 @@ public class WorldModel {
 		return tempArr;
 	}
 
-
 	// Getters and setters
 
-	public Point getPosition() {
+	public float getPosition() {
 		return position;
 	}
 
-	public void setPosition(Point position) {
+	public void setPosition(float position) {
 		this.position = position;
 	}
 
