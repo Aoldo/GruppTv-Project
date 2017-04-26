@@ -13,6 +13,8 @@ public class GameLogic {
 
 	private int tileSize = 50;
 
+	private float pixelsPerFrame = 1.5f;
+
 	//TODO: Decide how to deal with the world moving, move it in this class or actually move it inside of the world class?
 	public GameLogic() {
 
