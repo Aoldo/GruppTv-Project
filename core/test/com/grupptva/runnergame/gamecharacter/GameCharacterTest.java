@@ -44,7 +44,8 @@ public class GameCharacterTest {
 
 	@Test
 	public void testHandleCollisionFromBelow() {
-		gameCharacter.handleCollisionFromBelow();
+		gameCharacter.handleCollisionFromBelow(0);
 		Assert.assertTrue(gameCharacter.getyVelocity() == 0);
+		Assert.assertTrue(gameCharacter.getPosition().getY() == 0);
 	}
 }
