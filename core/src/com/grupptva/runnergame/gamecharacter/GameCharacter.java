@@ -18,12 +18,12 @@ public class GameCharacter {
 		position = box.getLocation();
 	}
 
-	public void moveY(double distance) {
+	private void moveY(double distance) {
 		double newY = position.getY() + distance;
 		position.setLocation(position.getX(), newY);
 	}
 
-	public void fall() {
+	private void fall() {
 		if (!collidingWithGround) {
 			yVelocity += gravity;
 		}
@@ -34,8 +34,9 @@ public class GameCharacter {
 		yVelocity += jumpInitialVelocity;
 	}
 
-	public void handleCollisionFromBelow() {
+	public void handleCollisionFromBelow(double yCoordinate) {
 		setyVelocity(0);
+		position.setLocation(position.getX(), yCoordinate);
 	}
 
 	public Point getPosition() {
