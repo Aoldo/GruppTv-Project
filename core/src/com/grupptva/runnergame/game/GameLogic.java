@@ -32,11 +32,11 @@ public class GameLogic {
 
 	private void renderWorld(ShapeRenderer renderer){
 		for(int i = 0; i < getWorld().getChunksInRightOrder().length; i++){
-			renderChunk(i, renderer);
+			renderChunk(chunk, i, renderer);
 		}
 	}
 
-	private void renderChunk(int chunkNumber, ShapeRenderer renderer) {
+	private void renderChunk(Chunk chunk, int chunkNumber, ShapeRenderer renderer) {
 
 	}
 
