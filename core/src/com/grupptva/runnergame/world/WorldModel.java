@@ -27,12 +27,6 @@ public class WorldModel {
 	 */
 	private int startIndex = 0;
 
-	/**
-	 * The length of the world. <b>Not to be confused with the width of the grid!</b>
-	 */
-	private int worldLength = 8; // Debugging variable
-
-
 	public WorldModel() {
 		this(new Chunk[3], new Point(0, 0));
 	}
