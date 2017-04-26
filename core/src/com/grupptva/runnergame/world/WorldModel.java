@@ -95,8 +95,8 @@ public class WorldModel {
 
 	/**
 	 * Increments the {@link #startIndex} with a given value. Increments causing the
-	 * startIndex to go beyond the end of the grid will cause the startIndex to wrap
-	 * around to the beginning again.
+	 * startIndex to go beyond the end of the chunk array will cause the startIndex to
+	 * wrap around to the beginning again.
 	 *
 	 * @param n the amount which the startIndex should be incremented with
 	 */
@@ -106,8 +106,8 @@ public class WorldModel {
 
 	/**
 	 * Increments the {@link #startIndex}. If the startIndex points at last element in
-	 * the grid when this method is called the startIndex will end up pointing to the
-	 * first element.
+	 * the chunk array when this method is called the startIndex will end up pointing to
+	 * the first element.
 	 */
 	public void incrementStartIndex() {
 		incrementStartIndexWith(1);
