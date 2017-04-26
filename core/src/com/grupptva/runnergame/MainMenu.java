@@ -11,11 +11,17 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class MainMenu {
 	
-	int screenWidth = Gdx.graphics.getWidth();
-	int screenHeight = Gdx.graphics.getHeight();
+	BitmapFont hookHeroBF;
+	private String hookHeroString;
 	
-	startGameString = "Start Game";
-	startGameBF = new BitmapFont();
+	BitmapFont startGameBF;
+	private String startGameString;
+	
+	BitmapFont highScoresBF;
+	private String highScoresString;
+	
+	BitmapFont quitGameBF;
+	private String quitGameString;
 	
 	MenuButton startGame;
 	MenuButton highScores;
@@ -23,37 +29,47 @@ public class MainMenu {
 	
 	Texture img;
 	
-	img = new Texture("mainmenubg.png");
-	
-	BitmapFont startGameBF;
-	private String startGameString;
+	int screenWidth = Gdx.graphics.getWidth();
+	int screenHeight = Gdx.graphics.getHeight();
 
-    private static ArrayList<MenuButton> menuButtons = new ArrayList<MenuButton>();
+    // private static ArrayList<MenuButton> menuButtons = new ArrayList<MenuButton>();
 	
 	public MainMenu() {
-		menuButtons.add(new MenuButton(0, 0, 0, 0));
+		img = new Texture("mainmenubg2.png");
+		
+		hookHeroString = "Hook Hero";
+		hookHeroBF = new BitmapFont();
+		
+		startGameString = "Start Game";
+		startGameBF = new BitmapFont();
+		
+		highScoresString = "Highscores";
+		highScoresBF = new BitmapFont();
+		
+		quitGameString = "Quit Game";
+		quitGameBF = new BitmapFont();
 		
 		startGame = new MenuButton(screenWidth/2-80,screenHeight/2+40,160,40);
 		highScores = new MenuButton(screenWidth/2-80,screenHeight/2-20,160,40);
 		quitGame = new MenuButton(screenWidth/2-80,screenHeight/2-80,160,40);
 	}
-	
-    public static void renderAllMenuButtons(ShapeRenderer sr){
-    	menuButtons.forEach(item -> {
-            item.render(sr);
-        });
-    }
     
-	public void renderBackground (ShapeRenderer sr, Batch b) {
-		
+	public void renderBackground (ShapeRenderer sr, Batch batch) {
+		batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 	
-	public void renderButtons (ShapeRenderer sr, Batch b) {
-		
+	public void renderButtons (ShapeRenderer sr, Batch batch) {
+		startGame.render(sr);
+		highScores.render(sr);
+		quitGame.render(sr);
 	}
 	
-	public void renderText (ShapeRenderer sr, Batch b) {
-		
+	public void renderText (ShapeRenderer sr, Batch batch) {
+		// startGameBF.draw(batch, startGameString, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2); 
+		// hookHeroBF.draw(batch, hookHeroString, 284, 390);
+		startGameBF.draw(batch, startGameString, 284, 305);
+		highScoresBF.draw(batch, highScoresString, 284, 246);
+		quitGameBF.draw(batch, quitGameString, 284, 186);
 	}
 
 }

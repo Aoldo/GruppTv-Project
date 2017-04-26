@@ -14,29 +14,37 @@ public class RunnerGame extends ApplicationAdapter {
 	ShapeRenderer sr;
 	SpriteBatch batch;
 	
+	MainMenu mainMenu;
+	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
+		mainMenu = new MainMenu();
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 0.4f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		// Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 0.4f);
+		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		batch.begin();
-		batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		//Background
+		batch.begin(); 
+		mainMenu.renderBackground(sr, batch);
 		batch.end();
 		
-		sr.begin(ShapeType.Filled);
-		//sr.begin(ShapeType.Line);
-		startGame.render(sr);
-		highScores.render(sr);
-		quitGame.render(sr);
+		// %% TODO %% 
+		// Change ShapeRenderer to SpriteBatch, 
+		// add texture to SpriteBatch and make it clickable
+		
+		//Buttons 
+		sr.begin(ShapeType.Filled); 
+		mainMenu.renderButtons(sr, batch);
 		sr.end();
-		batch.begin();
-		startGameBF.draw(batch, startGameString, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2); 
+		
+		//Text
+		batch.begin(); 
+		mainMenu.renderText(sr, batch);
 		batch.end();
 	}
 	
