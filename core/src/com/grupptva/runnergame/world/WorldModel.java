@@ -68,6 +68,14 @@ public class WorldModel {
 		return tempArr;
 	}
 
+	/**
+	 * Moves the chunks in the world a distance to the left.
+	 * @param distance  the distance to move the world.
+	 */
+	public void moveLeft(float distance){
+		setPosition(getPosition() - distance);
+	}
+
 	// Getters and setters
 
 	public float getPosition() {
