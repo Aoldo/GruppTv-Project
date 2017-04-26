@@ -43,7 +43,7 @@ public class WorldModel {
 	 *
 	 * @param n the amount which the startIndex should be incremented with
 	 */
-	public void incrementStartIndexWith(int n) {
+	private void incrementStartIndexWith(int n) {
 		setStartIndex((getStartIndex() + n) % getChunks().length);
 	}
 
