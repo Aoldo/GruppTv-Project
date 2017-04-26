@@ -1,8 +1,5 @@
 package com.grupptva.runnergame.world;
 
-
-import java.awt.*;
-
 /**
  * Created by karlwikstrom on 2017-04-03.
  *
