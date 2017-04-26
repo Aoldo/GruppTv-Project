@@ -23,6 +23,13 @@ public class GameLogic {
 	public void update() {
 		//character.update();
 		//move world here or world.update()?
+		world.moveLeft(pixelsPerFrame);
+		if(isCharacterCollidingFromBelow()){
+			handleCollisionFromBelow();
+		}
+		if(isCharacterCollidingFromRight()){
+			handleCollisionFromRight();
+		}
 	}
 
 	public void render(ShapeRenderer renderer) {
