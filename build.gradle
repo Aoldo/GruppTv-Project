@@ -49,12 +49,19 @@ project(":desktop") {
 project(":core") {
     apply plugin: "java"
 
+	sourceSets.test.java.srcDirs = ["test/"]
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+        
+        testCompile "junit:junit:+" 
+        testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        testCompile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        testCompile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        testCompile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"  
     }
 }
 
