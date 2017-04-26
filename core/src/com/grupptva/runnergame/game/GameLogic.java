@@ -24,8 +24,7 @@ public class GameLogic {
 	}
 
 	public void render(ShapeRenderer renderer) {
-		//character.render(batch);
-		//world.render(batch);
+		renderWorld(renderer);
 	}
 
 	private void checkCharacterCollision() {
