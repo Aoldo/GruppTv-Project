@@ -13,25 +13,25 @@ public class GameCharacter {
 	private double jumpInitialVelocity = 10;
 	private boolean collidingWithGround = false;
 
-	public GameCharacter(int x, int y) { 
+	public GameCharacter(int x, int y) {
 		box = new Rectangle(x, y, 25, 25);
-		 position = box.getLocation(); 
+		position = box.getLocation();
 	}
 
-	public void moveY(double distance) { 
-		double newY = position.getY() + distance; 
-		position.setLocation(position.getX(), newY); 
+	public void moveY(double distance) {
+		double newY = position.getY() + distance;
+		position.setLocation(position.getX(), newY);
 	}
 
-	public void fall() { 
+	public void fall() {
 		if (!collidingWithGround) {
-			 yVelocity += gravity; 
-		} 
+			yVelocity += gravity;
+		}
 		moveY(yVelocity);
-	 }
+	}
 
-	public void jump() { 
-		yVelocity += jumpInitialVelocity; 
+	public void jump() {
+		yVelocity += jumpInitialVelocity;
 	}
 
 	public Point getPosition() {
