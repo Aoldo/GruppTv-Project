@@ -3,6 +3,7 @@ package com.grupptva.runnergame.game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.grupptva.runnergame.world.Chunk;
+import com.grupptva.runnergame.world.Tile;
 import com.grupptva.runnergame.world.WorldModel;
 
 public class GameLogic {
@@ -42,9 +43,14 @@ public class GameLogic {
 	private void renderChunk(Chunk chunk, int chunkNumber, ShapeRenderer renderer) {
 		for(int col = 0; col < chunk.getWidth(); col++){
 			for(int row = 0; row < chunk.getHeight(); row++){
-				renderTile(chunk.getTiles()[col][row], chunkNumber, renderer);
+				renderTile(chunk.getTiles()[col][row], col, row, chunkNumber, renderer);
 			}
 		}
+	}
+
+	private void renderTile(Tile tile, int col, int row, int chunkNumber, ShapeRenderer
+			renderer) {
+
 	}
 
 	public WorldModel getWorld() {
