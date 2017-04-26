@@ -27,10 +27,10 @@ public class WorldModel {
 	private int startIndex = 0;
 
 	public WorldModel() {
-		this(new Chunk[3], new Point(0, 0));
+		this(new Chunk[3], 0f);
 	}
 
-	private WorldModel(Chunk[] chunks, Point position) {
+	private WorldModel(Chunk[] chunks, float position) {
 		setChunks(chunks);
 		setPosition(position);
 	}
