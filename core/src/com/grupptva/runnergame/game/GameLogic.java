@@ -31,8 +31,9 @@ public class GameLogic {
 	}
 
 	private void renderWorld(ShapeRenderer renderer){
-		for(int i = 0; i < getWorld().getChunksInRightOrder().length; i++){
-			renderChunk(chunk, i, renderer);
+		Chunk[] chunks = getWorld().getChunksInRightOrder();
+		for(int i = 0; i < chunks.length; i++){
+			renderChunk(chunks[i], i, renderer);
 		}
 	}
 
