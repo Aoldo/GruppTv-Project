@@ -41,4 +41,10 @@ public class GameCharacterTest {
 		Assert.assertTrue(gameCharacter.getyVelocity() == yvelocity + jumpVelocity);
 		Assert.assertTrue(x == newX);
 	}
+
+	@Test
+	public void testHandleCollisionFromBelow() {
+		gameCharacter.handleCollisionFromBelow();
+		Assert.assertTrue(gameCharacter.getyVelocity() == 0);
+	}
 }
