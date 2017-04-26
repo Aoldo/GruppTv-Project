@@ -7,23 +7,21 @@ import java.awt.*;
  */
 public class GameCharacter {
 	private Point position;
-	public Rectangle box;
-	private double gravity = 0.4;
-	private double yVelocity;
-	private double jumpInitialVelocity = 10;
+	private float gravity = 0.4f;
+	private float yVelocity;
+	private float jumpInitialVelocity = 10f;
 	private boolean collidingWithGround = false;
 
-	public GameCharacter(int x, int y) {
-		box = new Rectangle(x, y, 25, 25);
-		position = box.getLocation();
+	public GameCharacter(float x, float y) {
+		position = new Point(x, y);
 	}
 
 	public void update() {
 		fall();
 	}
 
-	private void moveY(double distance) {
-		double newY = position.getY() + distance;
+	private void moveY(float distance) {
+		float newY = position.getY() + distance;
 		position.setLocation(position.getX(), newY);
 	}
 
@@ -38,7 +36,7 @@ public class GameCharacter {
 		yVelocity += jumpInitialVelocity;
 	}
 
-	public void handleCollisionFromBelow(double yCoordinate) {
+	public void handleCollisionFromBelow(float yCoordinate) {
 		setyVelocity(0);
 		position.setLocation(position.getX(), yCoordinate);
 	}
@@ -51,15 +49,15 @@ public class GameCharacter {
 		this.position = position;
 	}
 
-	public double getyVelocity() {
+	public float getyVelocity() {
 		return yVelocity;
 	}
 
-	private void setyVelocity(double yVelocity) {
+	private void setyVelocity(float yVelocity) {
 		this.yVelocity = yVelocity;
 	}
 
-	public double getJumpInitialVelocity() {
+	public float getJumpInitialVelocity() {
 		return jumpInitialVelocity;
 	}
 
@@ -71,7 +69,7 @@ public class GameCharacter {
 		this.collidingWithGround = collidingWithGround;
 	}
 
-	public double getGravity() {
+	public float getGravity() {
 		return gravity;
 	}
 

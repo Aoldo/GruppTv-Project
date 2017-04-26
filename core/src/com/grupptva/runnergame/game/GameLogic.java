@@ -25,7 +25,7 @@ public class GameLogic {
 
 	private void renderCharacter(ShapeRenderer sr) {
 		sr.setColor(Color.FOREST);
-		sr.rect(character.box.getX(), character.box.getY(), character.box.getWidth(), character.box.getHeight());
+		sr.rect(character.getPosition().getX(), character.getPosition().getY(), tileSize, tileSize);
 	}
 
 	private void checkCharacterCollision() {
