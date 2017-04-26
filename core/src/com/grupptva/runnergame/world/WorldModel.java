@@ -111,6 +111,14 @@ public class WorldModel {
 	public void incrementStartIndex() {
 		incrementStartIndexWith(1);
 	}
+
+	public Chunk[] getChunksInRightOrder(){
+		Chunk[] tempArr = new Chunk[getChunks().length];
+		for(int i = 0; i < getChunks().length; i++){
+			tempArr[i] = getChunks()[(i + startIndex) % getChunks().length];
+		}
+		return tempArr;
+	}
 	
 	
 	// Getters and setters
