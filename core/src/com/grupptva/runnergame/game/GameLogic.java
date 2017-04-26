@@ -29,6 +29,10 @@ public class GameLogic {
 		//character.collide(yPos)
 	}
 
+	private void renderWorld(ShapeRenderer renderer){
+
+	}
+
 	public WorldModel getWorld() {
 		return world;
 	}
