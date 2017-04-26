@@ -1,5 +1,6 @@
 package com.grupptva.runnergame.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.grupptva.runnergame.world.Chunk;
@@ -50,6 +51,16 @@ public class GameLogic {
 
 	private void renderTile(Tile tile, int col, int row, int chunkNumber, ShapeRenderer
 			renderer) {
+		switch(tile){
+			case OBSTACLE:
+				renderer.setColor(new Color(0,0,0,1));
+				renderer.rect(col * tileSize * chunkNumber, row * tileSize, tileSize,
+						tileSize);
+				return;
+			case EMPTY:
+			default:
+				return;
+		}
 
 	}
 
