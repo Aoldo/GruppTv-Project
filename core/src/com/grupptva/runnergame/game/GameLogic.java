@@ -9,6 +9,8 @@ public class GameLogic {
 	// private character
 	private WorldModel world;
 
+	private int tileSize = 50;
+
 	//TODO: Decide how to deal with the world moving, move it in this class or actually move it inside of the world class?
 	public GameLogic() {
 
