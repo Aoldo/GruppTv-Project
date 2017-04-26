@@ -17,7 +17,7 @@ public class WorldModel {
 	private Chunk[] chunks;
 
 	/**
-	 * The position of the grid
+	 * The position of the grid.
 	 */
 	private Point position;
 
