@@ -34,6 +34,10 @@ public class GameCharacter {
 		yVelocity += jumpInitialVelocity;
 	}
 
+	public void handleCollisionFromBelow() {
+		setyVelocity(0);
+	}
+
 	public Point getPosition() {
 		return position;
 	}
