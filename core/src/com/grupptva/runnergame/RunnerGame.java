@@ -6,10 +6,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.grupptva.runnergame.game.GameLogic;
 
 public class RunnerGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+	GameLogic gameLogic;
 
 	final double fastestTimeStep = 0.0041666; //240 fps
 	final double slowestTimeStep = 0.0166666; //60 fps
@@ -20,6 +22,7 @@ public class RunnerGame extends ApplicationAdapter {
 	public void create() {
 		batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");
+		gameLogic = new GameLogic();
 	}
 
 	@Override
@@ -32,12 +35,14 @@ public class RunnerGame extends ApplicationAdapter {
 			timeAccumulator -= currentTimeStep;
 
 			//--------------------Do logic here-------------------
+			gameLogic.update();
 		}
 
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		//--------------------Do SpriteBatch rendering here----------------------
+		gameLogic.render(batch);
 		batch.end();
 	}
 
