@@ -32,6 +32,10 @@ public class GameLogic {
 		}
 	}
 
+	private boolean isCharacterCollidingFromBelow() {
+
+	}
+
 	public void render(ShapeRenderer renderer) {
 		renderWorld(renderer);
 	}
