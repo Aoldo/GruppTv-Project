@@ -6,10 +6,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.grupptva.runnergame.game.GameLogic;
 
 public class RunnerGame extends ApplicationAdapter {
 	SpriteBatch batch;
+	ShapeRenderer sr;
 	Texture img;
 	GameLogic gameLogic;
 
@@ -21,6 +23,7 @@ public class RunnerGame extends ApplicationAdapter {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
+		sr = new ShapeRenderer();
 		//img = new Texture("badlogic.jpg");
 		gameLogic = new GameLogic();
 	}
@@ -42,8 +45,11 @@ public class RunnerGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		//--------------------Do SpriteBatch rendering here----------------------
-		gameLogic.render(batch);
 		batch.end();
+		sr.begin(ShapeRenderer.ShapeType.Filled);
+		//--------------------Do ShapeRenderer rendering here--------------------
+		gameLogic.render(sr);
+		sr.end();
 	}
 
 	private void debugTimeStep() {

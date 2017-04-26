@@ -8,6 +8,7 @@ import com.grupptva.runnergame.gamecharacter.GameCharacter;
 public class GameLogic {
 	private GameCharacter character;
 	// private world
+	private float tileSize = 50;
 
 	//TODO: Decide how to deal with the world moving, move it in this class or actually move it inside of the world class?
 	public GameLogic() {
