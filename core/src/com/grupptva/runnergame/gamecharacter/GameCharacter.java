@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public class GameCharacter {
 	private Point position;
-	private float gravity = 0.4f;
+	private float gravity = -0.4f;
 	private float yVelocity;
 	private float jumpInitialVelocity = 10f;
 	private boolean collidingWithGround = false;
