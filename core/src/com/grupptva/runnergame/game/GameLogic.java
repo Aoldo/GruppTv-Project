@@ -40,7 +40,11 @@ public class GameLogic {
 	}
 
 	private void renderChunk(Chunk chunk, int chunkNumber, ShapeRenderer renderer) {
-
+		for(int col = 0; col < chunk.getWidth(); col++){
+			for(int row = 0; row < chunk.getHeight(); row++){
+				renderTile(chunk.getTiles()[col][row], chunkNumber, renderer);
+			}
+		}
 	}
 
 	public WorldModel getWorld() {
