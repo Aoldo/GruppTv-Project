@@ -2,7 +2,6 @@ package com.grupptva.runnergame.world;
 
 
 import java.awt.*;
-import java.util.Arrays;
 
 /**
  * Created by karlwikstrom on 2017-04-03.
