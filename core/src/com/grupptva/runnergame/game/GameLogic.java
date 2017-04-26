@@ -2,6 +2,7 @@ package com.grupptva.runnergame.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.grupptva.runnergame.world.Chunk;
 import com.grupptva.runnergame.world.WorldModel;
 
 public class GameLogic {
@@ -30,7 +31,9 @@ public class GameLogic {
 	}
 
 	private void renderWorld(ShapeRenderer renderer){
-
+		for(int i = 0; i < getWorld().getChunksInRightOrder().length; i++){
+			renderChunk(i, renderer);
+		}
 	}
 
 	public WorldModel getWorld() {
