@@ -36,6 +36,10 @@ public class GameLogic {
 		}
 	}
 
+	private void renderChunk(int chunkNumber, ShapeRenderer renderer) {
+
+	}
+
 	public WorldModel getWorld() {
 		return world;
 	}
