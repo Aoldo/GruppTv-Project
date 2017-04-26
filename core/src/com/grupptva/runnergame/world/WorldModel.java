@@ -12,24 +12,9 @@ import java.util.Arrays;
 public class WorldModel {
 
 	/**
-	 * The container which contains the world.
-	 */
-	private int[][] grid; // Should be replaced by chunks at some point
-
-	/**
 	 * The container which contains the world separated into {@link Chunk}s.
 	 */
 	private Chunk[] chunks;
-
-	/**
-	 * The width of the grid
-	 */
-	private int gridWidth;
-
-	/**
-	 * The height of the grid
-	 */
-	private int gridHeight;
 
 	/**
 	 * The position of the grid
@@ -55,42 +40,6 @@ public class WorldModel {
 	private WorldModel(Chunk[] chunks, Point position) {
 		setChunks(chunks);
 		setPosition(position);
-	}
-
-	/**
-	 * Returns a part of a world that wraps around the end of the array to the beginning.
-	 * <p>
-	 * An example would be:
-	 * <p>
-	 * world = [1, 2, 3, 4]
-	 * startIndex = 2
-	 * length = 3
-	 * returns -> [3, 4, 1]
-	 *
-	 * @param world      the world that the part is taken from
-	 * @param startIndex the index at which the part should start
-	 * @param length     the length of the part of the world
-	 *
-	 * @return a part of the world starting at startIndex wrapping around the end
-	 */
-	private int[][] getWorldPart(int[][] world, int startIndex, int length) {
-		int[][] worldPart = new int[length][world.length];
-		int index;
-		for (int i = 0; i < length; i++) {
-			index = (startIndex + i) % world.length;
-			worldPart[i] = Arrays.copyOf(world[index], world[index].length);
-		}
-		return worldPart;
-	}
-
-	/**
-	 * Runs {@link #getWorldPart(int[][], int, int)} with {@link #grid},
-	 * {@link #startIndex} and {@link #worldLength} in respective order.
-	 *
-	 * @return a part of the world starting at the set startIndex wrapping around the end
-	 */
-	public int[][] getWorldPart() {
-		return getWorldPart(grid, startIndex, worldLength);
 	}
 
 	/**
@@ -143,10 +92,6 @@ public class WorldModel {
 
 	private void setStartIndex(int startIndex) {
 		this.startIndex = startIndex;
-	}
-
-	private int getGridWidth() {
-		return gridWidth;
 	}
 
 	private Chunk[] getChunks() {
