@@ -13,6 +13,7 @@ public class GameCharacter {
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
 	private Point hookPosition;
+	private final float hookAngle = 1;
 
 	public GameCharacter(float x, float y) {
 		position = new Point(x, y);
@@ -43,8 +44,9 @@ public class GameCharacter {
 		position.setLocation(position.getX(), yCoordinate);
 	}
 
-	public void initHook() {
-
+	public void initHook(float length) {
+		attachedWithHook = true;
+		hookPosition = position.getOffsetPoint(length, hookAngle);
 	}
 
 	public Point getPosition() {
