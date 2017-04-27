@@ -11,6 +11,8 @@ public class GameCharacter {
 	private float yVelocity;
 	private float jumpInitialVelocity = 10f;
 	private boolean collidingWithGround = false;
+	private boolean attachedWithHook = false;
+	private Point hookPosition;
 
 	public GameCharacter(float x, float y) {
 		position = new Point(x, y);
@@ -39,6 +41,10 @@ public class GameCharacter {
 	public void handleCollisionFromBelow(float yCoordinate) {
 		setyVelocity(0);
 		position.setLocation(position.getX(), yCoordinate);
+	}
+
+	public void initHook() {
+
 	}
 
 	public Point getPosition() {
