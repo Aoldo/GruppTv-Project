@@ -6,6 +6,7 @@ import org.junit.Test;
 
 /**
  * Created by karlwikstrom on 2017-04-21.
+ * revised by Mattias
  */
 public class RunnerGameTest {
 	@Test

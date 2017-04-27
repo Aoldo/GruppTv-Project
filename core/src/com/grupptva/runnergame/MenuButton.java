@@ -3,7 +3,11 @@ package com.grupptva.runnergame;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
+/**
+ * 
+ * @author Luka
+ *
+ */
 public class MenuButton{
 
     public int x,y,width,height;

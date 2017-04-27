@@ -10,6 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+/**
+ * 
+ * @author Mattias
+ *
+ */
 public class GeneratorVisualizer {
 	WorldGenerator generator;
 	ShapeRenderer sr;

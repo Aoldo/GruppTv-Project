@@ -7,7 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.worldgenerator.GeneratorVisualizer;
-
+/**
+ * 
+ * @author Mattias
+ *
+ */
 public class RunnerGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;

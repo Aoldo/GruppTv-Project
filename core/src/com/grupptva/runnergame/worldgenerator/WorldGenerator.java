@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * 
+ * @author Mattias
+ *
+ */
 public class WorldGenerator {
 	final int chunkWidth = 65;
 	final int chunkHeight = 65;

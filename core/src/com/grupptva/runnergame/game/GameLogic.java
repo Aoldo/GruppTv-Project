@@ -2,6 +2,11 @@ package com.grupptva.runnergame.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * 
+ * @author Mattias
+ *
+ */
 public class GameLogic {
 	// private character
 	// private world

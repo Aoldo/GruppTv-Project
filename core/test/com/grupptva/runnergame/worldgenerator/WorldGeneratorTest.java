@@ -8,7 +8,11 @@ import java.util.List;
 import org.junit.*;
 
 import com.grupptva.runnergame.worldgenerator.WorldGenerator.Tile;
-
+/**
+ * 
+ * @author Mattias
+ *
+ */
 public class WorldGeneratorTest {
 	WorldGenerator wg;
 
