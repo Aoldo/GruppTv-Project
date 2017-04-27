@@ -23,6 +23,12 @@ public class Point {
 		return (float) Math.sqrt((dX * dX) + (dY * dY));
 	}
 
+	public Point getOffsetPoint(float length, float angle) {
+		float newX = x + (float) Math.cos(angle) * length;
+		float newY = y + (float) Math.sin(angle) * length;
+		return new Point(newX, newY);
+	}
+
 	public float getX() {
 		return x;
 	}
