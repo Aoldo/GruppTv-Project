@@ -20,5 +20,13 @@ public class MenuButton{
         sr.rect(x,y,width, height);
         sr.setColor(0.3f, 0.6f, 1f, 1);
     }
+    
+    public int getButtonWidth() {
+    	return width;
+    }
+    
+    public int getButtonHeight() {
+    	return height;
+    }
 
 }

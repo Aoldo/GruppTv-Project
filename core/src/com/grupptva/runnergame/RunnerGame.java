@@ -28,6 +28,16 @@ public class RunnerGame extends ApplicationAdapter {
 		// Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 0.4f);
 		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		int buttonHeight = mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2+40);
+		
+		// Start button collision
+		if (((Gdx.input.getX() < (mainMenu.getScreenWidth()/2-80) + mainMenu.startGame.getButtonWidth()) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
+			&& ((Gdx.input.getY() < buttonHeight)) && !(Gdx.input.getX() < ???????) ){                  
+			System.out.println("Active!");
+		} else {
+			System.out.println("Not Active!");
+		}
+		
 		//Background
 		batch.begin(); 
 		mainMenu.renderBackground(sr, batch);

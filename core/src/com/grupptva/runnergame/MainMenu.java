@@ -31,6 +31,14 @@ public class MainMenu {
 	
 	int screenWidth = Gdx.graphics.getWidth();
 	int screenHeight = Gdx.graphics.getHeight();
+	
+	public int getScreenWidth() {
+		return Gdx.graphics.getWidth();
+	}
+	
+	public int getScreenHeight() {
+		return Gdx.graphics.getHeight();
+	}
 
     // private static ArrayList<MenuButton> menuButtons = new ArrayList<MenuButton>();
 	
