@@ -25,14 +25,12 @@ public class RunnerGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		// Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 0.4f);
-		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
 		int buttonHeight = mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2+40);
+		int buttonWidth =  mainMenu.getScreenWidth()/2-80 + mainMenu.startGame.getButtonWidth();
 		
 		// Start button collision
-		if (((Gdx.input.getX() < (mainMenu.getScreenWidth()/2-80) + mainMenu.startGame.getButtonWidth()) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
-			&& ((Gdx.input.getY() < buttonHeight)) && !(Gdx.input.getX() < ???????) ){                  
+		if (((Gdx.input.getX() < buttonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
+			&& (((Gdx.input.getY() < buttonHeight)) && !(Gdx.input.getY() < (buttonHeight-mainMenu.startGame.getButtonHeight())))){                  
 			System.out.println("Active!");
 		} else {
 			System.out.println("Not Active!");
@@ -42,11 +40,7 @@ public class RunnerGame extends ApplicationAdapter {
 		batch.begin(); 
 		mainMenu.renderBackground(sr, batch);
 		batch.end();
-		
-		// %% TODO %% 
-		// Change ShapeRenderer to SpriteBatch, 
-		// add texture to SpriteBatch and make it clickable
-		
+
 		//Buttons 
 		sr.begin(ShapeType.Filled); 
 		mainMenu.renderButtons(sr, batch);

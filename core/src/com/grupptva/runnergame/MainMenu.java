@@ -73,8 +73,6 @@ public class MainMenu {
 	}
 	
 	public void renderText (ShapeRenderer sr, Batch batch) {
-		// startGameBF.draw(batch, startGameString, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2); 
-		// hookHeroBF.draw(batch, hookHeroString, 284, 390);
 		startGameBF.draw(batch, startGameString, 284, 305);
 		highScoresBF.draw(batch, highScoresString, 284, 246);
 		quitGameBF.draw(batch, quitGameString, 284, 186);
