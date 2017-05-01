@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class MainMenu {
 	
+	//TODO: Turn the BitmapFonts and the Strings into arrays
+	// String[] buttonTitles;
+	
 	BitmapFont hookHeroBF;
 	private String hookHeroString;
 	
@@ -44,6 +47,8 @@ public class MainMenu {
 	
 	public MainMenu() {
 		img = new Texture("mainmenubg2.png");
+		
+		// buttonTitles = {"Start Game", "Highscores", "Quit Game"};
 		
 		hookHeroString = "Hook Hero";
 		hookHeroBF = new BitmapFont();

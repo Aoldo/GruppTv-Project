@@ -26,38 +26,23 @@ public class RunnerGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		int startGameButtonHeight = mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2+40);
-		int startGameButtonWidth =  mainMenu.getScreenWidth()/2-80 + mainMenu.startGame.getButtonWidth();
 		
-		int highScoreButtonHeight =  mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2-20);
-		int highScoreButtonWidth =  mainMenu.getScreenWidth()/2-80 + mainMenu.highScores.getButtonWidth();
-		
-		int quitGameButtonHeight =  mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2-80);
-		int quitGameButtonWidth =  mainMenu.getScreenWidth()/2-80 + mainMenu.quitGame.getButtonWidth();
-		
-		// Start button collision
-		if (((Gdx.input.getX() < startGameButtonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
-			&& (((Gdx.input.getY() < startGameButtonHeight)) && !(Gdx.input.getY() < (startGameButtonHeight-mainMenu.startGame.getButtonHeight())))){                  
-		
+		// Button collision detection
+		// TODO: Click detection on release rather than click & 
+		//       change rect colour on click/add feedback
+		if (mainMenu.startGame.collides(-80, 40, mainMenu)) {	
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
-				System.exit(0);
+				System.out.println("Start game pressed!");
 			}
-		}
-		
-		// Highscores button collision
-		if (((Gdx.input.getX() < highScoreButtonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
-			&& (((Gdx.input.getY() < highScoreButtonHeight)) && !(Gdx.input.getY() < (highScoreButtonHeight-mainMenu.highScores.getButtonHeight())))){                  
 			
+		} else if (mainMenu.highScores.collides(-80, -20, mainMenu)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
-				System.exit(0);
+				System.out.println("Highscores pressed!");
 			}
-		}
-		
-		// Quit game button collision
-		if (((Gdx.input.getX() < quitGameButtonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
-			&& (((Gdx.input.getY() < quitGameButtonHeight)) && !(Gdx.input.getY() < (quitGameButtonHeight-mainMenu.highScores.getButtonHeight())))){                  
 			
+		} else if (mainMenu.quitGame.collides(-80, -80, mainMenu)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
+				System.out.println("Quit game pressed!");
 				Gdx.app.exit();
 			}
 		}

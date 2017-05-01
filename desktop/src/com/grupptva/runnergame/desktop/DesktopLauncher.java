@@ -10,5 +10,4 @@ public class DesktopLauncher {
 		new LwjglApplication(new RunnerGame(), config);
 		config.forceExit = true;
 	}
-
 }

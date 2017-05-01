@@ -29,18 +29,15 @@ public class MenuButton{
     public int getButtonHeight() {
     	return height;
     }
-    
-    /*
-    public boolean collide() {
-    	
-		if (((Gdx.input.getX() < startGameButtonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
-				&& (((Gdx.input.getY() < startGameButtonHeight)) && !(Gdx.input.getY() < (startGameButtonHeight-mainMenu.startGame.getButtonHeight())))){                  
-			
-				if (Gdx.input.isButtonPressed(Buttons.LEFT)){
-					System.exit(0);
-				}
-			}
- 
-    }*/
+   
+    public boolean collides(float x, float y, MainMenu mainMenu) {
+
+		if (((Gdx.input.getX() < (mainMenu.getScreenWidth()/2+x + 160)) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2+x)) 
+				&& (((Gdx.input.getY() < ((mainMenu.getScreenHeight()/2-y)))) && !(Gdx.input.getY() < (((mainMenu.getScreenHeight()/2-y)))-40))) {
+			return true;
+		} else {
+			return false;
+		}
+    }
 
 }
