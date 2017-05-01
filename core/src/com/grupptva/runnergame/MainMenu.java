@@ -77,5 +77,10 @@ public class MainMenu {
 		highScoresBF.draw(batch, highScoresString, 284, 246);
 		quitGameBF.draw(batch, quitGameString, 284, 186);
 	}
-
+	
+	/*
+	public void update () {
+		
+	}
+	*/
 }

@@ -3,6 +3,7 @@ package com.grupptva.runnergame;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -25,15 +26,40 @@ public class RunnerGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		int buttonHeight = mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2+40);
-		int buttonWidth =  mainMenu.getScreenWidth()/2-80 + mainMenu.startGame.getButtonWidth();
+		int startGameButtonHeight = mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2+40);
+		int startGameButtonWidth =  mainMenu.getScreenWidth()/2-80 + mainMenu.startGame.getButtonWidth();
+		
+		int highScoreButtonHeight =  mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2-20);
+		int highScoreButtonWidth =  mainMenu.getScreenWidth()/2-80 + mainMenu.highScores.getButtonWidth();
+		
+		int quitGameButtonHeight =  mainMenu.getScreenHeight() - (mainMenu.getScreenHeight()/2-80);
+		int quitGameButtonWidth =  mainMenu.getScreenWidth()/2-80 + mainMenu.quitGame.getButtonWidth();
 		
 		// Start button collision
-		if (((Gdx.input.getX() < buttonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
-			&& (((Gdx.input.getY() < buttonHeight)) && !(Gdx.input.getY() < (buttonHeight-mainMenu.startGame.getButtonHeight())))){                  
-			System.out.println("Active!");
-		} else {
-			System.out.println("Not Active!");
+		if (((Gdx.input.getX() < startGameButtonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
+			&& (((Gdx.input.getY() < startGameButtonHeight)) && !(Gdx.input.getY() < (startGameButtonHeight-mainMenu.startGame.getButtonHeight())))){                  
+		
+			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
+				System.exit(0);
+			}
+		}
+		
+		// Highscores button collision
+		if (((Gdx.input.getX() < highScoreButtonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
+			&& (((Gdx.input.getY() < highScoreButtonHeight)) && !(Gdx.input.getY() < (highScoreButtonHeight-mainMenu.highScores.getButtonHeight())))){                  
+			
+			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
+				System.exit(0);
+			}
+		}
+		
+		// Quit game button collision
+		if (((Gdx.input.getX() < quitGameButtonWidth) && !(Gdx.input.getX() < mainMenu.getScreenWidth()/2-80)) 
+			&& (((Gdx.input.getY() < quitGameButtonHeight)) && !(Gdx.input.getY() < (quitGameButtonHeight-mainMenu.highScores.getButtonHeight())))){                  
+			
+			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
+				Gdx.app.exit();
+			}
 		}
 		
 		//Background
