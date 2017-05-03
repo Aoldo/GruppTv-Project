@@ -116,7 +116,7 @@ public class MainMenu implements GamePlugin {
 		batch.begin();
 		renderBackground(batch);
 		batch.end();
-		sr.begin();
+		sr.begin(ShapeType.Filled);
 		renderButtons(sr);
 		sr.end();
 		batch.begin();
