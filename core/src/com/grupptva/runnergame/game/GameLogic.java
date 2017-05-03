@@ -82,8 +82,10 @@ public class GameLogic {
 
 	private void handlePossibleCharacterCollision() {
 		int indexOfFirstVisibleCol = ((int) Math.abs(world.getPosition()) / tileSize) % chunkWidth;
-		out.println(indexOfFirstVisibleCol);
+		//out.println(indexOfFirstVisibleCol);
 		character.setCollidingWithGround(false);
+
+
 
 		for (int col = indexOfFirstVisibleCol; col < world.getChunksInRightOrder()
 				[0].getTiles().length; col++) {
@@ -96,30 +98,39 @@ public class GameLogic {
 
 				float tileXPos = world.getPosition() + col * tileSize;
 				float tileYPos = row * tileSize;
-				if (2 * Math.abs(character.getPosition().getX() - tileXPos) <= tileSize
+				if (world.getChunksInRightOrder()[0].getTiles()[col][row] !=
+						Tile.EMPTY && 2 * Math.abs(character.getPosition().getX() -
+						tileXPos) <= 2 * tileSize
 						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <=
-						tileSize
-						&& world.getChunksInRightOrder()[0].getTiles()[col][row] !=
-						Tile.EMPTY) {
+						2 * tileSize) {
 					// handle collision
 					character.handleCollisionFromBelow(tileYPos + tileSize - 1);
 					character.setCollidingWithGround(true);
 				}
 			}
 		}
-		/*for (int row = 0; row < world.getChunksInRightOrder()[1].getTiles()[0]
-				.length; row++) {
-			float tileXPos = world.getPosition() + world.getChunksInRightOrder()[1]
-					.getTiles()[0].length * tileSize;
-			float tileYPos = row * tileSize;
-			if (2 * Math.abs(character.getPosition().getX() - tileXPos) <= tileSize &&
-				2 *	Math.abs(character.getPosition().getY() - tileYPos) <= tileSize &&
-					world.getChunksInRightOrder()[1].getTiles()[0][row] != Tile.EMPTY) {
-				// handle x
-				character.handleCollisionFromBelow(tileYPos + tileSize - 1);
-				character.setCollidingWithGround(true);
+		for (int col = 0; col < world.getChunksInRightOrder()
+				[1].getTiles().length; col++) {
+
+
+			for (int row = 0;
+			     row < world.getChunksInRightOrder()[1].getTiles()[col].length;
+			     row++) {
+
+
+				float tileXPos = world.getPosition() + col * tileSize + chunkWidth * tileSize;
+				float tileYPos = row * tileSize;
+				if (world.getChunksInRightOrder()[1].getTiles()[col][row] !=
+						Tile.EMPTY && 2 * Math.abs(character.getPosition().getX() -
+						tileXPos) <= 2 * tileSize
+						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <=
+						2 * tileSize) {
+					// handle collision
+					character.handleCollisionFromBelow(tileYPos + tileSize - 1);
+					character.setCollidingWithGround(true);
+				}
 			}
-		}*/
+		}
 	}
 
 	private void checkCharacterCollision() {
