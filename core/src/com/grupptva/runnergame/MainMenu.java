@@ -3,7 +3,7 @@ package com.grupptva.runnergame;
 /**
  * 
  * @author Luka
- *
+ * revised by Mattias
  */
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,10 +17,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class MainMenu {
+public class MainMenu implements GamePlugin {
 
 	//TODO: Turn the BitmapFonts and the Strings into arrays
 	Map<String, String> buttonTitles;
@@ -95,20 +96,32 @@ public class MainMenu {
 		sr.rect(button.x, button.y, button.width, button.height);
 	}
 
-	public void renderBackground(ShapeRenderer sr, Batch batch) {
+	public void renderBackground(Batch batch) {
 		batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
-	public void renderButtons(ShapeRenderer sr, Batch batch) {
+	public void renderButtons(ShapeRenderer sr) {
 		render(sr, startGame);
 		render(sr, highScores);
 		render(sr, quitGame);
 	}
 
-	public void renderText(ShapeRenderer sr, Batch batch) {
+	public void renderText(Batch batch) {
 		buttons.draw(batch, startGameString, 284, 305);
 		buttons.draw(batch, highScoresString, 284, 246);
 		buttons.draw(batch, quitGameString, 284, 186);
+	}
+
+	public void render(SpriteBatch batch, ShapeRenderer sr) {
+		batch.begin();
+		renderBackground(batch);
+		batch.end();
+		sr.begin();
+		renderButtons(sr);
+		sr.end();
+		batch.begin();
+		renderText(batch);
+		batch.end();
 	}
 
 	public void update() {
