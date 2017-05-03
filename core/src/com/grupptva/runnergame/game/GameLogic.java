@@ -29,14 +29,15 @@ public class GameLogic implements GamePlugin, InputListener {
 	private int chunkHeight = 20;
 
 	Chunk c = new Chunk(chunkWidth, chunkHeight);
+	Chunk d = new Chunk(chunkWidth, chunkHeight);
 
-	private int tileSize = 25;
+	private int tileSize = 20;
 
 	private float pixelsPerFrame = 1.5f;
 
 	//
 	public GameLogic() {
-		character = new GameCharacter(30, 30);
+		character = new GameCharacter(30, 150);
 		world = new WorldModel();
 
 		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
@@ -55,6 +56,16 @@ public class GameLogic implements GamePlugin, InputListener {
 				}
 			}
 		}
+		for (int x = 0; x < c.getTiles().length; x++) {
+			for (int y = 0; y < c.getTiles()[0].length; y++) {
+				if (y == 4) {
+					d.getTiles()[x][y] = Tile.OBSTACLE;
+				} else {
+					d.getTiles()[x][y] = Tile.EMPTY;
+				}
+			}
+		}
+		world.setChunks(new Chunk[] { c, d, c });
 
 		//TODO: First 3 chunks should be a tutorial.
 		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
@@ -62,10 +73,21 @@ public class GameLogic implements GamePlugin, InputListener {
 	}
 
 	public void update() {
+		world.moveLeft(pixelsPerFrame);
+		handlePossibleCharacterCollision();
 		character.update();
+		if (world.getPosition() < -tileSize * chunkWidth) {
+			world.incrementStartIndex();
+			world.setPosition(0);
+		}
 		//move world here or world.update()?
 		world.moveLeft(pixelsPerFrame);
 		checkCharacterCollision();
+
+		/*
+		 * if(isCharacterCollidingFromBelow()){ handleCollisionFromBelow(); }
+		 * if(isCharacterCollidingFromRight()){ handleCollisionFromRight(); }
+		 */
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
@@ -81,8 +103,42 @@ public class GameLogic implements GamePlugin, InputListener {
 				tileSize);
 	}
 
-	private boolean isCharacterCollidingFromBelow() {
-		return false;
+	private void handlePossibleCharacterCollision() {
+		int indexOfFirstVisibleCol = ((int) Math.abs(world.getPosition()) / tileSize)
+				% chunkWidth;
+		character.setCollidingWithGround(false);
+
+		for (int col = indexOfFirstVisibleCol; col < world.getChunksInRightOrder()[0]
+				.getTiles().length; col++) {
+
+			for (int row = 0; row < world.getChunksInRightOrder()[0]
+					.getTiles()[col].length; row++) {
+
+				float tileXPos = world.getPosition() + col * tileSize;
+				float tileYPos = row * tileSize;
+				if (2 * Math.abs(character.getPosition().getX() - tileXPos) <= tileSize
+						&& 2 * Math.abs(
+								character.getPosition().getY() - tileYPos) <= tileSize
+						&& world.getChunksInRightOrder()[0]
+								.getTiles()[col][row] != Tile.EMPTY) {
+					// handle collision
+					character.handleCollisionFromBelow(tileYPos + tileSize - 1);
+					character.setCollidingWithGround(true);
+				}
+			}
+		}
+		/*
+		 * for (int row = 0; row <
+		 * world.getChunksInRightOrder()[1].getTiles()[0] .length; row++) {
+		 * float tileXPos = world.getPosition() +
+		 * world.getChunksInRightOrder()[1] .getTiles()[0].length * tileSize;
+		 * float tileYPos = row * tileSize; if (2 *
+		 * Math.abs(character.getPosition().getX() - tileXPos) <= tileSize && 2
+		 * * Math.abs(character.getPosition().getY() - tileYPos) <= tileSize &&
+		 * world.getChunksInRightOrder()[1].getTiles()[0][row] != Tile.EMPTY) {
+		 * // handle x character.handleCollisionFromBelow(tileYPos + tileSize -
+		 * 1); character.setCollidingWithGround(true); } }
+		 */
 	}
 
 	private void checkCharacterCollision() {
@@ -121,7 +177,6 @@ public class GameLogic implements GamePlugin, InputListener {
 		default:
 			return;
 		}
-
 	}
 
 	public WorldModel getWorld() {
