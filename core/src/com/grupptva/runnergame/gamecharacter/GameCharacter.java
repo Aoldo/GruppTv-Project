@@ -31,8 +31,9 @@ public class GameCharacter {
 	private void fall() {
 		if (!collidingWithGround) {
 			yVelocity += gravity;
+			moveY(yVelocity);
 		}
-		moveY(yVelocity);
+
 	}
 
 	public void jump() {
