@@ -6,10 +6,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.grupptva.runnergame.game.GameLogic;
 
 public class RunnerGame extends ApplicationAdapter {
 	SpriteBatch batch;
+	ShapeRenderer sr;
 	Texture img;
+	GameLogic gameLogic;
 
 	final double fastestTimeStep = 0.0041666; //240 fps
 	final double slowestTimeStep = 0.0166666; //60 fps
@@ -19,7 +23,9 @@ public class RunnerGame extends ApplicationAdapter {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
+		sr = new ShapeRenderer();
 		//img = new Texture("badlogic.jpg");
+		gameLogic = new GameLogic();
 	}
 
 	@Override
@@ -32,6 +38,7 @@ public class RunnerGame extends ApplicationAdapter {
 			timeAccumulator -= currentTimeStep;
 
 			//--------------------Do logic here-------------------
+			gameLogic.update();
 		}
 
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
@@ -39,6 +46,10 @@ public class RunnerGame extends ApplicationAdapter {
 		batch.begin();
 		//--------------------Do SpriteBatch rendering here----------------------
 		batch.end();
+		sr.begin(ShapeRenderer.ShapeType.Filled);
+		//--------------------Do ShapeRenderer rendering here--------------------
+		gameLogic.render(sr);
+		sr.end();
 	}
 
 	private void debugTimeStep() {

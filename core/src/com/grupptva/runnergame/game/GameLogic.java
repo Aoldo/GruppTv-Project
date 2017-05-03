@@ -3,11 +3,16 @@ package com.grupptva.runnergame.game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.grupptva.runnergame.gamecharacter.GameCharacter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.grupptva.runnergame.world.Chunk;
 import com.grupptva.runnergame.world.Tile;
 import com.grupptva.runnergame.world.WorldModel;
 
 public class GameLogic {
+	private GameCharacter character;
+	// private world
+	private float tileSize = 50;
 	// private character
 	private WorldModel world;
 
@@ -17,11 +22,11 @@ public class GameLogic {
 
 	//TODO: Decide how to deal with the world moving, move it in this class or actually move it inside of the world class?
 	public GameLogic() {
-
+		character = new GameCharacter(30, 30);
 	}
 
 	public void update() {
-		//character.update();
+		character.update();
 		//move world here or world.update()?
 		world.moveLeft(pixelsPerFrame);
 		if(isCharacterCollidingFromBelow()){
@@ -32,6 +37,13 @@ public class GameLogic {
 		}
 	}
 
+	public void render(ShapeRenderer sr) {
+		renderCharacter(sr);
+	}
+
+	private void renderCharacter(ShapeRenderer sr) {
+		sr.setColor(Color.FOREST);
+		sr.rect(character.getPosition().getX(), character.getPosition().getY(), tileSize, tileSize);
 	private boolean isCharacterCollidingFromBelow() {
 
 	}
