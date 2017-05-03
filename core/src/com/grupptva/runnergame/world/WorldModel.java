@@ -95,7 +95,7 @@ public class WorldModel {
 		return chunks;
 	}
 
-	private void setChunks(Chunk[] chunks) {
+	public void setChunks(Chunk[] chunks) {
 		this.chunks = chunks;
 	}
 }
