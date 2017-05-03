@@ -9,13 +9,13 @@ import com.grupptva.runnergame.world.Chunk;
 
 /**
  * 
- * @author Mattias
- * TODO: Reduce amount of identical code by splitting the steps into even smaller methods that the
- * chunkLog version and the normal version use.
+ * @author Mattias TODO: Reduce amount of identical code by splitting the steps
+ *         into even smaller methods that the chunkLog version and the normal
+ *         version use.
  */
 public class WorldGenerator {
-	final int chunkWidth = 65;
-	final int chunkHeight = 65;
+	final int chunkWidth;
+	final int chunkHeight;
 	Random rng;
 
 	int jumpStepChance = 100;
@@ -71,9 +71,11 @@ public class WorldGenerator {
 	 * @param seed
 	 */
 	public WorldGenerator(List<Integer[]> hookAttachOffsets, List<Integer[]> jumpOffsets,
-			List<Integer[]> hookJumpOffsets, Long seed) {
-		
-		
+			List<Integer[]> hookJumpOffsets, Long seed, int chunkWidth, int chunkHeight) {
+
+		this.chunkHeight = chunkHeight;
+		this.chunkWidth = chunkWidth;
+
 		//Temporary solution to possible offsets
 		jumpOffsets.add(new Integer[] { 1, 0 });
 		jumpOffsets.add(new Integer[] { 2, 2 });
@@ -471,7 +473,6 @@ public class WorldGenerator {
 			if (isValidIndex(currentTile[0] + extraOffset, currentTile[1])) {
 				currentTile[0] += extraOffset;
 				chunk[currentTile[1]][currentTile[0]] = Tile.POSSIBLEHOOK;
-
 
 				extraOffset = rng.nextInt(currentTileExtraBuffer) + 1;
 				for (int i = 1; i <= extraOffset; i++) {

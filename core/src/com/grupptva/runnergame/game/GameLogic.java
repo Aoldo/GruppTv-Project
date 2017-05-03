@@ -55,7 +55,8 @@ public class GameLogic implements GamePlugin {
 	public void update() {
 		character.update();
 		//move world here or world.update()?
-		//world.moveLeft(pixelsPerFrame);
+		world.moveLeft(pixelsPerFrame);
+		checkCharacterCollision();
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
@@ -78,7 +79,7 @@ public class GameLogic implements GamePlugin {
 	private void checkCharacterCollision() {
 		//if collision
 		//send needed data to character:
-		//character.collide(yPos)
+		//character.handleCollisionFromBelow(10);
 	}
 
 	private void renderWorld(ShapeRenderer renderer) {
