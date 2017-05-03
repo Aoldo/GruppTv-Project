@@ -5,9 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.grupptva.runnergame.gamecharacter.GameCharacter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.grupptva.runnergame.gamecharacter.Point;
 import com.grupptva.runnergame.world.Chunk;
 import com.grupptva.runnergame.world.Tile;
 import com.grupptva.runnergame.world.WorldModel;
+
+import static java.lang.System.out;
 
 public class GameLogic {
 	private GameCharacter character;
@@ -22,7 +25,7 @@ public class GameLogic {
 
 	//TODO: Decide how to deal with the world moving, move it in this class or actually move it inside of the world class?
 	public GameLogic() {
-		character = new GameCharacter(30, 30);
+		character = new GameCharacter(30, 150);
 		world = new WorldModel();
 		for(int x = 0; x < c.getTiles().length; x++){
 			for(int y = 0; y < c.getTiles()[0].length; y++){
@@ -49,8 +52,10 @@ public class GameLogic {
 
 	public void update() {
 		character.update();
-		//move world here or world.update()?
 		world.moveLeft(pixelsPerFrame);
+		handlePossibleCharacterCollision();
+		//move world here or world.update()?
+
 		/*if(isCharacterCollidingFromBelow()){
 			handleCollisionFromBelow();
 		}
@@ -69,8 +74,46 @@ public class GameLogic {
 		sr.rect(character.getPosition().getX(), character.getPosition().getY(), tileSize, tileSize);
 	}
 
-	private boolean isCharacterCollidingFromBelow() {
-		return false;
+	private void handlePossibleCharacterCollision() {
+		int indexOfFirstVisibleCol = (int)Math.abs(world.getPosition()) % tileSize;
+		out.println(indexOfFirstVisibleCol);
+
+		for(int col = indexOfFirstVisibleCol; col < world.getChunksInRightOrder()
+				[0].getTiles().length; col++){
+
+
+			for(int row = 0; row < world.getChunksInRightOrder()[0].getTiles()[col]
+					.length; row++){
+
+
+				float tileXPos = world.getPosition() + col * tileSize;
+				float tileYPos = row * tileSize;
+				if(Math.abs(character.getPosition().getX() - tileXPos) <= 2 * tileSize){
+					// handle x
+				}
+				if(Math.abs(character.getPosition().getY() - tileYPos) <= 2 * tileSize
+						&& world.getChunksInRightOrder()[0].getTiles()[col][row] !=
+						Tile.EMPTY){
+					// handle y
+					character.handleCollisionFromBelow(tileYPos + tileSize - 1);
+				}
+			}
+		}
+		for(int row = 0; row < world.getChunksInRightOrder()[1].getTiles()[0]
+				.length; row++){
+			float tileXPos = world.getPosition() + world.getChunksInRightOrder()[1]
+					.getTiles()[0].length *	tileSize;
+			float tileYPos = row * tileSize;
+			if(Math.abs(character.getPosition().getX() - tileXPos) <= 2 * tileSize){
+				// handle x
+			}
+			if(Math.abs(character.getPosition().getY() - tileYPos) <= 2 * tileSize &&
+					world.getChunksInRightOrder()[1].getTiles()[0][row] != Tile
+							.EMPTY){
+				// handle y
+				character.handleCollisionFromBelow(tileYPos + tileSize - 1);
+			}
+		}
 	}
 
 	private void checkCharacterCollision() {
