@@ -43,7 +43,7 @@ public class GeneratorVisualizer implements GamePlugin{
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
-		sr.begin();
+		sr.begin(ShapeType.Filled);
 		renderChunk(sr, chunkLog.get(logIndex));
 		sr.end();
 	}
