@@ -5,15 +5,12 @@ package com.grupptva.runnergame;
  * @author Luka
  * revised by Mattias
  */
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -43,10 +40,13 @@ public class MainMenu implements GamePlugin {
 	MenuButton highScores;
 	MenuButton quitGame;
 
+	MenuListener listener;
+	
 	Texture img;
 
 	int screenWidth = Gdx.graphics.getWidth();
 	int screenHeight = Gdx.graphics.getHeight();
+	
 
 	public int getScreenWidth() {
 		return Gdx.graphics.getWidth();
@@ -58,8 +58,10 @@ public class MainMenu implements GamePlugin {
 
 	// private static ArrayList<MenuButton> menuButtons = new ArrayList<MenuButton>();
 
-	public MainMenu() {
+	public MainMenu(MenuListener listener) {
 		buttons = new BitmapFont();
+		
+		this.listener = listener;
 
 		img = new Texture(Gdx.files.internal("mainmenubg2.png"));
 
@@ -123,7 +125,13 @@ public class MainMenu implements GamePlugin {
 		renderText(batch);
 		batch.end();
 	}
-
+	private void startGame()
+	{
+		listener.startGameEvent();
+	}
+	
+	
+	
 	public void update() {
 		// Button collision detection
 		// TODO: Click detection on release rather than click & 
@@ -131,6 +139,7 @@ public class MainMenu implements GamePlugin {
 		if (startGame.collides(-80, 40, this)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				System.out.println("Start game pressed!");
+				startGame();
 				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
 			}
 

@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @author Mattias
  *
  */
-public class RunnerGame extends ApplicationAdapter {
+public class RunnerGame extends ApplicationAdapter implements MenuListener{
 	ShapeRenderer sr;
 	SpriteBatch batch;
 	Texture img;
@@ -39,12 +39,16 @@ public class RunnerGame extends ApplicationAdapter {
 	public void create() {
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
-		mainMenu = new MainMenu();
+		mainMenu = new MainMenu(this);
 		gv = new GeneratorVisualizer();
 		gameLogic = new GameLogic();
 		activePlugin = mainMenu;
 	}
-
+	public void startGameEvent()
+	{
+		gameLogic = new GameLogic();
+		activePlugin = gameLogic;
+	}
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
@@ -61,6 +65,8 @@ public class RunnerGame extends ApplicationAdapter {
 			activePlugin.update();
 		}
 
+		
+		
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//--------------------Do rendering here----------------------
