@@ -5,6 +5,7 @@ import java.awt.Color;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -67,6 +68,13 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 
 			//--------------------Do logic here-------------------
 			activePlugin.update();
+		}
+
+		if (Gdx.input.isKeyJustPressed(Keys.G)) {
+			if (activePlugin != gv)
+				activePlugin = gv;
+			else
+				activePlugin = mainMenu;
 		}
 
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);

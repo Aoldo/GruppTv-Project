@@ -30,7 +30,7 @@ public class GeneratorVisualizer implements GamePlugin{
 
 		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets, 1l, 40, 20);
 
-		chunkLog = generator.generateChunkLog(20);
+		chunkLog = generator.generateChunkLog(10);
 	}
 
 	public void update() {

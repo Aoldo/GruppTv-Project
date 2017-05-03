@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.*;
 
 import com.grupptva.runnergame.worldgenerator.WorldGenerator.Tile;
+
 /**
  * 
  * @author Mattias
@@ -19,7 +20,7 @@ public class WorldGeneratorTest {
 	@Before
 	public void init() {
 		wg = new WorldGenerator(new ArrayList<Integer[]>(), new ArrayList<Integer[]>(),
-				new ArrayList<Integer[]>(), 1l);
+				new ArrayList<Integer[]>(), 1l, 40, 20);
 	}
 
 	@Test
@@ -47,7 +48,8 @@ public class WorldGeneratorTest {
 
 	public boolean generateChunk_ShouldHaveTileAtRightmostColumn(int seed) {
 		//TODO: Use generate chunk instead of chunklog, once implemented.
-		List<Tile[][]> chunkLog = wg.generateChunkLog(seed);
+		wg.seed = (long)seed;
+		List<Tile[][]> chunkLog = wg.generateChunkLog(10);
 		Tile[][] chunk = chunkLog.get(chunkLog.size() - 1);
 
 		int x = chunk[0].length - 1;

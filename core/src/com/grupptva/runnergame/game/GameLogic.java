@@ -1,5 +1,8 @@
 package com.grupptva.runnergame.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -9,6 +12,7 @@ import com.grupptva.runnergame.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.world.Chunk;
 import com.grupptva.runnergame.world.Tile;
 import com.grupptva.runnergame.world.WorldModel;
+import com.grupptva.runnergame.worldgenerator.WorldGenerator;
 
 /**
  * 
@@ -18,11 +22,12 @@ public class GameLogic implements GamePlugin {
 	// private character
 	private GameCharacter character;
 	private WorldModel world;
+	private WorldGenerator generator;
 
 	Chunk c = new Chunk(10, 5);
 	Chunk d = new Chunk(10, 5);
 
-	private int tileSize = 50;
+	private int tileSize = 20;
 
 	private float pixelsPerFrame = 1.5f;
 
@@ -30,6 +35,13 @@ public class GameLogic implements GamePlugin {
 	public GameLogic() {
 		character = new GameCharacter(30, 30);
 		world = new WorldModel();
+		
+		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
+		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
+		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
+
+		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets, 1l, 40, 20);
+		
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
 				if (y == 3) {
@@ -48,7 +60,8 @@ public class GameLogic implements GamePlugin {
 				}
 			}
 		}
-		world.setChunks(new Chunk[] { c, d, c });
+		world.setChunks(new Chunk[] { generator.generateChunk(0),
+				generator.generateChunk(5), generator.generateChunk(5) });
 
 	}
 

@@ -170,14 +170,14 @@ public class WorldGenerator {
 	private com.grupptva.runnergame.world.Tile[][] convertChunkToWorldModel(
 			Tile[][] chunk) {
 
-		com.grupptva.runnergame.world.Tile[][] newChunk = new com.grupptva.runnergame.world.Tile[chunk.length][chunk[0].length];
+		com.grupptva.runnergame.world.Tile[][] newChunk = new com.grupptva.runnergame.world.Tile[chunk[0].length][chunk.length];
 
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
-				if (chunk[y][x] == Tile.FULL) {
-					newChunk[y][x] = com.grupptva.runnergame.world.Tile.OBSTACLE;
+				if (chunk[y][x] == Tile.FULL || chunk[y][x] == Tile.POSSIBLEHOOK) {
+					newChunk[x][y] = com.grupptva.runnergame.world.Tile.OBSTACLE;
 				} else {
-					newChunk[y][x] = com.grupptva.runnergame.world.Tile.EMPTY;
+					newChunk[x][y] = com.grupptva.runnergame.world.Tile.EMPTY;
 				}
 			}
 		}
