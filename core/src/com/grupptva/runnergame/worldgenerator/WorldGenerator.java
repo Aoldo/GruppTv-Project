@@ -22,6 +22,8 @@ public class WorldGenerator {
 	int hookStepChance = 30;
 	int runnerStepChance = 0;
 
+	int initY;
+
 	int currentTileExtraBuffer = 3;
 
 	public enum BufferPresets {
@@ -71,7 +73,10 @@ public class WorldGenerator {
 	 * @param seed
 	 */
 	public WorldGenerator(List<Integer[]> hookAttachOffsets, List<Integer[]> jumpOffsets,
-			List<Integer[]> hookJumpOffsets, Long seed, int chunkWidth, int chunkHeight) {
+			List<Integer[]> hookJumpOffsets, Long seed, int chunkWidth, int chunkHeight,
+			int initY) {
+
+		this.initY = initY;
 
 		this.chunkHeight = chunkHeight;
 		this.chunkWidth = chunkWidth;
@@ -130,7 +135,7 @@ public class WorldGenerator {
 		rng = new Random(seed);
 	}
 
-	public Chunk generateChunk(int initY) {
+	public Chunk generateChunk() {
 		Tile[][] chunk = new Tile[chunkHeight][chunkWidth];
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
@@ -163,6 +168,10 @@ public class WorldGenerator {
 
 		}
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+		
+		int finalY = currentTile[1];
+		System.out.println(finalY);
+		initY = finalY;
 
 		return new Chunk(convertChunkToWorldModel(chunk));
 	}

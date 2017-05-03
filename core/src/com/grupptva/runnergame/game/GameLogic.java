@@ -47,7 +47,7 @@ public class GameLogic implements GamePlugin, InputListener {
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
 		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets,
-				1l, chunkWidth, chunkHeight);
+				1l, chunkWidth, chunkHeight, 0);
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -70,8 +70,8 @@ public class GameLogic implements GamePlugin, InputListener {
 		world.setChunks(new Chunk[] { c, d, c });
 
 		//TODO: First 3 chunks should be a tutorial.
-		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
-				generator.generateChunk(5) });
+		world.setChunks(new Chunk[] { c, generator.generateChunk(),
+				generator.generateChunk() });
 	}
 
 	public void update() {

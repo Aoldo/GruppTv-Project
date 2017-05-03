@@ -20,7 +20,7 @@ public class WorldGeneratorTest {
 	@Before
 	public void init() {
 		wg = new WorldGenerator(new ArrayList<Integer[]>(), new ArrayList<Integer[]>(),
-				new ArrayList<Integer[]>(), 1l, 40, 20);
+				new ArrayList<Integer[]>(), 1l, 40, 20, 0);
 	}
 
 	@Test
