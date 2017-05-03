@@ -37,7 +37,10 @@ public class GameCharacter {
 	}
 
 	public void jump() {
-		yVelocity += jumpInitialVelocity;
+		if (collidingWithGround) {
+			position.setY(position.getY()+1);
+			yVelocity += jumpInitialVelocity;
+		}
 	}
 
 	public void handleCollisionFromBelow(float yCoordinate) {
