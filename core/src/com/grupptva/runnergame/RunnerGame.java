@@ -61,7 +61,7 @@ public class RunnerGame extends ApplicationAdapter {
 
 	private void worldGenVisualization() {
 		gv.update();
-		gv.render(batch);
+		gv.render(batch, sr);
 	}
 	// end worldgen
 

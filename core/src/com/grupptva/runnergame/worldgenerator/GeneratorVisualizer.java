@@ -3,6 +3,7 @@ package com.grupptva.runnergame.worldgenerator;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.grupptva.runnergame.GamePlugin;
 import com.grupptva.runnergame.worldgenerator.WorldGenerator.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -15,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @author Mattias
  *
  */
-public class GeneratorVisualizer {
+public class GeneratorVisualizer implements GamePlugin{
 	WorldGenerator generator;
 	ShapeRenderer sr;
 
@@ -41,13 +42,13 @@ public class GeneratorVisualizer {
 		}
 	}
 
-	public void render(SpriteBatch batch) {
-		renderChunk(batch, chunkLog.get(logIndex));
+	public void render(SpriteBatch batch, ShapeRenderer sr) {
+		sr.begin();
+		renderChunk(sr, chunkLog.get(logIndex));
+		sr.end();
 	}
 
-	public void renderChunk(SpriteBatch batch, Tile[][] chunk) {
-		sr = new ShapeRenderer();
-		sr.begin(ShapeType.Filled);
+	public void renderChunk(ShapeRenderer sr, Tile[][] chunk) {
 
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
@@ -71,6 +72,5 @@ public class GeneratorVisualizer {
 				}
 			}
 		}
-		sr.end();
 	}
 }
