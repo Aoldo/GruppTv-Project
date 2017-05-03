@@ -1,5 +1,7 @@
 package com.grupptva.runnergame;
 
+import java.awt.Color;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
@@ -16,7 +18,7 @@ public class RunnerGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	
 	MainMenu mainMenu;
-	
+		
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -27,25 +29,7 @@ public class RunnerGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		
-		// Button collision detection
-		// TODO: Click detection on release rather than click & 
-		//       change rect colour on click/add feedback
-		if (mainMenu.startGame.collides(-80, 40, mainMenu)) {	
-			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
-				System.out.println("Start game pressed!");
-			}
-			
-		} else if (mainMenu.highScores.collides(-80, -20, mainMenu)) {
-			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
-				System.out.println("Highscores pressed!");
-			}
-			
-		} else if (mainMenu.quitGame.collides(-80, -80, mainMenu)) {
-			if (Gdx.input.isButtonPressed(Buttons.LEFT)){
-				System.out.println("Quit game pressed!");
-				Gdx.app.exit();
-			}
-		}
+		mainMenu.update();
 		
 		//Background
 		batch.begin(); 
