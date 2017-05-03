@@ -72,7 +72,8 @@ public class WorldGenerator {
 	 */
 	public WorldGenerator(List<Integer[]> hookAttachOffsets, List<Integer[]> jumpOffsets,
 			List<Integer[]> hookJumpOffsets, Long seed) {
-
+		
+		
 		//Temporary solution to possible offsets
 		jumpOffsets.add(new Integer[] { 1, 0 });
 		jumpOffsets.add(new Integer[] { 2, 2 });
