@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.game.GameLogic;
+import com.grupptva.runnergame.input.InputHandler;
 import com.grupptva.runnergame.worldgenerator.GeneratorVisualizer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -34,24 +35,31 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 
 	MainMenu mainMenu;
 	GeneratorVisualizer gv;
+	
+	InputHandler inputHandler;
 
 	GamePlugin activePlugin;
 
 	@Override
 	public void create() {
+		inputHandler = new InputHandler();
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
 		mainMenu = new MainMenu(this);
 		gv = new GeneratorVisualizer();
-		gameLogic = new GameLogic();
 		activePlugin = mainMenu;
+	}
+	
+	private void initGameLogic()
+	{
+		inputHandler.removeListener(gameLogic);
+		gameLogic = new GameLogic();
+		inputHandler.addListener(gameLogic);	
+		activePlugin = gameLogic;
 	}
 
 	public void startGameEvent() {
-		gameLogic = new GameLogic();
-		activePlugin = gameLogic;
-		//img = new Texture("badlogic.jpg");
-		gameLogic = new GameLogic();
+		initGameLogic();
 	}
 
 	@Override
@@ -67,9 +75,15 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 			timeAccumulator -= currentTimeStep;
 
 			//--------------------Do logic here-------------------
+			inputHandler.update();
 			activePlugin.update();
 		}
 
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
 		if (Gdx.input.isKeyJustPressed(Keys.G)) {
 			if (activePlugin != gv)
 				activePlugin = gv;

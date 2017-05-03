@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.GamePlugin;
 import com.grupptva.runnergame.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.input.InputListener;
 import com.grupptva.runnergame.world.Chunk;
 import com.grupptva.runnergame.world.Tile;
 import com.grupptva.runnergame.world.WorldModel;
@@ -18,7 +19,7 @@ import com.grupptva.runnergame.worldgenerator.WorldGenerator;
  * 
  * @author Mattias revised by Karl
  */
-public class GameLogic implements GamePlugin {
+public class GameLogic implements GamePlugin, InputListener {
 	// private character
 	private GameCharacter character;
 	private WorldModel world;
@@ -26,24 +27,25 @@ public class GameLogic implements GamePlugin {
 
 	private int chunkWidth = 40;
 	private int chunkHeight = 20;
-	
-	Chunk c = new Chunk(chunkWidth,chunkHeight);
+
+	Chunk c = new Chunk(chunkWidth, chunkHeight);
 
 	private int tileSize = 25;
 
 	private float pixelsPerFrame = 1.5f;
 
-	//TODO: Decide how to deal with the world moving, move it in this class or actually move it inside of the world class?
+	//
 	public GameLogic() {
 		character = new GameCharacter(30, 30);
 		world = new WorldModel();
-		
+
 		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets, 1l, chunkWidth, chunkHeight);
-		
+		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets,
+				1l, chunkWidth, chunkHeight);
+
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
 				if (y == 0) {
@@ -53,9 +55,10 @@ public class GameLogic implements GamePlugin {
 				}
 			}
 		}
-		
-		world.setChunks(new Chunk[] { c,
-				generator.generateChunk(0), generator.generateChunk(5) });
+
+		//TODO: First 3 chunks should be a tutorial.
+		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
+				generator.generateChunk(5) });
 	}
 
 	public void update() {
@@ -127,5 +130,31 @@ public class GameLogic implements GamePlugin {
 
 	public void setWorld(WorldModel world) {
 		this.world = world;
+	}
+
+	@Override
+	public void jumpPressed() {
+		// TODO Auto-generated method stub
+		character.jump();
+		//System.out.println("JUMP HAS BEEN PRESSED IN GAMELOGIC");
+	}
+
+	@Override
+	public void jumpReleased() {
+		// TODO Auto-generated method stub
+		//System.out.println("JUMP HAS BEEN RELEASED IN GAMELOGIC");
+	}
+
+	@Override
+	public void hookPressed() {
+		// TODO Auto-generated method stub
+		//System.out.println("HOOK HAS BEEN RELEASED IN GAMELOGIC");
+	}
+
+	@Override
+	public void hookReleased() {
+		// TODO Auto-generated method stub
+		//System.out.println("HOOK HAS BEEN RELEASED IN GAMELOGIC");
+
 	}
 }
