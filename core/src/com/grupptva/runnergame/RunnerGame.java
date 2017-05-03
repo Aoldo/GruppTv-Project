@@ -1,5 +1,7 @@
 package com.grupptva.runnergame;
 
+import java.awt.Color;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,12 +9,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.worldgenerator.GeneratorVisualizer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 /**
  * 
  * @author Mattias
  *
  */
 public class RunnerGame extends ApplicationAdapter {
+	ShapeRenderer sr;
 	SpriteBatch batch;
 	Texture img;
 
@@ -21,22 +26,24 @@ public class RunnerGame extends ApplicationAdapter {
 	double currentTimeStep = slowestTimeStep;
 	double timeAccumulator = 0;
 
+	MainMenu mainMenu;
+
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-
+		sr = new ShapeRenderer();
+		mainMenu = new MainMenu();
 	}
 
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		
+
 		timeAccumulator += Gdx.graphics.getDeltaTime();
-		
+
 		debugTimeStep();
-		
+
 		while (timeAccumulator > 0) {
 			timeAccumulator -= currentTimeStep;
 
@@ -45,10 +52,8 @@ public class RunnerGame extends ApplicationAdapter {
 
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		//--------------------Do SpriteBatch rendering here----------------------
-		worldGenVisualization();
-		batch.end();
+
+		//--------------------Do rendering here----------------------
 	}
 
 	//This area is for testing the world generator and also for visualizing it.
@@ -59,7 +64,7 @@ public class RunnerGame extends ApplicationAdapter {
 		gv.render(batch);
 	}
 	// end worldgen
-		
+
 	private void debugTimeStep() {
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			if (currentTimeStep > fastestTimeStep) {
@@ -71,7 +76,6 @@ public class RunnerGame extends ApplicationAdapter {
 				currentTimeStep += 0.0001f;
 			}
 		}
-
 	}
 
 	@Override
