@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import com.grupptva.runnergame.world.Chunk;
+
 /**
  * 
  * @author Mattias
@@ -125,7 +127,7 @@ public class WorldGenerator {
 		rng = new Random(seed);
 	}
 
-	public com.grupptva.runnergame.world.Tile[][] generateChunk(int initY) {
+	public Chunk generateChunk(int initY) {
 		Tile[][] chunk = new Tile[chunkHeight][chunkWidth];
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
@@ -159,7 +161,7 @@ public class WorldGenerator {
 		}
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 
-		return convertChunkToWorldModel(chunk);
+		return new Chunk(convertChunkToWorldModel(chunk));
 	}
 
 	private com.grupptva.runnergame.world.Tile[][] convertChunkToWorldModel(
