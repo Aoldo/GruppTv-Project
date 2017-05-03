@@ -9,7 +9,7 @@ public class GameCharacter {
 	private Point position;
 	private float gravity = -0.4f;
 	private float yVelocity;
-	private float jumpInitialVelocity = 10f;
+	private float jumpInitialVelocity = 7f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
 	private Point hookPosition;
