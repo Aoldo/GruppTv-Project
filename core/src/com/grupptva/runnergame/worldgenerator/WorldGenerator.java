@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
 /**
  * 
  * @author Mattias
- *
+ * TODO: Reduce amount of identical code by splitting the steps into even smaller methods that the
+ * chunkLog version and the normal version use.
  */
 public class WorldGenerator {
 	final int chunkWidth = 65;
@@ -21,11 +23,17 @@ public class WorldGenerator {
 	int currentTileExtraBuffer = 3;
 
 	public enum BufferPresets {
-		NONE, SMALL, MEDIUM, HUGE;
+		NONE,
+		SMALL,
+		MEDIUM,
+		HUGE;
 	}
 
 	public enum Tile {
-		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND;
+		EMPTY,
+		FULL,
+		POSSIBLEHOOK,
+		POSSIBLESTAND;
 	}
 
 	/**
@@ -117,9 +125,59 @@ public class WorldGenerator {
 		rng = new Random(seed);
 	}
 
-	public Tile[][] generateChunk(int y) {
+	public com.grupptva.runnergame.world.Tile[][] generateChunk(int initY) {
+		Tile[][] chunk = new Tile[chunkHeight][chunkWidth];
+		for (int y = 0; y < chunk.length; y++) {
+			for (int x = 0; x < chunk[0].length; x++) {
+				chunk[y][x] = Tile.EMPTY;
+			}
+		}
 
-		return null;
+		//This is used to "crawl" through the possible paths inside of the chunk to the end of it.
+		//x, y
+		Integer[] currentTile = { 0, initY };
+
+		//Add a tile for the player to stand on at the start of the chunk.
+		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+
+		/*
+		 * Keep crawling forward step by step until the end of the chunk has
+		 * been reached. Inside this loop is where the magic happens.
+		 */
+		while (currentTile[0] != chunk[0].length - 1) {
+			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+
+			clearPossibilities(chunk); //Used for visualization only!
+
+			int stepValue = rng.nextInt(jumpStepChance + hookStepChance);
+
+			if (stepValue < jumpStepChance)
+				jumpStep(chunk, currentTile);
+			else if (stepValue < jumpStepChance + hookStepChance)
+				hookStep(chunk, currentTile);
+
+		}
+		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+
+		return convertChunkToWorldModel(chunk);
+	}
+
+	private com.grupptva.runnergame.world.Tile[][] convertChunkToWorldModel(
+			Tile[][] chunk) {
+
+		com.grupptva.runnergame.world.Tile[][] newChunk = new com.grupptva.runnergame.world.Tile[chunk.length][chunk[0].length];
+
+		for (int y = 0; y < chunk.length; y++) {
+			for (int x = 0; x < chunk[0].length; x++) {
+				if (chunk[y][x] == Tile.FULL) {
+					newChunk[y][x] = com.grupptva.runnergame.world.Tile.OBSTACLE;
+				} else {
+					newChunk[y][x] = com.grupptva.runnergame.world.Tile.EMPTY;
+				}
+			}
+		}
+
+		return newChunk;
 	}
 
 	/**
@@ -163,7 +221,7 @@ public class WorldGenerator {
 		 */
 		while (currentTile[0] != chunk[0].length - 1) {
 			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-			
+
 			chunkLog.add(deepCopyChunk(chunk));
 			clearPossibilities(chunk); //Used for visualization only!
 
@@ -196,7 +254,8 @@ public class WorldGenerator {
 	 * @param currentTile
 	 */
 	private void hookStep(Tile[][] chunk, Integer[] currentTile) {
-		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
+		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets,
+				currentTile);
 
 		//In order to prevent changes to currentTile in case there is no valid path after the hook attachment point has been set.
 		Integer[] currentTileCopy = new Integer[] { currentTile[0], currentTile[1] };
@@ -207,24 +266,28 @@ public class WorldGenerator {
 			currentTile[0] = chunkWidth - 1;
 			return;
 		}
-		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
+		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes,
+				currentTileCopy, Tile.POSSIBLEHOOK);
 
-		Integer[] offset = hookAttachOffsets
-				.get(validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
+		Integer[] offset = hookAttachOffsets.get(
+				validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
 
 		currentTileCopy[0] += offset[0];
 		currentTileCopy[1] += offset[1];
 
-		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets, currentTileCopy);
+		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets,
+				currentTileCopy);
 		if (validJumpIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 			return;
 		}
-		setValidOffsetsToValue(chunk, hookJumpOffsets, validJumpIndexes, currentTileCopy, Tile.POSSIBLESTAND);
+		setValidOffsetsToValue(chunk, hookJumpOffsets, validJumpIndexes, currentTileCopy,
+				Tile.POSSIBLESTAND);
 
-		offset = hookJumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+		offset = hookJumpOffsets
+				.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
 
 		currentTile[0] = currentTileCopy[0] + offset[0];
 		currentTile[1] = currentTileCopy[1] + offset[1];
@@ -238,8 +301,10 @@ public class WorldGenerator {
 	 * @see hookStep
 	 * @param chunkLog
 	 */
-	private void hookStep(Tile[][] chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
-		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
+	private void hookStep(Tile[][] chunk, Integer[] currentTile,
+			List<Tile[][]> chunkLog) {
+		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets,
+				currentTile);
 
 		//In order to prevent changes to currentTile in case there is no valid path after the hook attachment point has been set.
 		Integer[] currentTileCopy = new Integer[] { currentTile[0], currentTile[1] };
@@ -250,25 +315,29 @@ public class WorldGenerator {
 			currentTile[0] = chunkWidth - 1;
 			return;
 		}
-		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
+		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes,
+				currentTileCopy, Tile.POSSIBLEHOOK);
 		chunkLog.add(deepCopyChunk(chunk));
 
-		Integer[] offset = hookAttachOffsets
-				.get(validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
+		Integer[] offset = hookAttachOffsets.get(
+				validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
 
 		currentTileCopy[0] += offset[0];
 		currentTileCopy[1] += offset[1];
 
-		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets, currentTileCopy);
+		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets,
+				currentTileCopy);
 		if (validJumpIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 			return;
 		}
-		setValidOffsetsToValue(chunk, hookJumpOffsets, validJumpIndexes, currentTileCopy, Tile.POSSIBLESTAND);
+		setValidOffsetsToValue(chunk, hookJumpOffsets, validJumpIndexes, currentTileCopy,
+				Tile.POSSIBLESTAND);
 
-		offset = hookJumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+		offset = hookJumpOffsets
+				.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
 
 		currentTile[0] = currentTileCopy[0] + offset[0];
 		currentTile[1] = currentTileCopy[1] + offset[1];
@@ -325,7 +394,8 @@ public class WorldGenerator {
 	 *            The chunk currently being generated.
 	 * @param currentTile
 	 */
-	private void jumpStep(Tile[][] chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
+	private void jumpStep(Tile[][] chunk, Integer[] currentTile,
+			List<Tile[][]> chunkLog) {
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
 		if (validJumpIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop
@@ -334,9 +404,11 @@ public class WorldGenerator {
 
 			return;
 		}
-		setValidOffsetsToValue(chunk, jumpOffsets, validJumpIndexes, currentTile, Tile.POSSIBLESTAND);
+		setValidOffsetsToValue(chunk, jumpOffsets, validJumpIndexes, currentTile,
+				Tile.POSSIBLESTAND);
 
-		Integer[] offset = jumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+		Integer[] offset = jumpOffsets
+				.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
 		currentTile[0] += offset[0];
 		currentTile[1] += offset[1];
 
@@ -356,8 +428,49 @@ public class WorldGenerator {
 				chunk[currentTile[1]][currentTile[0]] = Tile.POSSIBLEHOOK;
 
 				chunkLog.add(deepCopyChunk(chunk));
-				
-				extraOffset = rng.nextInt(currentTileExtraBuffer)+1;
+
+				extraOffset = rng.nextInt(currentTileExtraBuffer) + 1;
+				for (int i = 1; i <= extraOffset; i++) {
+					if (isValidIndex(currentTile[0] + i, currentTile[1])) {
+						chunk[currentTile[1]][currentTile[0] + i] = Tile.FULL;
+					}
+				}
+			}
+		}
+	}
+
+	private void jumpStep(Tile[][] chunk, Integer[] currentTile) {
+		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
+		if (validJumpIndexes.size() == 0) {
+			//Failsafe to prevent infinite loop
+			//TODO: Better solution.
+			currentTile[0] = chunkWidth - 1;
+
+			return;
+		}
+		setValidOffsetsToValue(chunk, jumpOffsets, validJumpIndexes, currentTile,
+				Tile.POSSIBLESTAND);
+
+		Integer[] offset = jumpOffsets
+				.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+		currentTile[0] += offset[0];
+		currentTile[1] += offset[1];
+
+		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+
+		if (currentTileExtraBuffer > 0) {
+			int extraOffset = rng.nextInt(currentTileExtraBuffer) + 1;
+			for (int i = 0; i <= extraOffset; i++) {
+				if (isValidIndex(currentTile[0] + i, currentTile[1])) {
+					chunk[currentTile[1]][currentTile[0] + i] = Tile.FULL;
+				}
+			}
+			if (isValidIndex(currentTile[0] + extraOffset, currentTile[1])) {
+				currentTile[0] += extraOffset;
+				chunk[currentTile[1]][currentTile[0]] = Tile.POSSIBLEHOOK;
+
+
+				extraOffset = rng.nextInt(currentTileExtraBuffer) + 1;
 				for (int i = 1; i <= extraOffset; i++) {
 					if (isValidIndex(currentTile[0] + i, currentTile[1])) {
 						chunk[currentTile[1]][currentTile[0] + i] = Tile.FULL;
@@ -400,13 +513,13 @@ public class WorldGenerator {
 	 * @param value
 	 *            The type of tile to set every valid chunk index to.
 	 */
-	private void setValidOffsetsToValue(Tile[][] chunk, List<Integer[]> offsets, List<Integer> validIndexes,
-			Integer[] currentTile, Tile value) {
+	private void setValidOffsetsToValue(Tile[][] chunk, List<Integer[]> offsets,
+			List<Integer> validIndexes, Integer[] currentTile, Tile value) {
 		for (Integer index : validIndexes) {
 			int x = offsets.get(index)[0] + currentTile[0];
 			int y = offsets.get(index)[1] + currentTile[1];
 
-			if(chunk[y][x] != Tile.FULL)
+			if (chunk[y][x] != Tile.FULL)
 				chunk[y][x] = value;
 		}
 	}
@@ -423,7 +536,8 @@ public class WorldGenerator {
 	 *            The position that the offsets are in relation to.
 	 * @return An integer list with the index of every valid offset.
 	 */
-	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile) {
+	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets,
+			Integer[] currentTile) {
 		List<Integer> validIndexes = new ArrayList<Integer>();
 
 		for (int i = 0; i < offsets.size(); i++) {
