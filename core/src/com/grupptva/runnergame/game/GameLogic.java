@@ -24,10 +24,12 @@ public class GameLogic implements GamePlugin {
 	private WorldModel world;
 	private WorldGenerator generator;
 
-	Chunk c = new Chunk(10, 5);
-	Chunk d = new Chunk(10, 5);
+	private int chunkWidth = 40;
+	private int chunkHeight = 20;
+	
+	Chunk c = new Chunk(chunkWidth,chunkHeight);
 
-	private int tileSize = 20;
+	private int tileSize = 25;
 
 	private float pixelsPerFrame = 1.5f;
 
@@ -40,29 +42,20 @@ public class GameLogic implements GamePlugin {
 		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets, 1l, 40, 20);
+		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets, 1l, chunkWidth, chunkHeight);
 		
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
-				if (y == 3) {
+				if (y == 0) {
 					c.getTiles()[x][y] = Tile.OBSTACLE;
 				} else {
 					c.getTiles()[x][y] = Tile.EMPTY;
 				}
 			}
 		}
-		for (int x = 0; x < c.getTiles().length; x++) {
-			for (int y = 0; y < c.getTiles()[0].length; y++) {
-				if (y == 4) {
-					d.getTiles()[x][y] = Tile.OBSTACLE;
-				} else {
-					d.getTiles()[x][y] = Tile.EMPTY;
-				}
-			}
-		}
-		world.setChunks(new Chunk[] { generator.generateChunk(0),
-				generator.generateChunk(5), generator.generateChunk(5) });
-
+		
+		world.setChunks(new Chunk[] { c,
+				generator.generateChunk(0), generator.generateChunk(5) });
 	}
 
 	public void update() {
