@@ -20,6 +20,7 @@ import com.grupptva.runnergame.worldgenerator.WorldGenerator;
  * @author Mattias revised by Karl
  */
 public class GameLogic implements GamePlugin, InputListener {
+	GameRenderer gameRenderer;
 	// private character
 	private GameCharacter character;
 	private WorldModel world;
@@ -37,6 +38,7 @@ public class GameLogic implements GamePlugin, InputListener {
 
 	//
 	public GameLogic() {
+		gameRenderer = new GameRenderer();
 		character = new GameCharacter(30, 150);
 		world = new WorldModel();
 
@@ -92,15 +94,9 @@ public class GameLogic implements GamePlugin, InputListener {
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
 		sr.begin(ShapeType.Filled);
-		renderCharacter(sr);
-		renderWorld(sr);
+		gameRenderer.renderCharacter(tileSize, character, sr);
+		gameRenderer.renderWorld(tileSize, getWorld(), sr);
 		sr.end();
-	}
-
-	private void renderCharacter(ShapeRenderer sr) {
-		sr.setColor(Color.FOREST);
-		sr.rect(character.getPosition().getX(), character.getPosition().getY(), tileSize,
-				tileSize);
 	}
 
 	private void handlePossibleCharacterCollision() {
@@ -153,38 +149,6 @@ public class GameLogic implements GamePlugin, InputListener {
 		//if collision
 		//send needed data to character:
 		//character.handleCollisionFromBelow(10);
-	}
-
-	private void renderWorld(ShapeRenderer renderer) {
-		Chunk[] chunks = getWorld().getChunksInRightOrder();
-		for (int i = 0; i < chunks.length; i++) {
-			renderChunk(getWorld().getPosition(), chunks[i], i, renderer);
-		}
-	}
-
-	private void renderChunk(float worldPos, Chunk chunk, int chunkNumber,
-			ShapeRenderer renderer) {
-		for (int col = 0; col < chunk.getWidth(); col++) {
-			for (int row = 0; row < chunk.getHeight(); row++) {
-				renderTile(
-						worldPos + col * tileSize
-								+ chunkNumber * chunk.getTiles().length * tileSize,
-						chunk.getTiles()[col][row], col, row, chunkNumber, renderer);
-			}
-		}
-	}
-
-	private void renderTile(float tilePos, Tile tile, int col, int row, int chunkNumber,
-			ShapeRenderer renderer) {
-		switch (tile) {
-		case OBSTACLE:
-			renderer.setColor(new Color(0, 0, 0, 1));
-			renderer.rect(tilePos, row * tileSize, tileSize, tileSize);
-			return;
-		case EMPTY:
-		default:
-			return;
-		}
 	}
 
 	public WorldModel getWorld() {
