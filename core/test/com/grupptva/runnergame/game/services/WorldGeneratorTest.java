@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.worldgenerator;
+package com.grupptva.runnergame.game.services;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,8 @@ import java.util.List;
 
 import org.junit.*;
 
-import com.grupptva.runnergame.worldgenerator.WorldGenerator.Tile;
+import com.grupptva.runnergame.game.services.WorldGenerator;
+import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
 
 /**
  * 
@@ -20,7 +21,7 @@ public class WorldGeneratorTest {
 	@Before
 	public void init() {
 		wg = new WorldGenerator(new ArrayList<Integer[]>(), new ArrayList<Integer[]>(),
-				new ArrayList<Integer[]>(), 1l, 40, 20, 0);
+				new ArrayList<Integer[]>(), 2l, 40, 20, 0);
 	}
 
 	@Test
@@ -38,7 +39,7 @@ public class WorldGeneratorTest {
 	public void testFinalTileOnMultipleSeeds() {
 		boolean noFail = true;
 		for (int i = 0; i < 50; i++) {
-			if (!generateChunk_ShouldHaveTileAtRightmostColumn(i)) {
+			if (!generateChunk_ShouldHaveTileAtRightmostColumn()) {
 				noFail = false;
 				break;
 			}
@@ -46,9 +47,8 @@ public class WorldGeneratorTest {
 		assertTrue(noFail);
 	}
 
-	public boolean generateChunk_ShouldHaveTileAtRightmostColumn(int seed) {
+	public boolean generateChunk_ShouldHaveTileAtRightmostColumn() {
 		//TODO: Use generate chunk instead of chunklog, once implemented.
-		wg.seed = (long)seed;
 		List<Tile[][]> chunkLog = wg.generateChunkLog(10);
 		Tile[][] chunk = chunkLog.get(chunkLog.size() - 1);
 

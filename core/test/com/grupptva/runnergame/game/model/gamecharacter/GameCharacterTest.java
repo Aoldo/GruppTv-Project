@@ -1,8 +1,10 @@
-package com.grupptva.runnergame.gamecharacter;
+package com.grupptva.runnergame.game.model.gamecharacter;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 
 /**
  * Created by agnesmardh on 2017-04-21.

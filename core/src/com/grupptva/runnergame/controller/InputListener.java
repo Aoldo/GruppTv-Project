@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.input;
+package com.grupptva.runnergame.controller;
 
 public interface InputListener {
 	public void jumpPressed();

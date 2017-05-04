@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.world;
+package com.grupptva.runnergame.game.model.world;
 
 /**
  * Created on 4/24/17.

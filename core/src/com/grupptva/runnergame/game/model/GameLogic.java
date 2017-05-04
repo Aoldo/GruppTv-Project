@@ -1,25 +1,27 @@
-package com.grupptva.runnergame.game;
+package com.grupptva.runnergame.game.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.grupptva.runnergame.GamePlugin;
-import com.grupptva.runnergame.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.input.InputListener;
-import com.grupptva.runnergame.world.Chunk;
-import com.grupptva.runnergame.world.Tile;
-import com.grupptva.runnergame.world.WorldModel;
-import com.grupptva.runnergame.worldgenerator.WorldGenerator;
+import com.grupptva.runnergame.ScenePlugin;
+import com.grupptva.runnergame.controller.InputListener;
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.game.model.world.Chunk;
+import com.grupptva.runnergame.game.model.world.Tile;
+import com.grupptva.runnergame.game.model.world.WorldModel;
+import com.grupptva.runnergame.game.services.WorldGenerator;
+import com.grupptva.runnergame.game.view.GameRenderer;
 
 /**
  * 
  * @author Mattias revised by Karl
  */
-public class GameLogic implements GamePlugin, InputListener {
+public class GameLogic implements ScenePlugin, InputListener, InputProcessor {
 	GameRenderer gameRenderer;
 	// private character
 	private GameCharacter character;
@@ -47,7 +49,7 @@ public class GameLogic implements GamePlugin, InputListener {
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
 		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets,
-				1l, chunkWidth, chunkHeight, 0);
+				4l, chunkWidth, chunkHeight, 0);
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -183,5 +185,53 @@ public class GameLogic implements GamePlugin, InputListener {
 		// TODO Auto-generated method stub
 		//System.out.println("HOOK HAS BEEN RELEASED IN GAMELOGIC");
 
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

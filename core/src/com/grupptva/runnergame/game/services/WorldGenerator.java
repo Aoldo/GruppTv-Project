@@ -1,11 +1,11 @@
-package com.grupptva.runnergame.worldgenerator;
+package com.grupptva.runnergame.game.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import com.grupptva.runnergame.world.Chunk;
+import com.grupptva.runnergame.game.model.world.Chunk;
 
 /**
  * 
@@ -58,7 +58,6 @@ public class WorldGenerator {
 	 * issues later, need to figure out a fix.
 	 */
 	List<Integer[]> hookJumpOffsets;
-	Long seed;
 
 	/**
 	 * Creates a new WorldGenerator, parameters are the coordinates in the grid
@@ -170,23 +169,22 @@ public class WorldGenerator {
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 		
 		int finalY = currentTile[1];
-		System.out.println(finalY);
 		initY = finalY;
 
 		return new Chunk(convertChunkToWorldModel(chunk));
 	}
 
-	private com.grupptva.runnergame.world.Tile[][] convertChunkToWorldModel(
+	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(
 			Tile[][] chunk) {
 
-		com.grupptva.runnergame.world.Tile[][] newChunk = new com.grupptva.runnergame.world.Tile[chunk[0].length][chunk.length];
+		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[chunk[0].length][chunk.length];
 
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
 				if (chunk[y][x] == Tile.FULL || chunk[y][x] == Tile.POSSIBLEHOOK) {
-					newChunk[x][y] = com.grupptva.runnergame.world.Tile.OBSTACLE;
+					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.OBSTACLE;
 				} else {
-					newChunk[x][y] = com.grupptva.runnergame.world.Tile.EMPTY;
+					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.EMPTY;
 				}
 			}
 		}

@@ -1,10 +1,10 @@
-package com.grupptva.runnergame.worldgenerator;
+package com.grupptva.runnergame.game.services;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.grupptva.runnergame.GamePlugin;
-import com.grupptva.runnergame.worldgenerator.WorldGenerator.Tile;
+import com.grupptva.runnergame.ScenePlugin;
+import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @author Mattias
  *
  */
-public class GeneratorVisualizer implements GamePlugin{
+public class GeneratorVisualizer implements ScenePlugin{
 	WorldGenerator generator;
 	ShapeRenderer sr;
 

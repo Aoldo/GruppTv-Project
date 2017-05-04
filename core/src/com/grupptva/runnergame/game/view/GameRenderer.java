@@ -1,11 +1,11 @@
-package com.grupptva.runnergame.game;
+package com.grupptva.runnergame.game.view;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.grupptva.runnergame.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.world.Chunk;
-import com.grupptva.runnergame.world.Tile;
-import com.grupptva.runnergame.world.WorldModel;
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.game.model.world.Chunk;
+import com.grupptva.runnergame.game.model.world.Tile;
+import com.grupptva.runnergame.game.model.world.WorldModel;
 
 /**
  * Created by Karl 'NaN' Wikström on 2017-05-03.

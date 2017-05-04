@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.input;
+package com.grupptva.runnergame.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ public class InputHandler {
 
 	public void addListener(InputListener listener) {
 		listeners.add(listener);
-		System.out.println(listeners.size());
+		System.out.println("Listeners size: " + listeners.size());
 	}
 
 	public void removeListener(InputListener listener) {
 		listeners.remove(listener);
-		System.out.println(listeners.size());
+		System.out.println("Listeners size: " + listeners.size());
 	}
 
 	public void update() {
