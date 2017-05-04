@@ -52,9 +52,9 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	
 	private void initGameLogic()
 	{
-		inputHandler.removeListener(gameLogic);
+		//inputHandler.removeListener(gameLogic);
 		gameLogic = new GameLogic();
-		inputHandler.addListener(gameLogic);	
+		//inputHandler.addListener(gameLogic);
 		activePlugin = gameLogic;
 	}
 

@@ -87,7 +87,7 @@ public class WorldModel {
 		return startIndex;
 	}
 
-	private void setStartIndex(int startIndex) {
+	public void setStartIndex(int startIndex) {
 		this.startIndex = startIndex;
 	}
 

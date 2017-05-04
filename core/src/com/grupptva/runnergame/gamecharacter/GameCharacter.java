@@ -40,6 +40,7 @@ public class GameCharacter {
 		if (collidingWithGround) {
 			position.setY(position.getY()+1);
 			yVelocity += jumpInitialVelocity;
+			collidingWithGround = false;
 		}
 	}
 

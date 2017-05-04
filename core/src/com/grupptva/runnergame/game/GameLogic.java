@@ -3,6 +3,8 @@ package com.grupptva.runnergame.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,8 +39,14 @@ public class GameLogic implements GamePlugin, InputProcessor {
 
 	private float pixelsPerFrame = 1.5f;
 
+	private final int jumpKeyCode = Input.Keys.SPACE;
+	private final int hookKeyCode = Input.Keys.H;
+	private final int resetKeyCode = Input.Keys.R;
+
 	//
 	public GameLogic() {
+		Gdx.input.setInputProcessor(this);
+
 		gameRenderer = new GameRenderer();
 		character = new GameCharacter(30, 150);
 		world = new WorldModel();
@@ -160,9 +168,29 @@ public class GameLogic implements GamePlugin, InputProcessor {
 		this.world = world;
 	}
 
+	private void reset() {
+		character = new GameCharacter(30, 150);
+		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
+				generator.generateChunk(5) });
+		world.setPosition(0);
+		world.setStartIndex(0);
+	}
+
 	@Override
 	public boolean keyDown(int keycode) {
-		return false;
+		switch (keycode) {
+			case jumpKeyCode:
+				character.jump();
+				return true;
+			case hookKeyCode:
+				//handle hook here
+				return true;
+			case resetKeyCode:
+				reset();
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	@Override
