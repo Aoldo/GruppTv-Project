@@ -3,6 +3,7 @@ package com.grupptva.runnergame.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,7 +20,7 @@ import com.grupptva.runnergame.worldgenerator.WorldGenerator;
  * 
  * @author Mattias revised by Karl
  */
-public class GameLogic implements GamePlugin, InputListener {
+public class GameLogic implements GamePlugin, InputProcessor {
 	GameRenderer gameRenderer;
 	// private character
 	private GameCharacter character;
@@ -160,28 +161,42 @@ public class GameLogic implements GamePlugin, InputListener {
 	}
 
 	@Override
-	public void jumpPressed() {
-		// TODO Auto-generated method stub
-		character.jump();
-		//System.out.println("JUMP HAS BEEN PRESSED IN GAMELOGIC");
+	public boolean keyDown(int keycode) {
+		return false;
 	}
 
 	@Override
-	public void jumpReleased() {
-		// TODO Auto-generated method stub
-		//System.out.println("JUMP HAS BEEN RELEASED IN GAMELOGIC");
+	public boolean keyUp(int keycode) {
+		return false;
 	}
 
 	@Override
-	public void hookPressed() {
-		// TODO Auto-generated method stub
-		//System.out.println("HOOK HAS BEEN RELEASED IN GAMELOGIC");
+	public boolean keyTyped(char character) {
+		return false;
 	}
 
 	@Override
-	public void hookReleased() {
-		// TODO Auto-generated method stub
-		//System.out.println("HOOK HAS BEEN RELEASED IN GAMELOGIC");
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
 
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		return false;
 	}
 }
