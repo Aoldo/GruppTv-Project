@@ -34,6 +34,7 @@ public class WorldGeneratorTest {
 
 		assertFalse(chunk[0][0] == chunkCopy[0][0]);
 	}
+	
 
 	@Test
 	public void testFinalTileOnMultipleSeeds() {
