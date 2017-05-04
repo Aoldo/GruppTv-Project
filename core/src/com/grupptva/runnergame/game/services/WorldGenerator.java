@@ -134,6 +134,23 @@ public class WorldGenerator {
 		rng = new Random(seed);
 	}
 
+	public float getFramesToApexOfJump(float v0y, float a) {
+		//v=v_0+a*t, v = 0 => t=v_0/a
+		return Math.abs(v0y / (a));
+	}
+
+	public float getRelativeHeightOfApex(float v0y, float a) {
+		//integrate v=v_0+a*t dt <=> v_0*t-(a*t^2)/2
+		float t = getFramesToApexOfJump(v0y, a);
+		return (v0y * t) - ((a * t * t) / 2);
+	}
+
+	private void calculateJumpOffsets(float a, float v0y, float vx) {
+		float maxY = getRelativeHeightOfApex(v0y, a);
+		float t = getFramesToApexOfJump(v0y, a);
+
+	}
+
 	public Chunk generateChunk() {
 		Tile[][] chunk = new Tile[chunkHeight][chunkWidth];
 		for (int y = 0; y < chunk.length; y++) {
@@ -167,7 +184,7 @@ public class WorldGenerator {
 
 		}
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-		
+
 		int finalY = currentTile[1];
 		initY = finalY;
 
