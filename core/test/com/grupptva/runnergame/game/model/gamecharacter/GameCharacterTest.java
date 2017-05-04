@@ -27,14 +27,13 @@ public class GameCharacterTest {
 
 	@Test
 	public void testFall() {
-		double yVelocity = gameCharacter.getyVelocity();
-		double y = gameCharacter.getPosition().getY();
+		float yVelocity = gameCharacter.getyVelocity();
+		float y = gameCharacter.getPosition().getY();
 		gameCharacter.fall();
 		
-		//Assert.assertTrue(gameCharacter.getyVelocity() == yVelocity + gameCharacter.getGravity());
+		System.out.println("!!!!!!!!!!!!!!!!!!!!");
 		
-		Assert.assertEquals(gameCharacter.getyVelocity(), yVelocity + gameCharacter.getGravity(), .05f);
-		
+		Assert.assertTrue(gameCharacter.getyVelocity() == yVelocity + gameCharacter.getGravity());		
 		Assert.assertEquals(gameCharacter.getPosition().getY(), y + yVelocity, .05f);
 	}
 

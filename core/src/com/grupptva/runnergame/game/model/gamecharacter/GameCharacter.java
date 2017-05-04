@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 
 /**
- * Created by agnesmardh on 2017-04-21. Revised by Mattias
+ * Created by agnesmardh on 2017-04-21.
  */
 public class GameCharacter {
 	private Point position;
