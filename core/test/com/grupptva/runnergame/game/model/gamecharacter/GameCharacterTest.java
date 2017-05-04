@@ -31,7 +31,10 @@ public class GameCharacterTest {
 		float y = gameCharacter.getPosition().getY();
 		gameCharacter.fall();
 		
-		System.out.println("!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("yVel " + yVelocity);
+		System.out.println("y " + y);
+		System.out.println("charYVel " + gameCharacter.getyVelocity());
+		System.out.println("charY " + gameCharacter.getPosition().getY());
 		
 		Assert.assertTrue(gameCharacter.getyVelocity() == yVelocity + gameCharacter.getGravity());		
 		Assert.assertEquals(gameCharacter.getPosition().getY(), y + yVelocity, .05f);
