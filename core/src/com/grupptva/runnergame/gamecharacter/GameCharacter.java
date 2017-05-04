@@ -23,12 +23,12 @@ public class GameCharacter {
 		fall();
 	}
 
-	private void moveY(float distance) {
+	void moveY(float distance) {
 		float newY = position.getY() + distance;
 		position.setLocation(position.getX(), newY);
 	}
 
-	private void fall() {
+	void fall() {
 		if (!collidingWithGround) {
 			yVelocity += gravity;
 		}
