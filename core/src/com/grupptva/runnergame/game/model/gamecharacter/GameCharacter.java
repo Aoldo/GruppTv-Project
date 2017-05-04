@@ -23,9 +23,13 @@ public class GameCharacter {
 		position = new Point(x, y);
 	}
 
-	public float getTimeToApexOfJump()
+	public float getFramesToApexOfJump()
 	{
 		return jumpInitialVelocity/(-gravity);
+	}
+	public float getRelativeHeightOfApex()
+	{
+		return 
 	}
 	
 	public void update() {
