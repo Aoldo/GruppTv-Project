@@ -1,17 +1,30 @@
 package com.grupptva.runnergame;
 
+import java.awt.Color;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.grupptva.runnergame.game.GameLogic;
+import com.grupptva.runnergame.input.InputHandler;
+import com.grupptva.runnergame.worldgenerator.GeneratorVisualizer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.grupptva.runnergame.game.GameLogic;
 
-public class RunnerGame extends ApplicationAdapter {
-	SpriteBatch batch;
+/**
+ * 
+ * @author Mattias
+ *
+ */
+public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	ShapeRenderer sr;
+	SpriteBatch batch;
 	Texture img;
 	GameLogic gameLogic;
 
@@ -20,36 +33,68 @@ public class RunnerGame extends ApplicationAdapter {
 	double currentTimeStep = slowestTimeStep;
 	double timeAccumulator = 0;
 
+	MainMenu mainMenu;
+	GeneratorVisualizer gv;
+	
+	InputHandler inputHandler;
+
+	GamePlugin activePlugin;
+
 	@Override
 	public void create() {
+		inputHandler = new InputHandler();
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
-		//img = new Texture("badlogic.jpg");
+		mainMenu = new MainMenu(this);
+		gv = new GeneratorVisualizer();
+		activePlugin = mainMenu;
+	}
+	
+	private void initGameLogic()
+	{
+		//inputHandler.removeListener(gameLogic);
 		gameLogic = new GameLogic();
+		//inputHandler.addListener(gameLogic);
+		activePlugin = gameLogic;
+	}
+
+	public void startGameEvent() {
+		initGameLogic();
 	}
 
 	@Override
 	public void render() {
+		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		timeAccumulator += Gdx.graphics.getDeltaTime();
-		
+
 		debugTimeStep();
-		
+
 		while (timeAccumulator > 0) {
 			timeAccumulator -= currentTimeStep;
 
 			//--------------------Do logic here-------------------
-			gameLogic.update();
+			inputHandler.update();
+			activePlugin.update();
+		}
+
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
+		if (Gdx.input.isKeyJustPressed(Keys.G)) {
+			if (activePlugin != gv)
+				activePlugin = gv;
+			else
+				activePlugin = mainMenu;
 		}
 
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		//--------------------Do SpriteBatch rendering here----------------------
-		batch.end();
-		sr.begin(ShapeRenderer.ShapeType.Filled);
-		//--------------------Do ShapeRenderer rendering here--------------------
-		gameLogic.render(sr);
-		sr.end();
+		//--------------------Do rendering here----------------------
+		activePlugin.render(batch, sr);
 	}
 
 	private void debugTimeStep() {
@@ -63,7 +108,6 @@ public class RunnerGame extends ApplicationAdapter {
 				currentTimeStep += 0.0001f;
 			}
 		}
-
 	}
 
 	@Override

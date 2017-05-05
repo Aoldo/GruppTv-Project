@@ -9,7 +9,7 @@ public class GameCharacter {
 	private Point position;
 	private float gravity = -0.4f;
 	private float yVelocity;
-	private float jumpInitialVelocity = 10f;
+	private float jumpInitialVelocity = 7f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
 	private Point hookPosition;
@@ -31,12 +31,17 @@ public class GameCharacter {
 	void fall() {
 		if (!collidingWithGround) {
 			yVelocity += gravity;
+			moveY(yVelocity);
 		}
-		moveY(yVelocity);
+
 	}
 
 	public void jump() {
-		yVelocity += jumpInitialVelocity;
+		if (collidingWithGround) {
+			position.setY(position.getY()+1);
+			yVelocity += jumpInitialVelocity;
+			collidingWithGround = false;
+		}
 	}
 
 	public void handleCollisionFromBelow(float yCoordinate) {
@@ -53,7 +58,7 @@ public class GameCharacter {
 		return position;
 	}
 
-	private void setPosition(Point position) {
+	public void setPosition(Point position) {
 		this.position = position;
 	}
 

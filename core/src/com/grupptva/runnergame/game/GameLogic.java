@@ -1,37 +1,230 @@
 package com.grupptva.runnergame.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.grupptva.runnergame.GamePlugin;
 import com.grupptva.runnergame.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.input.InputListener;
+import com.grupptva.runnergame.world.Chunk;
+import com.grupptva.runnergame.world.Tile;
+import com.grupptva.runnergame.world.WorldModel;
+import com.grupptva.runnergame.worldgenerator.WorldGenerator;
 
-public class GameLogic {
+/**
+ * 
+ * @author Mattias revised by Karl
+ */
+public class GameLogic implements GamePlugin, InputProcessor {
+	GameRenderer gameRenderer;
+	// private character
 	private GameCharacter character;
-	// private world
-	private float tileSize = 50;
+	private WorldModel world;
+	private WorldGenerator generator;
 
-	//TODO: Decide how to deal with the world moving, move it in this class or actually move it inside of the world class?
+	private int chunkWidth = 40;
+	private int chunkHeight = 20;
+
+	Chunk c = new Chunk(chunkWidth, chunkHeight);
+	Chunk d = new Chunk(chunkWidth, chunkHeight);
+
+	private int tileSize = 20;
+
+	private float pixelsPerFrame = 1.5f;
+
+	private final int jumpKeyCode = Input.Keys.SPACE;
+	private final int hookKeyCode = Input.Keys.H;
+	private final int resetKeyCode = Input.Keys.R;
+
+	//
 	public GameLogic() {
-		character = new GameCharacter(30, 30);
+		Gdx.input.setInputProcessor(this);
+
+		gameRenderer = new GameRenderer();
+		character = new GameCharacter(30, 150);
+		world = new WorldModel();
+
+		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
+		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
+		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
+
+		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets,
+				1l, chunkWidth, chunkHeight);
+
+		for (int x = 0; x < c.getTiles().length; x++) {
+			for (int y = 0; y < c.getTiles()[0].length; y++) {
+				if (y == 0) {
+					c.getTiles()[x][y] = Tile.OBSTACLE;
+				} else {
+					c.getTiles()[x][y] = Tile.EMPTY;
+				}
+			}
+		}
+		for (int x = 0; x < c.getTiles().length; x++) {
+			for (int y = 0; y < c.getTiles()[0].length; y++) {
+				if (y == 4) {
+					d.getTiles()[x][y] = Tile.OBSTACLE;
+				} else {
+					d.getTiles()[x][y] = Tile.EMPTY;
+				}
+			}
+		}
+		world.setChunks(new Chunk[] { c, d, c });
+
+		//TODO: First 3 chunks should be a tutorial.
+		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
+				generator.generateChunk(5) });
 	}
 
 	public void update() {
+		world.moveLeft(pixelsPerFrame);
+		handlePossibleCharacterCollision();
 		character.update();
+		if (world.getPosition() < -tileSize * chunkWidth) {
+			world.incrementStartIndex();
+			world.setPosition(0);
+		}
 		//move world here or world.update()?
+		world.moveLeft(pixelsPerFrame);
+		checkCharacterCollision();
+
+		/*
+		 * if(isCharacterCollidingFromBelow()){ handleCollisionFromBelow(); }
+		 * if(isCharacterCollidingFromRight()){ handleCollisionFromRight(); }
+		 */
 	}
 
-	public void render(ShapeRenderer sr) {
-		renderCharacter(sr);
+	public void render(SpriteBatch batch, ShapeRenderer sr) {
+		sr.begin(ShapeType.Filled);
+		gameRenderer.renderCharacter(tileSize, character, sr);
+		gameRenderer.renderWorld(tileSize, getWorld(), sr);
+		sr.end();
 	}
 
-	private void renderCharacter(ShapeRenderer sr) {
-		sr.setColor(Color.FOREST);
-		sr.rect(character.getPosition().getX(), character.getPosition().getY(), tileSize, tileSize);
+	private void handlePossibleCharacterCollision() {
+		int indexOfFirstVisibleCol = ((int) Math.abs(world.getPosition()) / tileSize)
+				% chunkWidth;
+		//out.println(indexOfFirstVisibleCol);
+		character.setCollidingWithGround(false);
+
+		for (int col = indexOfFirstVisibleCol; col < world.getChunksInRightOrder()[0]
+				.getTiles().length; col++) {
+
+			for (int row = 0; row < world.getChunksInRightOrder()[0]
+					.getTiles()[col].length; row++) {
+
+				float tileXPos = world.getPosition() + col * tileSize;
+				float tileYPos = row * tileSize;
+				if (world.getChunksInRightOrder()[0].getTiles()[col][row] != Tile.EMPTY
+						&& 2 * Math.abs(character.getPosition().getX() - tileXPos) <= 2
+								* tileSize
+						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <= 2
+								* tileSize) {
+					// handle collision
+					character.handleCollisionFromBelow(tileYPos + tileSize);
+					character.setCollidingWithGround(true);
+				}
+			}
+		}
+		for (int col = 0; col < 5; col++) {
+
+			for (int row = 0; row < world.getChunksInRightOrder()[1]
+					.getTiles()[col].length; row++) {
+
+				float tileXPos = world.getPosition() + col * tileSize
+						+ chunkWidth * tileSize;
+				float tileYPos = row * tileSize;
+				if (world.getChunksInRightOrder()[1].getTiles()[col][row] != Tile.EMPTY
+						&& 2 * Math.abs(character.getPosition().getX() - tileXPos) <= 2
+								* tileSize
+						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <= 2
+								* tileSize) {
+					// handle collision
+					character.handleCollisionFromBelow(tileYPos + tileSize);
+					character.setCollidingWithGround(true);
+				}
+			}
+		}
 	}
 
 	private void checkCharacterCollision() {
 		//if collision
 		//send needed data to character:
-		//character.collide(yPos)
+		//character.handleCollisionFromBelow(10);
+	}
+
+	public WorldModel getWorld() {
+		return world;
+	}
+
+	public void setWorld(WorldModel world) {
+		this.world = world;
+	}
+
+	private void reset() {
+		character = new GameCharacter(30, 150);
+		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
+				generator.generateChunk(5) });
+		world.setPosition(0);
+		world.setStartIndex(0);
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		switch (keycode) {
+			case jumpKeyCode:
+				character.jump();
+				return true;
+			case hookKeyCode:
+				//handle hook here
+				return true;
+			case resetKeyCode:
+				reset();
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		return false;
 	}
 }

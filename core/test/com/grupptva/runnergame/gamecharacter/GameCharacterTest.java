@@ -17,7 +17,7 @@ public class GameCharacterTest {
 
 	@Test
 	public void testMoveY() {
-		float newY = 1f;
+		double newY = -1;
 		gameCharacter.moveY(newY);
 		Assert.assertTrue(gameCharacter.getPosition().getY() == newY);
 		Assert.assertTrue(gameCharacter.getPosition().getX() == 0);
@@ -25,8 +25,8 @@ public class GameCharacterTest {
 
 	@Test
 	public void testFall() {
-		float yVelocity = gameCharacter.getyVelocity();
-		float y = gameCharacter.getPosition().getY();
+		double yVelocity = gameCharacter.getyVelocity();
+		double y = gameCharacter.getPosition().getY();
 		gameCharacter.fall();
 		Assert.assertTrue(gameCharacter.getyVelocity() == yVelocity + gameCharacter.getGravity());
 		Assert.assertTrue(gameCharacter.getPosition().getY() == y + yVelocity);
@@ -34,10 +34,10 @@ public class GameCharacterTest {
 
 	@Test
 	public void testJump() {
-		float x = gameCharacter.getPosition().getX();
-		float yvelocity = gameCharacter.getyVelocity();
-		float jumpVelocity = gameCharacter.getJumpInitialVelocity();gameCharacter.jump();
-		float newX = gameCharacter.getPosition().getX();
+		double x = gameCharacter.getPosition().getX();
+		double yvelocity = gameCharacter.getyVelocity();
+		double jumpVelocity = gameCharacter.getJumpInitialVelocity();gameCharacter.jump();
+		double newX = gameCharacter.getPosition().getX();
 		Assert.assertTrue(gameCharacter.getyVelocity() == yvelocity + jumpVelocity);
 		Assert.assertTrue(x == newX);
 	}
