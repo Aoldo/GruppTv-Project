@@ -5,6 +5,7 @@ package com.grupptva.runnergame;
  * @author Luka
  * revised by Mattias
  */
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,8 +64,7 @@ public class MainMenu implements GamePlugin {
 		
 		this.listener = listener;
 
-		img = new Texture(Gdx.files.internal("core/assets/mainmenubg2.png"));
-
+		img = new Texture(Gdx.files.internal("core"+ File.separator + "assets" + File.separator + "mainmenubg2.png"));
 		buttonTitles = new HashMap();
 		buttonTitles.put("startgame", "Start Game");
 
