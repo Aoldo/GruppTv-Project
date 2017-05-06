@@ -132,7 +132,7 @@ public class WorldGenerator {
 		return Math.abs(v0y / (a));
 	}
 
-	float getRelativeHeightOfApex(float v0y, float a) {		
+	float getRelativeHeightOfApex(float v0y, float a) {
 		//integrate v=v_0+a*t dt <=> y = v_0*t-(a*t^2)/2
 		float t = getFramesToApexOfJump(v0y, a);
 		return getJumpY(v0y, a, t);
@@ -162,13 +162,21 @@ public class WorldGenerator {
 	}
 
 	private float getJumpY(float v0y, float a, float t) {
- 		return (v0y * t) - ((a * t * t) / 2);
+		return (v0y * t) - ((a * t * t) / 2);
 	}
 
-	private void calculateJumpOffsets(float a, float v0y, float vx, float tileSize) {
-		float maxY = getRelativeHeightOfApex(v0y, a);
-		float t = getFramesToApexOfJump(v0y, a);
+	private void calculateJumpOffsets(float v0y, float a, float tileSize, float vx) {
+		boolean[][] jumpGrid = createJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
+		//Calculations are done by simulating a point performing the jump and checking where it can land.
+		//Starting y position of character is in the middle of the testing grid, since possible locations are [yApex, -yApex]
+		//ie the character can gain or lose up to yApex in height.
+		float y0 = jumpGrid.length * tileSize / 2;
+		//Point is picked as slightly outside of the first tile, to simulate the bottomright corner of the player character, 
+		//since it is the point that will collide with things first. Position of it is kinda arbitrary, but this position should
+		//give the player some room for error.
+		float x0 = tileSize + tileSize / 3f;
 
+		
 	}
 
 	public Chunk generateChunk() {
