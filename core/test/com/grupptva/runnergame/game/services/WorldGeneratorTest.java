@@ -31,8 +31,7 @@ public class WorldGeneratorTest {
 	}
 	@Test
 	public void getRelativeHeightOfApexTest()
-	{		System.out.println(wg.getRelativeHeightOfApex(860f, 9.8f));
-
+	{		
 		assertEquals(wg.getRelativeHeightOfApex(860f, 9.8f), 37734.6939f, 0.1);
 	}
 	
