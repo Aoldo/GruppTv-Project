@@ -132,30 +132,28 @@ public class WorldGenerator {
 		return Math.abs(v0y / (a));
 	}
 
-	float getRelativeHeightOfApex(float v0y, float a) {
+	float getRelativeHeightOfApex(float v0y, float a) {		
 		//integrate v=v_0+a*t dt <=> y = v_0*t-(a*t^2)/2
 		float t = getFramesToApexOfJump(v0y, a);
-		return (v0y * t) - ((a * t * t) / 2);
+		return getJumpY(v0y, a, t);
 	}
 
 	float getFramesToYValue(float v0y, float a, float y, float y0) {
 		float sqrt = (float) Math.sqrt(2 * a * y - 2 * a * y0 + v0y * v0y);
 		//Get the furthest future time, ie rightmost point with that y value.
-		if(sqrt-v0y > -sqrt-v0y)
+		if (sqrt - v0y > -sqrt - v0y)
 			sqrt *= -1;
-		
+
 		return (sqrt - v0y) / a;
 	}
 
-	private int[] getSizeOfPossibleJumpGrid(float maxY, float t, float vx, float tileSize) {
+	private int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize, float vx) {
 		int[] size = new int[] { 0, 0 };
+		float maxY = getRelativeHeightOfApex(v0y, a);
 		size[1] = (int) Math.ceil(maxY / tileSize) * 2; //*2 due to going up to the apex of the jump and then down to -apex
-		//t = time(frames) to apex
-		//2t = time to same y as initial y
-		//3t != time to y equals -apexY
-		//TODO: Replace 3t with value of t when y = -apexY
+		float t = getFramesToYValue(v0y, a, -maxY, 0);
 
-		size[0] = (int) Math.ceil(((3 * t) * vx) / tileSize);
+		size[0] = (int) Math.ceil((t * vx) / tileSize);
 		return size;
 	}
 
@@ -163,8 +161,8 @@ public class WorldGenerator {
 		return new boolean[size[1]][size[0]];
 	}
 
-	private float getJumpY(float a, float v0y, float t) {
-		return 0;
+	private float getJumpY(float v0y, float a, float t) {
+ 		return (v0y * t) - ((a * t * t) / 2);
 	}
 
 	private void calculateJumpOffsets(float a, float v0y, float vx, float tileSize) {
