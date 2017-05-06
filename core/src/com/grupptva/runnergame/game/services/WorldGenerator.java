@@ -140,14 +140,36 @@ public class WorldGenerator {
 	}
 
 	private float getRelativeHeightOfApex(float v0y, float a) {
-		//integrate v=v_0+a*t dt <=> v_0*t-(a*t^2)/2
+		//integrate v=v_0+a*t dt <=> y = v_0*t-(a*t^2)/2
 		float t = getFramesToApexOfJump(v0y, a);
 		return (v0y * t) - ((a * t * t) / 2);
 	}
 
+	private int[] getSizeOfPossibleJumpGrid(float maxY, float t, float vx, float tileSize)
+	{
+		int[] size = new int[]{0,0};
+		size[1] = (int)Math.ceil(maxY/tileSize);
+		//t = time(frames) to apex
+		//2t = time to same y as initial y
+		//3t != time to y equals -apexY
+		//TODO: Replace 3t with value of t when y = -apexY
+		
+		size[0] = (int)Math.ceil(((3*t)*vx)/tileSize);
+		return size;
+	}
+	private boolean[][] createJumpGrid(int[] size)
+	{
+		return new boolean[size[1]][size[0]];
+	}
+	private float getJumpY(float a, float v0y, float t)
+	{
+		return 0;
+	}
 	private void calculateJumpOffsets(float a, float v0y, float vx, float tileSize) {
 		float maxY = getRelativeHeightOfApex(v0y, a);
 		float t = getFramesToApexOfJump(v0y, a);
+		
+		
 	}
 
 	public Chunk generateChunk() {
