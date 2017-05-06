@@ -20,32 +20,34 @@ public class WorldGeneratorTest {
 
 	@Before
 	public void init() {
-		wg = new WorldGenerator(new ArrayList<Integer[]>(), new ArrayList<Integer[]>(),
-				new ArrayList<Integer[]>(), 2l, 40, 20, 0);
+		wg = new WorldGenerator(new ArrayList<Integer[]>(), new ArrayList<Integer[]>(), new ArrayList<Integer[]>(), 2l,
+				40, 20, 0);
 	}
 
 	@Test
-	public void getFramesToApexOfJumpTest()
-	{
+	public void getFramesToApexOfJumpTest() {
 		assertTrue(wg.getFramesToApexOfJump(9.82f, -19.64f) == .5f);
 	}
+
 	@Test
-	public void getRelativeHeightOfApexTest()
-	{		
+	public void getRelativeHeightOfApexTest() {
 		assertEquals(wg.getRelativeHeightOfApex(860f, 9.8f), 37734.6939f, 0.1);
 	}
-	
+
+	@Test
+	public void getFramesToYValueTest() {
+		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10) * 2);
+	}
+
 	@Test
 	public void deepCopyChunk_ShouldNotBeReference() {
-		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY },
-				{ Tile.EMPTY, Tile.EMPTY } };
+		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY }, { Tile.EMPTY, Tile.EMPTY } };
 
 		Tile[][] chunkCopy = wg.deepCopyChunk(chunk);
 		chunk[0][0] = Tile.FULL;
 
 		assertFalse(chunk[0][0] == chunkCopy[0][0]);
 	}
-	
 
 	@Test
 	public void testFinalTileOnMultipleSeeds() {
