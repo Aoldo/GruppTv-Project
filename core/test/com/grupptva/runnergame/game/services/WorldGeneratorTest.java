@@ -25,6 +25,18 @@ public class WorldGeneratorTest {
 	}
 
 	@Test
+	public void getFramesToApexOfJumpTest()
+	{
+		assertTrue(wg.getFramesToApexOfJump(9.82f, -19.64f) == .5f);
+	}
+	@Test
+	public void getRelativeHeightOfApexTest()
+	{		System.out.println(wg.getRelativeHeightOfApex(860f, 9.8f));
+
+		assertEquals(wg.getRelativeHeightOfApex(860f, 9.8f), 37734.6939f, 0.1);
+	}
+	
+	@Test
 	public void deepCopyChunk_ShouldNotBeReference() {
 		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY },
 				{ Tile.EMPTY, Tile.EMPTY } };
