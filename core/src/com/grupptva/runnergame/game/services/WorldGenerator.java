@@ -187,7 +187,6 @@ public class WorldGenerator {
 		//Do x lines   | 
 		for (int x = 0; x < jumpGrid[0].length * tileSize; x += tileSize) {
 			float y = getJumpY(v0y, a, x) + y0;
-			System.out.println("X: " + x + "  Y: " + (y - y0));
 			int normY = (int) (y / tileSize);
 			int normX = (int) (x / tileSize);
 			points.add(new float[] { normX, normY });
@@ -197,6 +196,7 @@ public class WorldGenerator {
 			//Add tiles (x,y) and (x-1,y)
 			int x = (int) points.get(index)[0];
 			int y = (int) points.get(index)[1];
+			//Make sure it is inside bounds.
 			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
 				jumpGrid[y][x] = true;
 				if (x >= 1)
@@ -228,6 +228,7 @@ public class WorldGenerator {
 			//Add tiles (x,y) and (x,y-1)
 			int x = (int) points.get(index)[0];
 			int y = (int) points.get(index)[1];
+			//Make sure it is inside bounds.
 			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
 				jumpGrid[y][x] = true;
 				if (y >= 1)
