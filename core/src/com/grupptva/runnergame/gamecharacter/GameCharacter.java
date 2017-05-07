@@ -22,7 +22,9 @@ public class GameCharacter {
 	}
 
 	public void update(float pixelsPerFrame) {
-		fall();
+		if(!collidingWithGround) {
+			fall();
+		}
 		if(attachedWithHook) {
 			moveHook(pixelsPerFrame);
 		}
@@ -34,11 +36,8 @@ public class GameCharacter {
 	}
 
 	void fall() {
-		if (!collidingWithGround) {
 			yVelocity += gravity;
 			moveY(yVelocity);
-		}
-
 	}
 
 	public void jump() {
