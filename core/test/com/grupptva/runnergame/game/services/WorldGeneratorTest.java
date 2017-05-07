@@ -31,14 +31,29 @@ public class WorldGeneratorTest {
 
 	@Test
 	public void getRelativeHeightOfApexTest() {
-		assertEquals(wg.getRelativeHeightOfApex(860f, 9.8f), 37734.6939f, 0.1);
+		assertEquals(wg.getRelativeHeightOfApex(860f, -9.8f), 37734.6939f, 0.1);
 	}
 
 	@Test
 	public void getFramesToYValueTest() {
 		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10) * 2);
+		System.out.println(wg.getFramesToYValue(4, -2, -5, 1));
+		assertEquals(wg.getFramesToYValue(4, -2, -5, 1) ,5.15f, .1f);
 	}
 
+	@Test
+	public void getJumpY() {
+		assertTrue(wg.getJumpY(4, -2, 3, 1) == 4f);
+	}
+	@Test
+	public void calculateJumpOffsetsTest()
+	{
+		wg.calculateJumpOffsets(4, -2, 1, 1);
+		
+		assertTrue(true);
+	}
+	
+	
 	@Test
 	public void deepCopyChunk_ShouldNotBeReference() {
 		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY }, { Tile.EMPTY, Tile.EMPTY } };
