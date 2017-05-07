@@ -153,6 +153,7 @@ public class WorldGenerator {
 		size[1] = (int) Math.ceil(maxY / tileSize) * 2; //*2 due to going up to the apex of the jump and then down to -apex
 		float t = getFramesToYValue(v0y, a, -maxY, 0);
 
+		System.out.println("maxY " + maxY + " t: " + t);
 		size[0] = (int) Math.ceil((t * vx) / tileSize);
 		return size;
 	}
@@ -162,20 +163,63 @@ public class WorldGenerator {
 	}
 
 	private float getJumpY(float v0y, float a, float t) {
-		return (v0y * t) - ((a * t * t) / 2);
+		return (v0y * t) + ((a * t * t) / 2);
 	}
 
-	private void calculateJumpOffsets(float v0y, float a, float tileSize, float vx) {
+	float getJumpY(float v0y, float a, float t, float xTranslation) {
+		return (v0y * (t - xTranslation)) + ((a * (t - xTranslation) * (t - xTranslation)) / 2);
+	}
+
+	void calculateJumpOffsets(float v0y, float a, float tileSize, float vx) {
 		boolean[][] jumpGrid = createJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
+		//boolean[][] jumpGrid = new boolean[100][10];
+
 		//Calculations are done by simulating a point performing the jump and checking where it can land.
 		//Starting y position of character is in the middle of the testing grid, since possible locations are [yApex, -yApex]
 		//ie the character can gain or lose up to yApex in height.
 		float y0 = jumpGrid.length * tileSize / 2;
+		//float y0 = 0;
 		//Point is picked as slightly outside of the first tile, to simulate the bottomright corner of the player character, 
 		//since it is the point that will collide with things first. Position of it is kinda arbitrary, but this position should
 		//give the player some room for error.
 		float x0 = tileSize + tileSize / 3f;
+		System.out.println(jumpGrid[0].length);
+		//In order to get every tile that the jump parabola intersects with, the (X or Y) coordinates between tiles are sent into the 
+		//parabolas equation. The (Y or X respectively) solution is then used to select the who use the solution as a coordinate and 
+		//who are connected to the initial "line between" coordinate. See http://i.imgur.com/6e25A1N.png for graphical illustration.
 
+		List<float[]> points = new ArrayList<float[]>();
+		//Do x lines
+		for (int x = 0; x < jumpGrid[0].length * tileSize; x += tileSize) {
+			float y = getJumpY(v0y, a, x) + y0;
+			System.out.println("X: " + x + "  Y: " + y);
+			int normY = (int) (y / tileSize);
+			int normX = (int) (x / tileSize);
+			points.add(new float[] { normX, normY });
+		}
+		//Do y lines
+		float framesToApex = getFramesToApexOfJump(v0y, a);
+		float framesToZero = 2 * framesToApex;
+		System.out.println("______");
+		for (int y = 0; y < jumpGrid.length * tileSize; y += tileSize) {
+			float adjustedY = y - y0;
+			
+			float x = getFramesToYValue(v0y, a, adjustedY, 0);
+
+			System.out.println("X: " + x + "  Y: " + adjustedY);
+			int normY = (int) (adjustedY / tileSize);
+			int normX = (int) (x / tileSize);
+			points.add(new float[] { normX, normY });
+
+			if (x < framesToZero) {
+				float dx = x - framesToApex;
+				float leftX = framesToApex - dx;
+				float normLeftX = (int) (leftX / tileSize);
+				System.out.println("X: " + leftX + "  Y: " + adjustedY);
+
+				points.add(new float[] { normLeftX, normY });
+			}
+		}
 		
 	}
 
