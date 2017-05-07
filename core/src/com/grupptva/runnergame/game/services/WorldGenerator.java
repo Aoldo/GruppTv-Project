@@ -238,7 +238,7 @@ public class WorldGenerator {
 		}
 		return jumpGrid;
 	}
-	List<Integer[]> calculateJumpLandingOffsets(boolean[][] jumpTiles)
+	boolean[][] calculateJumpLandingOffsets(boolean[][] jumpTiles)
 	{
 		//TODO: Check which tiles can be landed one (by checking if jump enters tile from above)
 		return null;
