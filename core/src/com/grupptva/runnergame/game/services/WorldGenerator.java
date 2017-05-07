@@ -178,12 +178,7 @@ public class WorldGenerator {
 		//Starting y position of character is in the middle of the testing grid, since possible locations are [yApex, -yApex]
 		//ie the character can gain or lose up to yApex in height.
 		float y0 = jumpGrid.length * tileSize / 2;
-		//float y0 = 0;
-		//Point is picked as slightly outside of the first tile, to simulate the bottomright corner of the player character, 
-		//since it is the point that will collide with things first. Position of it is kinda arbitrary, but this position should
-		//give the player some room for error.
-		float x0 = tileSize + tileSize / 3f;
-		System.out.println(jumpGrid[0].length);
+		
 		//In order to get every tile that the jump parabola intersects with, the (X or Y) coordinates between tiles are sent into the 
 		//parabolas equation. The (Y or X respectively) solution is then used to select the who use the solution as a coordinate and 
 		//who are connected to the initial "line between" coordinate. See http://i.imgur.com/6e25A1N.png for graphical illustration.
@@ -208,20 +203,15 @@ public class WorldGenerator {
 					jumpGrid[y][x - 1] = true;
 			}
 		}
-		for (int i = 0; i < jumpGrid.length; i++) {
-			System.out.println(Arrays.toString(jumpGrid[i]));
-		}
 
 		//Do y lines   _
 		float framesToApex = getFramesToApexOfJump(v0y, a);
 		float framesToZero = 2 * framesToApex;
-		System.out.println("______");
 		for (int y = 0; y < jumpGrid.length * tileSize; y += tileSize) {
 			float adjustedY = y - y0;
 
 			float x = getFramesToYValue(v0y, a, adjustedY, 0);
 
-			System.out.println("X: " + x + "  Y: " + adjustedY);
 			int normY = (int) (y / tileSize);
 			int normX = (int) (x / tileSize);
 			points.add(new float[] { normX, normY });
@@ -230,7 +220,6 @@ public class WorldGenerator {
 				float dx = x - framesToApex;
 				float leftX = framesToApex - dx;
 				float normLeftX = (int) (leftX / tileSize);
-				System.out.println("X: " + leftX + "  Y: " + adjustedY);
 
 				points.add(new float[] { normLeftX, normY });
 			}
@@ -244,9 +233,6 @@ public class WorldGenerator {
 				if (y >= 1)
 					jumpGrid[y - 1][x] = true;
 			}
-		}
-		for (int i = 0; i < jumpGrid.length; i++) {
-			System.out.println(Arrays.toString(jumpGrid[i]));
 		}
 		//TODO: Check which tiles can be landed one (by checking if jump enters tile from above)
 		return jumpGrid;
