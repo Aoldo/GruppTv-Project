@@ -208,8 +208,9 @@ public class WorldGenerator {
 		float framesToApex = getFramesToApexOfJump(v0y, a);
 		float framesToZero = 2 * framesToApex;
 		for (int y = 0; y < jumpGrid.length * tileSize; y += tileSize) {
-			float adjustedY = y - y0;
-
+			
+			float adjustedY = y - y0; 
+			
 			float x = getFramesToYValue(v0y, a, adjustedY, 0);
 
 			int normY = (int) (y / tileSize);
@@ -235,8 +236,12 @@ public class WorldGenerator {
 					jumpGrid[y - 1][x] = true;
 			}
 		}
-		//TODO: Check which tiles can be landed one (by checking if jump enters tile from above)
 		return jumpGrid;
+	}
+	List<Integer[]> calculateJumpOffsets(boolean[][] jumpTiles)
+	{
+		//TODO: Check which tiles can be landed one (by checking if jump enters tile from above)
+		return null;
 	}
 
 	public Chunk generateChunk() {
