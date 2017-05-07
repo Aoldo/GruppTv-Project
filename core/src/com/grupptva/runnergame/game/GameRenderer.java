@@ -17,6 +17,9 @@ public class GameRenderer {
 		sr.setColor(Color.FOREST);
 		sr.rect(gameCharacter.getPosition().getX(), gameCharacter.getPosition().getY(), tileSize,
 				tileSize);
+		if(gameCharacter.isAttachedWithHook())
+		sr.line(gameCharacter.getPosition().getX(), gameCharacter.getPosition().getY(),
+				gameCharacter.getHookPosition().getX(), gameCharacter.getHookPosition().getY());
 	}
 
 	public void renderWorld(int tileSize, WorldModel world, ShapeRenderer renderer) {

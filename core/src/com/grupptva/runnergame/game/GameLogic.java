@@ -6,13 +6,11 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.GamePlugin;
 import com.grupptva.runnergame.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.input.InputListener;
 import com.grupptva.runnergame.world.Chunk;
 import com.grupptva.runnergame.world.Tile;
 import com.grupptva.runnergame.world.WorldModel;
@@ -86,7 +84,7 @@ public class GameLogic implements GamePlugin, InputProcessor {
 	public void update() {
 		world.moveLeft(pixelsPerFrame);
 		handlePossibleCharacterCollision();
-		character.update();
+		character.update(pixelsPerFrame);
 		if (world.getPosition() < -tileSize * chunkWidth) {
 			world.incrementStartIndex();
 			world.setPosition(0);
@@ -183,7 +181,11 @@ public class GameLogic implements GamePlugin, InputProcessor {
 				character.jump();
 				return true;
 			case hookKeyCode:
-				//handle hook here
+				if(character.isAttachedWithHook()) {
+					character.removeHook();
+				} else {
+					character.initHook(500);
+				}
 				return true;
 			case resetKeyCode:
 				reset();

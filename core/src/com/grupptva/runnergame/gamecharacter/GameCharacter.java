@@ -10,6 +10,8 @@ public class GameCharacter {
 	private float gravity = -0.4f;
 	private float yVelocity;
 	private float jumpInitialVelocity = 7f;
+	private float maxHookVelocity = 14f;
+	private float xVelocity = 1.5f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
 	private Point hookPosition;
@@ -19,8 +21,11 @@ public class GameCharacter {
 		position = new Point(x, y);
 	}
 
-	public void update() {
+	public void update(float pixelsPerFrame) {
 		fall();
+		if(attachedWithHook) {
+			moveHook(pixelsPerFrame);
+		}
 	}
 
 	void moveY(float distance) {
@@ -44,7 +49,12 @@ public class GameCharacter {
 		}
 	}
 
+	public Point getHookPosition() {
+		return hookPosition;
+	}
+
 	public void handleCollisionFromBelow(float yCoordinate) {
+
 		setyVelocity(0);
 		position.setLocation(position.getX(), yCoordinate);
 	}
@@ -52,6 +62,17 @@ public class GameCharacter {
 	public void initHook(float length) {
 		attachedWithHook = true;
 		hookPosition = position.getOffsetPoint(length, hookAngle);
+	}
+
+	public void removeHook() {
+		attachedWithHook = false;
+		position.setY(position.getY()+1);
+		yVelocity += maxHookVelocity;
+		collidingWithGround = false;
+	}
+
+	private void moveHook(float pixelsPerFrame) {
+		hookPosition.setX(hookPosition.getX() - pixelsPerFrame);
 	}
 
 	public Point getPosition() {
@@ -84,6 +105,10 @@ public class GameCharacter {
 
 	public float getGravity() {
 		return gravity;
+	}
+
+	public boolean isAttachedWithHook() {
+		return attachedWithHook;
 	}
 
 }
