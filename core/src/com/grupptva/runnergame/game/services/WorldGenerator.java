@@ -220,6 +220,8 @@ public class WorldGenerator {
 				points.add(new float[] { normLeftX, normY });
 			}
 		}
+		//TODO: Convert points into actual tiles
+		//TODO: Check which tiles can be landed one (by checking if jump enters tile from above)
 		
 	}
 
