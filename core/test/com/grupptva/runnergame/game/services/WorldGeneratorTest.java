@@ -38,22 +38,46 @@ public class WorldGeneratorTest {
 	public void getFramesToYValueTest() {
 		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10) * 2);
 		System.out.println(wg.getFramesToYValue(4, -2, -5, 1));
-		assertEquals(wg.getFramesToYValue(4, -2, -5, 1) ,5.15f, .1f);
+		assertEquals(wg.getFramesToYValue(4, -2, -5, 1), 5.15f, .1f);
 	}
 
 	@Test
 	public void getJumpY() {
 		assertTrue(wg.getJumpY(4, -2, 3, 1) == 4f);
 	}
+
 	@Test
-	public void calculateJumpOffsetsTest()
-	{
-		wg.calculateJumpOffsets(4, -2, 1, 1);
-		
-		assertTrue(true);
+	public void calculateJumpGridTest() {
+		//Don't worry about it.
+		boolean[][] result1 = new boolean[][] { { false, false, false, false, true },
+				{ false, false, false, false, true }, { false, false, false, false, true },
+				{ false, false, false, false, true }, { true, false, false, true, true },
+				{ true, false, false, true, false }, { true, true, false, true, false },
+				{ true, true, true, true, false } };
+
+		assertArrayEquals(wg.calculateJumpGrid(4, -2, 1, 1), result1);
+
+		boolean[][] result2 = new boolean[][] { { false, false, false, false, false, false, false, true },
+				{ false, false, false, false, false, false, false, true },
+				{ false, false, false, false, false, false, true, true },
+				{ false, false, false, false, false, false, true, false },
+				{ false, false, false, false, false, false, true, false },
+				{ false, false, false, false, false, false, true, false },
+				{ false, false, false, false, false, false, true, false },
+				{ false, false, false, false, false, false, true, false },
+				{ false, false, false, false, false, false, true, false },
+				{ true, false, false, false, false, true, true, false },
+				{ true, false, false, false, false, true, false, false },
+				{ true, false, false, false, false, true, false, false },
+				{ true, false, false, false, false, true, false, false },
+				{ true, true, false, false, false, true, false, false },
+				{ true, true, false, false, true, true, false, false },
+				{ false, true, false, false, true, false, false, false },
+				{ false, true, true, false, true, false, false, false },
+				{ false, true, true, true, true, false, false, false } };
+		assertArrayEquals(wg.calculateJumpGrid(6, -2, 1, 1), result2);
 	}
-	
-	
+
 	@Test
 	public void deepCopyChunk_ShouldNotBeReference() {
 		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY }, { Tile.EMPTY, Tile.EMPTY } };
