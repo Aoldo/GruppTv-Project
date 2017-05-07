@@ -158,7 +158,7 @@ public class WorldGenerator {
 		return size;
 	}
 
-	private boolean[][] createJumpGrid(int[] size) {
+	private boolean[][] createEmptyJumpGrid(int[] size) {
 		return new boolean[size[1]][size[0]];
 	}
 
@@ -170,8 +170,8 @@ public class WorldGenerator {
 		return (v0y * (t - xTranslation)) + ((a * (t - xTranslation) * (t - xTranslation)) / 2);
 	}
 
-	void calculateJumpOffsets(float v0y, float a, float tileSize, float vx) {
-		boolean[][] jumpGrid = createJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
+	boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
+		boolean[][] jumpGrid = createEmptyJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
 		//boolean[][] jumpGrid = new boolean[100][10];
 
 		//Calculations are done by simulating a point performing the jump and checking where it can land.
@@ -189,25 +189,40 @@ public class WorldGenerator {
 		//who are connected to the initial "line between" coordinate. See http://i.imgur.com/6e25A1N.png for graphical illustration.
 
 		List<float[]> points = new ArrayList<float[]>();
-		//Do x lines
+		//Do x lines   | 
 		for (int x = 0; x < jumpGrid[0].length * tileSize; x += tileSize) {
 			float y = getJumpY(v0y, a, x) + y0;
-			System.out.println("X: " + x + "  Y: " + y);
+			System.out.println("X: " + x + "  Y: " + (y - y0));
 			int normY = (int) (y / tileSize);
 			int normX = (int) (x / tileSize);
 			points.add(new float[] { normX, normY });
 		}
-		//Do y lines
+		int index = 0;
+		for (; index < points.size(); index++) {
+			//Add tiles (x,y) and (x-1,y)
+			int x = (int) points.get(index)[0];
+			int y = (int) points.get(index)[1];
+			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
+				jumpGrid[y][x] = true;
+				if (x >= 1)
+					jumpGrid[y][x - 1] = true;
+			}
+		}
+		for (int i = 0; i < jumpGrid.length; i++) {
+			System.out.println(Arrays.toString(jumpGrid[i]));
+		}
+
+		//Do y lines   _
 		float framesToApex = getFramesToApexOfJump(v0y, a);
 		float framesToZero = 2 * framesToApex;
 		System.out.println("______");
 		for (int y = 0; y < jumpGrid.length * tileSize; y += tileSize) {
 			float adjustedY = y - y0;
-			
+
 			float x = getFramesToYValue(v0y, a, adjustedY, 0);
 
 			System.out.println("X: " + x + "  Y: " + adjustedY);
-			int normY = (int) (adjustedY / tileSize);
+			int normY = (int) (y / tileSize);
 			int normX = (int) (x / tileSize);
 			points.add(new float[] { normX, normY });
 
@@ -220,9 +235,21 @@ public class WorldGenerator {
 				points.add(new float[] { normLeftX, normY });
 			}
 		}
-		//TODO: Convert points into actual tiles
+		for (; index < points.size(); index++) {
+			//Add tiles (x,y) and (x,y-1)
+			int x = (int) points.get(index)[0];
+			int y = (int) points.get(index)[1];
+			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
+				jumpGrid[y][x] = true;
+				if (y >= 1)
+					jumpGrid[y - 1][x] = true;
+			}
+		}
+		for (int i = 0; i < jumpGrid.length; i++) {
+			System.out.println(Arrays.toString(jumpGrid[i]));
+		}
 		//TODO: Check which tiles can be landed one (by checking if jump enters tile from above)
-		
+		return jumpGrid;
 	}
 
 	public Chunk generateChunk() {
