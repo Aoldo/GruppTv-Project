@@ -181,11 +181,7 @@ public class GameLogic implements GamePlugin, InputProcessor {
 				character.jump();
 				return true;
 			case hookKeyCode:
-				if(character.isAttachedWithHook()) {
-					character.removeHook();
-				} else {
-					character.initHook(500);
-				}
+				character.initHook(500);
 				return true;
 			case resetKeyCode:
 				reset();
@@ -197,7 +193,14 @@ public class GameLogic implements GamePlugin, InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		return false;
+		switch (keycode) {
+			case hookKeyCode:
+				if(character.isAttachedWithHook())
+					character.removeHook();
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	@Override

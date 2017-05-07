@@ -17,9 +17,10 @@ public class GameRenderer {
 		sr.setColor(Color.FOREST);
 		sr.rect(gameCharacter.getPosition().getX(), gameCharacter.getPosition().getY(), tileSize,
 				tileSize);
-		if(gameCharacter.isAttachedWithHook())
-		sr.line(gameCharacter.getPosition().getX(), gameCharacter.getPosition().getY(),
-				gameCharacter.getHookPosition().getX(), gameCharacter.getHookPosition().getY());
+		if (gameCharacter.isAttachedWithHook()) {
+			sr.line(gameCharacter.getPosition().getX(), gameCharacter.getPosition().getY(),
+					gameCharacter.getHookPosition().getX(), gameCharacter.getHookPosition().getY());
+		}
 	}
 
 	public void renderWorld(int tileSize, WorldModel world, ShapeRenderer renderer) {
@@ -28,6 +29,7 @@ public class GameRenderer {
 			renderChunk(tileSize, world.getPosition(), chunks[i], i, renderer);
 		}
 	}
+
 	private void renderChunk(int tileSize, float worldPos, Chunk chunk, int chunkNumber,
 	                         ShapeRenderer renderer) {
 		for (int col = 0; col < chunk.getWidth(); col++) {
@@ -39,6 +41,7 @@ public class GameRenderer {
 			}
 		}
 	}
+
 	private void renderTile(int tileSize, float tilePos, Tile tile, int col, int row, int
 			chunkNumber,
 	                        ShapeRenderer renderer) {
