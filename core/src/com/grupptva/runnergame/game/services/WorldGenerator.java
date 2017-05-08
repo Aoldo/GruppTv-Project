@@ -2,6 +2,8 @@ package com.grupptva.runnergame.game.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -178,7 +180,7 @@ public class WorldGenerator {
 		//Starting y position of character is in the middle of the testing grid, since possible locations are [yApex, -yApex]
 		//ie the character can gain or lose up to yApex in height.
 		float y0 = jumpGrid.length * tileSize / 2;
-		
+
 		//In order to get every tile that the jump parabola intersects with, the (X or Y) coordinates between tiles are sent into the 
 		//parabolas equation. The (Y or X respectively) solution is then used to select the who use the solution as a coordinate and 
 		//who are connected to the initial "line between" coordinate. See http://i.imgur.com/6e25A1N.png for graphical illustration.
@@ -208,9 +210,9 @@ public class WorldGenerator {
 		float framesToApex = getFramesToApexOfJump(v0y, a);
 		float framesToZero = 2 * framesToApex;
 		for (int y = 0; y < jumpGrid.length * tileSize; y += tileSize) {
-			
-			float adjustedY = y - y0; 
-			
+
+			float adjustedY = y - y0;
+
 			float x = getFramesToYValue(v0y, a, adjustedY, 0);
 
 			int normY = (int) (y / tileSize);
@@ -238,10 +240,47 @@ public class WorldGenerator {
 		}
 		return jumpGrid;
 	}
-	boolean[][] calculateJumpLandingOffsets(boolean[][] jumpTiles)
-	{
+
+	boolean[][] calculateJumpLandingOffsets(boolean[][] jumpTiles) {
 		//TODO: Check which tiles can be landed one (by checking if jump enters tile from above)
+
 		return null;
+	}
+
+	List<Integer[]> getTrueIndexes(boolean[][] tiles) {
+		List<Integer[]> indexes = new ArrayList<Integer[]>();
+
+		for (int y = 0; y < tiles.length; y++) {
+			for (int x = 0; x < tiles.length; x++) {
+				if (tiles[y][x] == true)
+					indexes.add(new Integer[] { x, y });
+			}
+		}
+		return indexes;
+	}
+
+	void sortJumpIndexes(List<Integer[]> jumpIndexes) {
+		//TODO: Sort by X, and then everything to the left of apex should be sorted by ascending Y, everything to the right descending.
+	}
+
+	/**
+	 * Sorts the jumpIndexes list and then checks every tile if it is below the
+	 * previous tile. Adds all of those tiles to list and returns them.
+	 * 
+	 * @param jumpIndexes
+	 * @return
+	 */
+	List<Integer[]> getLandingIndexes(List<Integer[]> jumpIndexes) {
+		sortJumpIndexes(jumpIndexes);
+
+		List<Integer[]> landingIndexes = new ArrayList<Integer[]>();
+		for (int i = 1; i < jumpIndexes.size(); i++) {
+			//TODO: Currently adds diagonal as landing, check if viable, if not: change to vertical by checking x= x
+			if (jumpIndexes.get(i)[1] < jumpIndexes.get(i - 1)[1]) {
+				landingIndexes.add(jumpIndexes.get(i));
+			}
+		}
+		return landingIndexes;
 	}
 
 	public Chunk generateChunk() {
