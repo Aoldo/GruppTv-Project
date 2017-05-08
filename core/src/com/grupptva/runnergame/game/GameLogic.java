@@ -18,7 +18,7 @@ import com.grupptva.runnergame.worldgenerator.WorldGenerator;
 
 /**
  * 
- * @author Mattias revised by Karl
+ * @author Mattias revised by Karl and Agnes
  */
 public class GameLogic implements GamePlugin, InputProcessor {
 	GameRenderer gameRenderer;
