@@ -52,8 +52,8 @@ public class GameCharacter {
 	}
 
 	private void swing() {
-		float newY = hookPosition.getY() - (float) Math.sqrt(hookLength * hookLength / (position.getX() - hookPosition.getX() *
-				position.getX() - hookPosition.getX()));
+		float newY = hookPosition.getY() - (float) Math.sqrt(hookLength * hookLength - ((position.getX() - hookPosition.getX()) *
+				(position.getX() - hookPosition.getX())));
 		position.setY(newY);
 		if(Math.abs(newY - hookPosition.getY()) < 10) {
 			removeHook();
