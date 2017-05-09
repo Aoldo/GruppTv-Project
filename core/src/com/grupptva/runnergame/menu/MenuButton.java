@@ -1,4 +1,4 @@
-package com.grupptva.runnergame;
+package com.grupptva.runnergame.menu;
 
 import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;

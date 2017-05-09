@@ -1,6 +1,9 @@
-package com.grupptva.runnergame.gamecharacter;
+package com.grupptva.runnergame.game.model.gamecharacter;
 
 import java.awt.*;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 
 /**
  * Created by agnesmardh on 2017-04-21.
@@ -19,8 +22,10 @@ public class GameCharacter {
 		position = new Point(x, y);
 	}
 
+
 	public void update() {
 		fall();
+		debugReset();
 	}
 
 	void moveY(float distance) {
@@ -38,7 +43,7 @@ public class GameCharacter {
 
 	public void jump() {
 		if (collidingWithGround) {
-			position.setY(position.getY()+1);
+			position.setY(position.getY() + 1);
 			yVelocity += jumpInitialVelocity;
 			collidingWithGround = false;
 		}
@@ -86,4 +91,8 @@ public class GameCharacter {
 		return gravity;
 	}
 
+	private void debugReset() {
+		if (Gdx.input.isKeyJustPressed(Keys.R))
+			this.position.setLocation(position.getX(), 100);
+	}
 }

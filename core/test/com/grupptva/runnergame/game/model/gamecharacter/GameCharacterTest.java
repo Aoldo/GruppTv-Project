@@ -1,8 +1,10 @@
-package com.grupptva.runnergame.gamecharacter;
+package com.grupptva.runnergame.game.model.gamecharacter;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 
 /**
  * Created by agnesmardh on 2017-04-21.
@@ -25,14 +27,16 @@ public class GameCharacterTest {
 
 	@Test
 	public void testFall() {
-		double yVelocity = gameCharacter.getyVelocity();
-		double y = gameCharacter.getPosition().getY();
+		float yVelocity = gameCharacter.getyVelocity();
+		float y = gameCharacter.getPosition().getY();
 		gameCharacter.fall();
 		
-		//Assert.assertTrue(gameCharacter.getyVelocity() == yVelocity + gameCharacter.getGravity());
+		System.out.println("yVel " + yVelocity);
+		System.out.println("y " + y);
+		System.out.println("charYVel " + gameCharacter.getyVelocity());
+		System.out.println("charY " + gameCharacter.getPosition().getY());
 		
-		Assert.assertEquals(gameCharacter.getyVelocity(), yVelocity + gameCharacter.getGravity(), .05f);
-		
+		Assert.assertTrue(gameCharacter.getyVelocity() == yVelocity + gameCharacter.getGravity());		
 		Assert.assertEquals(gameCharacter.getPosition().getY(), y + yVelocity, .05f);
 	}
 

@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game;
+package com.grupptva.runnergame.game.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +10,20 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.grupptva.runnergame.GamePlugin;
-import com.grupptva.runnergame.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.input.InputListener;
-import com.grupptva.runnergame.world.Chunk;
-import com.grupptva.runnergame.world.Tile;
-import com.grupptva.runnergame.world.WorldModel;
-import com.grupptva.runnergame.worldgenerator.WorldGenerator;
+import com.grupptva.runnergame.ScenePlugin;
+import com.grupptva.runnergame.controller.InputListener;
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.game.model.world.Chunk;
+import com.grupptva.runnergame.game.model.world.Tile;
+import com.grupptva.runnergame.game.model.world.WorldModel;
+import com.grupptva.runnergame.game.services.WorldGenerator;
+import com.grupptva.runnergame.game.view.GameRenderer;
 
 /**
  * 
  * @author Mattias revised by Karl
  */
-public class GameLogic implements GamePlugin, InputProcessor {
+public class GameLogic implements ScenePlugin, InputProcessor {
 	GameRenderer gameRenderer;
 	// private character
 	private GameCharacter character;
@@ -55,8 +56,8 @@ public class GameLogic implements GamePlugin, InputProcessor {
 		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets,
-				1l, chunkWidth, chunkHeight);
+		generator = new WorldGenerator(character.getJumpInitialVelocity(),
+				character.getGravity(), pixelsPerFrame, 8, 4l, chunkWidth, chunkHeight, 0);
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -79,8 +80,8 @@ public class GameLogic implements GamePlugin, InputProcessor {
 		world.setChunks(new Chunk[] { c, d, c });
 
 		//TODO: First 3 chunks should be a tutorial.
-		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
-				generator.generateChunk(5) });
+		world.setChunks(
+				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 	}
 
 	public void update() {
@@ -170,8 +171,8 @@ public class GameLogic implements GamePlugin, InputProcessor {
 
 	private void reset() {
 		character = new GameCharacter(30, 150);
-		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
-				generator.generateChunk(5) });
+		world.setChunks(new Chunk[] { c, generator.generateChunk(),
+				generator.generateChunk() });
 		world.setPosition(0);
 		world.setStartIndex(0);
 	}
