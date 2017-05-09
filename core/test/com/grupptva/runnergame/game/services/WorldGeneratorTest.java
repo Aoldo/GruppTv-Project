@@ -124,13 +124,13 @@ public class WorldGeneratorTest {
 		List<Integer[]> landingOffsets = wg.calculateJumpLandingOffsets(4, -2, 1, 1);
 		List<Integer[]> expectedOffsets = new ArrayList<Integer[]>();
 
-		expectedOffsets.add(new Integer[] { 3, 6 });
-		expectedOffsets.add(new Integer[] { 3, 5 });
-		expectedOffsets.add(new Integer[] { 3, 4 });
-		expectedOffsets.add(new Integer[] { 4, 3 });
-		expectedOffsets.add(new Integer[] { 4, 2 });
-		expectedOffsets.add(new Integer[] { 4, 1 });
-		expectedOffsets.add(new Integer[] { 4, 0 });
+		expectedOffsets.add(new Integer[] { 3, 2 });
+		expectedOffsets.add(new Integer[] { 3, 1 });
+		expectedOffsets.add(new Integer[] { 3, 0 });
+		expectedOffsets.add(new Integer[] { 4, -1 });
+		expectedOffsets.add(new Integer[] { 4, -2 });
+		expectedOffsets.add(new Integer[] { 4, -3 });
+		expectedOffsets.add(new Integer[] { 4, -4 });
 
 		for (int i = 0; i < landingOffsets.size(); i++) {
 			for (int u = 0; u < landingOffsets.get(i).length; u++) {

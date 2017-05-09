@@ -51,7 +51,7 @@ public class WorldGenerator {
 	 * The offsets compared to the "current tile" that the character can jump
 	 * and land on.
 	 */
-	List<Integer[]> jumpOffsets= new ArrayList<Integer[]>();
+	List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 	/**
 	 * The offsets compared to the "current tile"-which the hook is attached to
 	 * that the character can land on.
@@ -59,7 +59,7 @@ public class WorldGenerator {
 	 * TODO: This might depend on the radius of the hook and will probably cause
 	 * issues later, need to figure out a fix.
 	 */
-	List<Integer[]> hookJumpOffsets= new ArrayList<Integer[]>();
+	List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 
 	/**
 	 * Creates a new WorldGenerator, parameters are the coordinates in the grid
@@ -73,9 +73,8 @@ public class WorldGenerator {
 	 * @param hookJumpOffsets
 	 * @param seed
 	 */
-	public WorldGenerator(float v0y, float a, float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight,
-			int initY) {
-
+	public WorldGenerator(float v0y, float a, float vx, int tileSize, Long seed,
+			int chunkWidth, int chunkHeight, int initY) {
 		this.initY = initY;
 
 		this.chunkHeight = chunkHeight;
@@ -83,18 +82,20 @@ public class WorldGenerator {
 
 		//TODO: y-grid/2
 		jumpOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
-		
-		/*Temporary solution to possible offsets
-		jumpOffsets.add(new Integer[] { 1, 0 });
-		jumpOffsets.add(new Integer[] { 2, 2 });
-		jumpOffsets.add(new Integer[] { 3, 2 });
-		jumpOffsets.add(new Integer[] { 3, 1 });
-		jumpOffsets.add(new Integer[] { 3, 0 });
-		jumpOffsets.add(new Integer[] { 3, -1 });
-		jumpOffsets.add(new Integer[] { 4, -1 });
-		jumpOffsets.add(new Integer[] { 3, -2 });
-		jumpOffsets.add(new Integer[] { 4, -2 });
-*/
+
+		for (Integer[] offset : jumpOffsets) {
+			System.out.println(Arrays.toString(offset));
+		}
+
+		/*
+		 * Temporary solution to possible offsets jumpOffsets.add(new Integer[]
+		 * { 1, 0 }); jumpOffsets.add(new Integer[] { 2, 2 });
+		 * jumpOffsets.add(new Integer[] { 3, 2 }); jumpOffsets.add(new
+		 * Integer[] { 3, 1 }); jumpOffsets.add(new Integer[] { 3, 0 });
+		 * jumpOffsets.add(new Integer[] { 3, -1 }); jumpOffsets.add(new
+		 * Integer[] { 4, -1 }); jumpOffsets.add(new Integer[] { 3, -2 });
+		 * jumpOffsets.add(new Integer[] { 4, -2 });
+		 */
 		hookAttachOffsets.add(new Integer[] { 2, 4 });
 
 		hookJumpOffsets.add(new Integer[] { 0, -5 });
@@ -255,9 +256,14 @@ public class WorldGenerator {
 	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize,
 			float vx) {
 		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx);
-
+		int halfGridHeight = jumpGrid.length / 2;
 		List<Integer[]> trueIndexes = getTrueIndexes(jumpGrid);
 		List<Integer[]> landingIndexes = getLandingIndexes(trueIndexes);
+
+		//Offset Y values so top half is positive and bottom half negative
+		for (Integer[] index : landingIndexes) {
+			index[1] -= halfGridHeight;
+		}
 
 		return landingIndexes;
 	}
