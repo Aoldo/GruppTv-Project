@@ -252,7 +252,6 @@ public class WorldGenerator {
 
 	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize,
 			float vx) {
-		//TODO: Implement
 		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx);
 
 		List<Integer[]> trueIndexes = getTrueIndexes(jumpGrid);
