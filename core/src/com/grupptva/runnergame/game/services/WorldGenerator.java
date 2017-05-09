@@ -73,7 +73,7 @@ public class WorldGenerator {
 	 * @param hookJumpOffsets
 	 * @param seed
 	 */
-	public WorldGenerator(float v0y, float a, float vx, Long seed, int chunkWidth, int chunkHeight,
+	public WorldGenerator(float v0y, float a, float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight,
 			int initY) {
 
 		this.initY = initY;
@@ -82,8 +82,9 @@ public class WorldGenerator {
 		this.chunkWidth = chunkWidth;
 
 		//TODO: y-grid/2
+		jumpOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
 		
-		//Temporary solution to possible offsets
+		/*Temporary solution to possible offsets
 		jumpOffsets.add(new Integer[] { 1, 0 });
 		jumpOffsets.add(new Integer[] { 2, 2 });
 		jumpOffsets.add(new Integer[] { 3, 2 });
@@ -93,7 +94,7 @@ public class WorldGenerator {
 		jumpOffsets.add(new Integer[] { 4, -1 });
 		jumpOffsets.add(new Integer[] { 3, -2 });
 		jumpOffsets.add(new Integer[] { 4, -2 });
-
+*/
 		hookAttachOffsets.add(new Integer[] { 2, 4 });
 
 		hookJumpOffsets.add(new Integer[] { 0, -5 });
