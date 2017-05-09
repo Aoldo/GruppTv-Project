@@ -14,6 +14,7 @@ public class GameCharacter {
 	private float xVelocity = 1.5f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
+	private boolean hookExtended = false;
 	private Point hookPosition;
 	private float hookLength;
 	private final float hookAngle = 1;
@@ -23,13 +24,15 @@ public class GameCharacter {
 	}
 
 	public void update(float pixelsPerFrame) {
-		if (attachedWithHook && hookLength <= position.getDistance(hookPosition)) {
-			swing();
-		} else if (!collidingWithGround) {
-			fall();
-		}
-		if (attachedWithHook) {
+		if(attachedWithHook){
+			hookExtended = hookLength <= position.getDistance(hookPosition);
+			if(hookExtended){
+				swing();
+			}
 			moveHook(pixelsPerFrame);
+		}
+		if(!collidingWithGround && !hookExtended){
+			fall();
 		}
 	}
 
@@ -52,8 +55,8 @@ public class GameCharacter {
 	}
 
 	private void swing() {
-		float newY = hookPosition.getY() - (float) Math.sqrt(hookLength * hookLength - ((position.getX() - hookPosition.getX()) *
-				(position.getX() - hookPosition.getX())));
+		float newY = hookPosition.getY() - (float) Math.sqrt(hookLength * hookLength - ((position.getX() + 1 - hookPosition.getX()) *
+				(position.getX() + 1 - hookPosition.getX())));
 		position.setY(newY);
 		if(Math.abs(newY - hookPosition.getY()) < 10) {
 			removeHook();
@@ -81,6 +84,7 @@ public class GameCharacter {
 		position.setY(position.getY() + 1);
 		yVelocity += maxHookVelocity;
 		collidingWithGround = false;
+		hookExtended = false;
 	}
 
 	private void moveHook(float pixelsPerFrame) {

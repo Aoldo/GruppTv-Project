@@ -181,7 +181,7 @@ public class GameLogic implements GamePlugin, InputProcessor {
 				character.jump();
 				return true;
 			case hookKeyCode:
-				character.initHook(500);
+				character.initHook(75);
 				return true;
 			case resetKeyCode:
 				reset();
