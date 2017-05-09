@@ -46,7 +46,7 @@ public class GameLogic implements GamePlugin, InputProcessor {
 		Gdx.input.setInputProcessor(this);
 
 		gameRenderer = new GameRenderer();
-		character = new GameCharacter(30, 150);
+		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
 
 		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
@@ -84,7 +84,7 @@ public class GameLogic implements GamePlugin, InputProcessor {
 	public void update() {
 		world.moveLeft(pixelsPerFrame);
 		handlePossibleCharacterCollision();
-		character.update(pixelsPerFrame);
+		character.update();
 		if (world.getPosition() < -tileSize * chunkWidth) {
 			world.incrementStartIndex();
 			world.setPosition(0);
@@ -167,7 +167,7 @@ public class GameLogic implements GamePlugin, InputProcessor {
 	}
 
 	private void reset() {
-		character = new GameCharacter(30, 150);
+		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
 				generator.generateChunk(5) });
 		world.setPosition(0);

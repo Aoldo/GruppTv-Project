@@ -18,18 +18,20 @@ public class GameCharacter {
 	private Point hookPosition;
 	private float hookLength;
 	private final float hookAngle = 1;
+	private final float pixelsPerFrame;
 
-	public GameCharacter(float x, float y) {
+	public GameCharacter(float x, float y, float pixelsPerFrame) {
 		position = new Point(x, y);
+		this.pixelsPerFrame = pixelsPerFrame;
 	}
 
-	public void update(float pixelsPerFrame) {
+	public void update() {
 		if(attachedWithHook){
 			hookExtended = hookLength <= position.getDistance(hookPosition);
 			if(hookExtended){
 				swing();
 			}
-			moveHook(pixelsPerFrame);
+			moveHook();
 		}
 		if(!collidingWithGround && !hookExtended){
 			fall();
@@ -87,7 +89,7 @@ public class GameCharacter {
 		hookExtended = false;
 	}
 
-	private void moveHook(float pixelsPerFrame) {
+	private void moveHook() {
 		hookPosition.setX(hookPosition.getX() - pixelsPerFrame);
 	}
 
