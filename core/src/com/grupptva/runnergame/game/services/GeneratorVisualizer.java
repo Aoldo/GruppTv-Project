@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @author Mattias
  *
  */
-public class GeneratorVisualizer implements ScenePlugin{
+public class GeneratorVisualizer implements ScenePlugin {
 	WorldGenerator generator;
 	ShapeRenderer sr;
 
@@ -28,7 +28,7 @@ public class GeneratorVisualizer implements ScenePlugin{
 		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets, 1l, 40, 20,0);
+		generator = new WorldGenerator(7f, -0.4f, 1.5f, 1l, 40, 20, 0);
 
 		chunkLog = generator.generateChunkLog(10);
 	}
@@ -65,7 +65,7 @@ public class GeneratorVisualizer implements ScenePlugin{
 						sr.setColor(.6f, .2f, .9f, 1);
 						break;
 					default:
-						sr.setColor(1,0,1,1);
+						sr.setColor(1, 0, 1, 1);
 						break;
 					}
 					sr.rect(x * 10, y * 10, 10, 10);

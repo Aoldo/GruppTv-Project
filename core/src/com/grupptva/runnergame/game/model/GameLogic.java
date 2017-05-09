@@ -48,8 +48,8 @@ public class GameLogic implements ScenePlugin, InputListener, InputProcessor {
 		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-		generator = new WorldGenerator(hookAttachOffsets, jumpOffsets, hookJumpOffsets,
-				4l, chunkWidth, chunkHeight, 0);
+		generator = new WorldGenerator(character.getJumpInitialVelocity(),
+				character.getGravity(), pixelsPerFrame, 4l, chunkWidth, chunkHeight, 0);
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -72,8 +72,8 @@ public class GameLogic implements ScenePlugin, InputListener, InputProcessor {
 		world.setChunks(new Chunk[] { c, d, c });
 
 		//TODO: First 3 chunks should be a tutorial.
-		world.setChunks(new Chunk[] { c, generator.generateChunk(),
-				generator.generateChunk() });
+		world.setChunks(
+				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 	}
 
 	public void update() {

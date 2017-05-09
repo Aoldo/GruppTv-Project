@@ -21,8 +21,7 @@ public class WorldGeneratorTest {
 
 	@Before
 	public void init() {
-		wg = new WorldGenerator(new ArrayList<Integer[]>(), new ArrayList<Integer[]>(),
-				new ArrayList<Integer[]>(), 2l, 40, 20, 0);
+		wg = new WorldGenerator(7, -.4f, 1.5f, 2l, 40, 20, 0);
 	}
 
 	@Test
@@ -133,7 +132,6 @@ public class WorldGeneratorTest {
 		expectedOffsets.add(new Integer[] { 4, 1 });
 		expectedOffsets.add(new Integer[] { 4, 0 });
 
-		
 		for (int i = 0; i < landingOffsets.size(); i++) {
 			for (int u = 0; u < landingOffsets.get(i).length; u++) {
 				assertTrue(landingOffsets.get(i)[u] == expectedOffsets.get(i)[u]);

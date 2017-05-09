@@ -46,12 +46,12 @@ public class WorldGenerator {
 	 * The offsets compared to the "current tile" that the character can attach
 	 * it's hook to.
 	 */
-	List<Integer[]> hookAttachOffsets;
+	List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
 	/**
 	 * The offsets compared to the "current tile" that the character can jump
 	 * and land on.
 	 */
-	List<Integer[]> jumpOffsets;
+	List<Integer[]> jumpOffsets= new ArrayList<Integer[]>();
 	/**
 	 * The offsets compared to the "current tile"-which the hook is attached to
 	 * that the character can land on.
@@ -59,7 +59,7 @@ public class WorldGenerator {
 	 * TODO: This might depend on the radius of the hook and will probably cause
 	 * issues later, need to figure out a fix.
 	 */
-	List<Integer[]> hookJumpOffsets;
+	List<Integer[]> hookJumpOffsets= new ArrayList<Integer[]>();
 
 	/**
 	 * Creates a new WorldGenerator, parameters are the coordinates in the grid
