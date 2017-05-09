@@ -80,7 +80,6 @@ public class WorldGenerator {
 		this.chunkHeight = chunkHeight;
 		this.chunkWidth = chunkWidth;
 
-		//TODO: y-grid/2
 		jumpOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
 
 
