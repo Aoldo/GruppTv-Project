@@ -73,8 +73,7 @@ public class WorldGenerator {
 	 * @param hookJumpOffsets
 	 * @param seed
 	 */
-	public WorldGenerator(List<Integer[]> hookAttachOffsets, List<Integer[]> jumpOffsets,
-			List<Integer[]> hookJumpOffsets, Long seed, int chunkWidth, int chunkHeight,
+	public WorldGenerator(float v0y, float a, float vx, Long seed, int chunkWidth, int chunkHeight,
 			int initY) {
 
 		this.initY = initY;
@@ -82,6 +81,8 @@ public class WorldGenerator {
 		this.chunkHeight = chunkHeight;
 		this.chunkWidth = chunkWidth;
 
+		//TODO: y-grid/2
+		
 		//Temporary solution to possible offsets
 		jumpOffsets.add(new Integer[] { 1, 0 });
 		jumpOffsets.add(new Integer[] { 2, 2 });
