@@ -83,9 +83,6 @@ public class WorldGenerator {
 		//TODO: y-grid/2
 		jumpOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
 
-		for (Integer[] offset : jumpOffsets) {
-			System.out.println(Arrays.toString(offset));
-		}
 
 		/*
 		 * Temporary solution to possible offsets jumpOffsets.add(new Integer[]
