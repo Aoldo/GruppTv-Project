@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.gamecharacter;
+package com.grupptva.runnergame.game.model.gamecharacter;
 
 import java.awt.*;
 

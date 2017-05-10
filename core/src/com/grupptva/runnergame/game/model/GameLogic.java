@@ -170,8 +170,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
-		world.setChunks(new Chunk[] { c, generator.generateChunk(0),
-				generator.generateChunk(5) });
+		world.setChunks(new Chunk[] { c, generator.generateChunk(),
+				generator.generateChunk() });
 		world.setPosition(0);
 		world.setStartIndex(0);
 	}
