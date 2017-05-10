@@ -647,7 +647,7 @@ public class WorldGenerator {
 	private boolean hookStepPart1(Tile[][] chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
 			Integer[] currentTileCopy) {
 		if (validHookAttachIndexes.size() == 0) {
-			//Failsafe to prevent infinite loop
+			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 			return false;
@@ -676,7 +676,7 @@ public class WorldGenerator {
 
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets, currentTileCopy);
 		if (validJumpIndexes.size() == 0) {
-			//Failsafe to prevent infinite loop
+			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 			return;
@@ -771,7 +771,7 @@ public class WorldGenerator {
 	private boolean jumpStepPart1(Tile[][] chunk, Integer[] currentTile) {
 		List<Integer> validJumpIndexes = getValidOffsetIndexes(jumpOffsets, currentTile);
 		if (validJumpIndexes.size() == 0) {
-			//Failsafe to prevent infinite loop
+			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 
