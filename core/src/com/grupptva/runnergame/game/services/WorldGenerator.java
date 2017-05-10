@@ -697,7 +697,7 @@ public class WorldGenerator {
 
 				chunkLog.add(deepCopyChunk(chunk));
 
-				extraOffset = rng.nextInt(currentTileExtraBuffer) + 1;
+				extraOffset = rng.nextInt(2);
 				for (int i = 1; i <= extraOffset; i++) {
 					if (isValidIndex(currentTile[0] + i, currentTile[1])) {
 						chunk[currentTile[1]][currentTile[0] + i] = Tile.FULL;
