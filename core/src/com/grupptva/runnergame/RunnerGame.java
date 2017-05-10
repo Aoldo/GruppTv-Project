@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.controller.InputHandler;
 import com.grupptva.runnergame.game.model.GameLogic;
 import com.grupptva.runnergame.game.services.GeneratorVisualizer;
+import com.grupptva.runnergame.highscores.HighScoresData;
+import com.grupptva.runnergame.menu.HighScores;
 import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuListener;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -23,11 +25,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @author Mattias
  *
  */
+
 public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	ShapeRenderer sr;
 	SpriteBatch batch;
 	Texture img;
 	GameLogic gameLogic;
+	HighScores highscores;
 
 	final double fastestTimeStep = 0.0041666; //240 fps
 	final double slowestTimeStep = 0.0166666; //60 fps
@@ -57,6 +61,15 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 		gameLogic = new GameLogic();
 		//inputHandler.addListener(gameLogic);
 		activePlugin = gameLogic;
+	}
+	
+	public void enterHighscores() {
+		highscores = new HighScores(this);
+		activePlugin = highscores;
+	}
+
+	public void exitHighscores() {
+		activePlugin = mainMenu;
 	}
 
 	public void startGameEvent() {
@@ -115,4 +128,5 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	public void dispose() {
 		batch.dispose();
 	}
+
 }
