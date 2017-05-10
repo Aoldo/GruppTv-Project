@@ -105,7 +105,7 @@ public class GameCharacter {
 		return yVelocity;
 	}
 
-	private void setyVelocity(float yVelocity) {
+	public void setyVelocity(float yVelocity) {
 		this.yVelocity = yVelocity;
 	}
 
