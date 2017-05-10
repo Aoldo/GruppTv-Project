@@ -1,5 +1,4 @@
-package com.grupptva.runnergame.gamecharacter;
-
+package com.grupptva.runnergame.game.model.gamecharacter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
