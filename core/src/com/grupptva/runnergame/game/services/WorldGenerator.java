@@ -11,9 +11,7 @@ import com.grupptva.runnergame.game.model.world.Chunk;
 
 /**
  * 
- * @author Mattias TODO: Reduce amount of identical code by splitting the steps
- *         into even smaller methods that the chunkLog version and the normal
- *         version use.
+ * @author Mattias
  */
 public class WorldGenerator {
 	final int chunkWidth;
@@ -122,23 +120,54 @@ public class WorldGenerator {
 		hookJumpOffsets.add(new Integer[] { 6, 0 });
 		hookJumpOffsets.add(new Integer[] { 6, 1 });
 
-		this.hookAttachOffsets = hookAttachOffsets;
-		this.jumpOffsets = jumpOffsets;
-		this.hookJumpOffsets = hookJumpOffsets;
 		rng = new Random(seed);
 	}
 
+	/**
+	 * Calculates the amount of frames, from y=0, to reach the apex of the
+	 * characters jump.
+	 * 
+	 * @param v0y
+	 *            The initial Y velocity of the character.
+	 * @param a
+	 *            Constant acceleration of the character, should be negative.
+	 * @return Frames to the apex.
+	 */
 	float getFramesToApexOfJump(float v0y, float a) {
 		//v=v_0+a*t, v = 0 => t=v_0/a
 		return Math.abs(v0y / (a));
 	}
 
+	/**
+	 * Calculates the height of the apex of a jump, relative to Y=0.
+	 * 
+	 * @param v0y
+	 *            The initial Y velocity of the character.
+	 * @param a
+	 *            Constant acceleration of the character, should be negative.
+	 * @return Height of the apex.
+	 */
 	float getRelativeHeightOfApex(float v0y, float a) {
 		//integrate v=v_0+a*t dt <=> y = v_0*t-(a*t^2)/2
 		float t = getFramesToApexOfJump(v0y, a);
 		return getJumpY(v0y, a, t);
 	}
 
+	/**
+	 * Gets the amount of frames(time) that corresponds to the rightmost point
+	 * of a jump with a Y value of {@param y}.
+	 * 
+	 * @param v0y
+	 *            The initial Y velocity of the character.
+	 * @param a
+	 *            Constant acceleration of the character, should be negative.
+	 * @param y
+	 *            The Y value of the sought point.
+	 * @param y0
+	 *            The initial Y value of the character.
+	 * @return The amount of frames, from the initial value {@param y0}, to the
+	 *         sought value {@param y}.
+	 */
 	float getFramesToYValue(float v0y, float a, float y, float y0) {
 		float sqrt = (float) Math.sqrt(2 * a * y - 2 * a * y0 + v0y * v0y);
 		//Get the furthest future time, ie rightmost point with that y value.
@@ -148,6 +177,21 @@ public class WorldGenerator {
 		return (sqrt - v0y) / a;
 	}
 
+	/**
+	 * Calculates the size of a jump starting at y=0, then going to y=apex and
+	 * then going to y=-apex. The dimensions are then normalized with
+	 * {@param tileSize}.
+	 * 
+	 * @param v0y
+	 *            The initial Y velocity of the character.
+	 * @param a
+	 *            Constant acceleration of the character, should be negative.
+	 * @param tileSize
+	 *            Size of each tile in the grid.
+	 * @param vx
+	 *            Constant X velocity of the character.
+	 * @return The size of the jump grid.
+	 */
 	private int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize, float vx) {
 		int[] size = new int[] { 0, 0 };
 		float maxY = getRelativeHeightOfApex(v0y, a);
@@ -158,10 +202,32 @@ public class WorldGenerator {
 		return size;
 	}
 
+	/**
+	 * Returns an empty 2d array of booleans, with dimensions decided by
+	 * {@param Size}
+	 * 
+	 * @param size
+	 *            The dimensions of the 2d array, in the format [0] = X, [1] =
+	 *            Y.
+	 * @return An empty 2d array of booleans.
+	 */
 	private boolean[][] createEmptyJumpGrid(int[] size) {
 		return new boolean[size[1]][size[0]];
 	}
 
+	/**
+	 * Returns the Y value that the time(x value) corresponds to, in the
+	 * constant acceleration equation made out of the initial velocity v0y and
+	 * acceleration a.
+	 * 
+	 * @param v0y
+	 *            The initial velocity
+	 * @param a
+	 *            The constant acceleration.
+	 * @param t
+	 *            The time/frame/x value
+	 * @return The corresponding Y value.
+	 */
 	private float getJumpY(float v0y, float a, float t) {
 		return (v0y * t) + ((a * t * t) / 2);
 	}
@@ -171,33 +237,37 @@ public class WorldGenerator {
 	}
 
 	boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
+		//Create a grid of false booleans. Size depends on how far the character can reach by jumping.
 		boolean[][] jumpGrid = createEmptyJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
-		//boolean[][] jumpGrid = new boolean[100][10];
 
 		//Calculations are done by simulating a point performing the jump and checking where it can land.
-		//Starting y position of character is in the middle of the testing grid, since possible locations are [yApex, -yApex]
+		//Starting y position of character is in the middle of the testing grid, since possible locations are [-yApex, yApex]
 		//ie the character can gain or lose up to yApex in height.
 		float y0 = jumpGrid.length * tileSize / 2;
 
 		//In order to get every tile that the jump parabola intersects with, the (X or Y) coordinates between tiles are sent into the 
 		//parabolas equation. The (Y or X respectively) solution is then used to select the who use the solution as a coordinate and 
-		//who are connected to the initial "line between" coordinate. See http://i.imgur.com/6e25A1N.png for graphical illustration.
-
-		List<float[]> points = new ArrayList<float[]>();
+		//who are connected to the initial "line between" coordinate. {@See http://i.imgur.com/6e25A1N.png} for graphical illustration.
+		List<float[]> points = new ArrayList<float[]>(); //List containing all points.
 		//Do x lines   | 
 		for (int x = 0; x < jumpGrid[0].length * tileSize; x += tileSize) {
 			float y = getJumpY(v0y, a, x) + y0;
+
+			//Normalize the values so that they can be turned into indexes.
 			int normY = (int) (y / tileSize);
 			int normX = (int) (x / tileSize);
-			points.add(new float[] { normX, normY });
+
+			points.add(new float[] { normX, normY }); //Save index.
 		}
+
+		//Add the tiles connected horizontally to every point.
 		int index = 0;
 		for (; index < points.size(); index++) {
-			//Add tiles (x,y) and (x-1,y)
 			int x = (int) points.get(index)[0];
 			int y = (int) points.get(index)[1];
 			//Make sure it is inside bounds.
 			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
+				//Add tiles (x,y) and (x-1,y)
 				jumpGrid[y][x] = true;
 				if (x >= 1)
 					jumpGrid[y][x - 1] = true;
@@ -205,32 +275,40 @@ public class WorldGenerator {
 		}
 
 		//Do y lines   _
+		//Drawing a horizontal line of second grade equation, y=ax^2+bx+c, gives 2 results
 		float framesToApex = getFramesToApexOfJump(v0y, a);
 		float framesToZero = 2 * framesToApex;
 		for (int y = 0; y < jumpGrid.length * tileSize; y += tileSize) {
 
-			float adjustedY = y - y0;
+			float adjustedY = y - y0; //TODO: Figure out why this was needed.
 
-			float x = getFramesToYValue(v0y, a, adjustedY, 0);
+			float x = getFramesToYValue(v0y, a, adjustedY, 0); //The x value of the rightmost result from drawing the line.
 
+			//Normalize the values so that they can be turned into indexes.
 			int normY = (int) (y / tileSize);
 			int normX = (int) (x / tileSize);
-			points.add(new float[] { normX, normY });
+			points.add(new float[] { normX, normY }); //Save index.
 
+			//Make sure the leftmost result is inside bounds, since it looks something like this, any x past framesToZero is outside the left edge.
+			//    _____
+			//    |/\ |
+			//    |  \|
+			//    ¯¯¯¯¯
 			if (x < framesToZero) {
-				float dx = x - framesToApex;
-				float leftX = framesToApex - dx;
-				float normLeftX = (int) (leftX / tileSize);
+				float dx = x - framesToApex; //Get distance to apex from rightmost x, since leftmost x is on the opposite side of the apex.
+				float leftX = framesToApex - dx; //The value of the leftmost x result form drawing the line.
+				float normLeftX = (int) (leftX / tileSize);//Normalize the value so that it can be turned into an index.
 
-				points.add(new float[] { normLeftX, normY });
+				points.add(new float[] { normLeftX, normY }); //Save index.
 			}
 		}
+		//Add the tiles connected vertically to every point.
 		for (; index < points.size(); index++) {
-			//Add tiles (x,y) and (x,y-1)
 			int x = (int) points.get(index)[0];
 			int y = (int) points.get(index)[1];
 			//Make sure it is inside bounds.
 			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
+				//Add tiles (x,y) and (x,y-1)
 				jumpGrid[y][x] = true;
 				if (y >= 1)
 					jumpGrid[y - 1][x] = true;
@@ -239,9 +317,28 @@ public class WorldGenerator {
 		return jumpGrid;
 	}
 
+	/**
+	 * Calculates the offset of every tile the character can jump to and land
+	 * on, based on the second grade equation that makes up its jump movement.
+	 * 
+	 * @param v0y
+	 *            The initial upwards velocity that the character jumps with.
+	 * @param a
+	 *            The acceleration due to gravity. Should be negative.
+	 * @param tileSize
+	 *            TODO: Supposed to be the size of every tile in the world,
+	 *            actually sending in that value give the expected results.
+	 *            Currently sending in slightly less than half of the tileSize
+	 *            gives appropriate results ????
+	 * @param vx
+	 *            TODO: Supposed to be the constant x velocity of the character.
+	 *            Might not be used properly, but should still be needed.
+	 * @return A list containing the offsets, in relation to the tile the
+	 *         character is at, that the character can reach by jumping.
+	 */
 	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize, float vx) {
-		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx);
-		int halfGridHeight = jumpGrid.length / 2;
+		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx); //Grid of tiles that the character might be able to reach by jumping.
+		int halfGridHeight = jumpGrid.length / 2; //Save half of grid height, since grid height [-apexY, apexY] of jump, and character starts at 0.
 		List<Integer[]> trueIndexes = getTrueIndexes(jumpGrid);
 		List<Integer[]> landingIndexes = getLandingIndexes(trueIndexes);
 
@@ -261,11 +358,11 @@ public class WorldGenerator {
 	 */
 	List<Integer[]> getTrueIndexes(boolean[][] tiles) {
 		List<Integer[]> indexes = new ArrayList<Integer[]>();
-
+		//Loop through every index.
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[0].length; x++) {
 				if (tiles[y][x] == true)
-					indexes.add(new Integer[] { x, y });
+					indexes.add(new Integer[] { x, y }); //Add index of true to return list.
 			}
 		}
 		return indexes;
@@ -282,8 +379,8 @@ public class WorldGenerator {
 	 * @return Sorted list.
 	 */
 	List<Integer[]> sortJumpIndexes(List<Integer[]> jumpIndexes) {
-		//Sort everything by ascending X, with equals to the left of apex sorted by ascending Y
-		//and equals to the right of apex by descending Y.
+		//Sort everything by ascending X, with equal X values to the left of the apex sorted by ascending Y
+		//and equals to the right of the apex by descending Y.
 		jumpIndexes = mergeSort(jumpIndexes, 0);
 
 		//Failsafe so that it splits between different X values, otherwise it wont sort properly
@@ -293,24 +390,30 @@ public class WorldGenerator {
 			lowestMidXIndex--;
 		}
 
+		//Split the list.
 		List<Integer[]> left = jumpIndexes.subList(0, lowestMidXIndex);
 		List<Integer[]> right = jumpIndexes.subList(lowestMidXIndex, jumpIndexes.size());
 
+		//Sort by Y
 		left = mergeSort(left, 1);
 		right = mergeSort(right, 1);
-		Collections.reverse(right);
-		left.addAll(right);
-		left = mergeSort(left, 0);
+		Collections.reverse(right); //Reverse right half to get descending sort.
+
+		left.addAll(right); //Add right half to left half to get everything in one list again.
+		left = mergeSort(left, 0); //Sort entire list by ascending X. Sort is stable so ascending/descending Y is kept.
 
 		return left;
 	}
 
 	/**
 	 * Sorts {@param list} by the ascending value of Integer[index].
+	 * {@See https://en.wikipedia.org/wiki/Merge_sort}
 	 * 
 	 * @param list
 	 *            List of Integer[] to be sorted.
 	 * @param index
+	 *            the index of the integer[] that should be used to determine
+	 *            the sorting.
 	 * @return Sorted list.
 	 */
 	List<Integer[]> mergeSort(List<Integer[]> list, int index) {
@@ -335,10 +438,12 @@ public class WorldGenerator {
 		return merge(left, right, index);
 	}
 
-	List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right, int index) {
+	private List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right, int index) {
 		List<Integer[]> result = new ArrayList<Integer[]>();
 
+		//Loops until either list is empty.
 		while (left.size() > 0 && right.size() > 0) {
+			//Appends the lowest value, from either list, to the result list.
 			if (left.get(0)[index] <= right.get(0)[index]) {
 				result.add(left.get(0));
 				left.remove(0);
@@ -347,7 +452,7 @@ public class WorldGenerator {
 				right.remove(0);
 			}
 		}
-
+		//Adds the remaining values to the result, only the list with things left in it's loop will run.
 		while (left.size() > 0) {
 			result.add(left.get(0));
 			left.remove(0);
@@ -360,11 +465,14 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * Sorts the jumpIndexes list and then checks every tile if it is below the
-	 * previous tile. Adds all of those tiles to list and returns them.
+	 * Sorts the jumpIndexes list and then checks every tile, to the right of
+	 * the apex, if it is below the previous tile. Adds all of those tiles to a
+	 * new list and returns them.
 	 * 
 	 * @param jumpIndexes
-	 * @return
+	 *            List to be sorted and whose tiles should be investigated.
+	 * @return A new list containing all tileIndexes who are below the previous
+	 *         tile.
 	 */
 	List<Integer[]> getLandingIndexes(List<Integer[]> jumpIndexes) {
 		jumpIndexes = sortJumpIndexes(jumpIndexes);
@@ -426,7 +534,7 @@ public class WorldGenerator {
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL; //Create solid ground at the end of the chunk.
 		initY = currentTile[1]; //Save final Y value of the chunk so that it can seamlessly connect to the next one.
 
-		return new Chunk(convertChunkToWorldModel(chunk));	//Convert the chunk into one that is usable by the world, and return it.
+		return new Chunk(convertChunkToWorldModel(chunk)); //Convert the chunk into one that is usable by the world, and return it.
 	}
 
 	private void initEmptyChunk(Tile[][] chunk) {
