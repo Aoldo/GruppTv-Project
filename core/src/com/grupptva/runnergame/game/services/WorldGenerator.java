@@ -379,46 +379,15 @@ public class WorldGenerator {
 		return landingIndexes;
 	}
 
-	public Chunk generateChunk() {
-		Tile[][] chunk = new Tile[chunkHeight][chunkWidth];
-		for (int y = 0; y < chunk.length; y++) {
-			for (int x = 0; x < chunk[0].length; x++) {
-				chunk[y][x] = Tile.EMPTY;
-			}
-		}
-
-		//This is used to "crawl" through the possible paths inside of the chunk to the end of it.
-		//x, y
-		Integer[] currentTile = { 0, initY };
-
-		//Add a tile for the player to stand on at the start of the chunk.
-		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-
-		/*
-		 * Keep crawling forward step by step until the end of the chunk has
-		 * been reached. Inside this loop is where the magic happens.
-		 */
-		while (currentTile[0] != chunk[0].length - 1) {
-			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-
-			clearPossibilities(chunk); //Used for visualization only!
-
-			int stepValue = rng.nextInt(jumpStepChance + hookStepChance);
-
-			if (stepValue < jumpStepChance)
-				jumpStep(chunk, currentTile);
-			else if (stepValue < jumpStepChance + hookStepChance)
-				hookStep(chunk, currentTile);
-
-		}
-		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-
-		int finalY = currentTile[1];
-		initY = finalY;
-
-		return new Chunk(convertChunkToWorldModel(chunk));
-	}
-
+	/**
+	 * Converts a chunk made out of WorldGenerator.Tile s to a chunk used in the
+	 * actual world. This is needed because the generator has special tiles used
+	 * for the visualization of the generation, that don't exist in the actual
+	 * world.
+	 * 
+	 * @param chunk
+	 * @return
+	 */
 	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(Tile[][] chunk) {
 
 		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[chunk[0].length][chunk.length];
@@ -436,6 +405,38 @@ public class WorldGenerator {
 		return newChunk;
 	}
 
+	public Chunk generateChunk() {
+		Tile[][] chunk = new Tile[chunkHeight][chunkWidth]; //The generated chunk. Currently empty.
+		initEmptyChunk(chunk); //Initialize every tile inside of the chunk to prevent nullpointer exceptions.
+
+		Integer[] currentTile = { 0, initY }; //Represents current position of the "crawler" that simulates possible character movement through the chunk.
+
+		// Keep crawling forward step by step until the end of the chunk has been reached.
+		// Inside this loop is where the magic happens.
+		while (currentTile[0] != chunk[0].length - 1) {
+			chunk[currentTile[1]][currentTile[0]] = Tile.FULL; //Creates solid ground at the crawlers current position.
+
+			int stepValue = rng.nextInt(jumpStepChance + hookStepChance); //Randomize which kind of movement should be used next.
+
+			if (stepValue < jumpStepChance) //Select jumpStep
+				jumpStep(chunk, currentTile);
+			else if (stepValue < jumpStepChance + hookStepChance) //Select hookStep
+				hookStep(chunk, currentTile);
+		}
+		chunk[currentTile[1]][currentTile[0]] = Tile.FULL; //Create solid ground at the end of the chunk.
+		initY = currentTile[1]; //Save final Y value of the chunk so that it can seamlessly connect to the next one.
+
+		return new Chunk(convertChunkToWorldModel(chunk));	//Convert the chunk into one that is usable by the world, and return it.
+	}
+
+	private void initEmptyChunk(Tile[][] chunk) {
+		for (int y = 0; y < chunk.length; y++) {
+			for (int x = 0; x < chunk[0].length; x++) {
+				chunk[y][x] = Tile.EMPTY;
+			}
+		}
+	}
+
 	/**
 	 * Generates a chunk, but unlike generateChunk this method returns every
 	 * single iteration of said chunks generation. Used for visualization
@@ -447,50 +448,31 @@ public class WorldGenerator {
 	 */
 	public List<Tile[][]> generateChunkLog(int initY) {
 		List<Tile[][]> chunkLog = new ArrayList<Tile[][]>();
+		Tile[][] chunk = new Tile[chunkHeight][chunkWidth]; //The generated chunk. Currently empty.
+		initEmptyChunk(chunk); //Initialize every tile inside of the chunk to prevent nullpointer exceptions.
 
-		//Initialize the chunk, if the elements aren't set they are null which throws exceptions.
-		Tile[][] chunk = new Tile[chunkHeight][chunkWidth];
-		for (int y = 0; y < chunk.length; y++) {
-			for (int x = 0; x < chunk[0].length; x++) {
-				chunk[y][x] = Tile.EMPTY;
-			}
-		}
+		Integer[] currentTile = { 0, initY }; //Represents current position of the "crawler" that simulates possible character movement through the chunk.
 
-		//This is used to "crawl" through the possible paths inside of the chunk to the end of it.
-		//x, y
-		Integer[] currentTile = { 0, initY };
-
-		//Add a tile for the player to stand on at the start of the chunk.
-		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
-
-		/*
-		 * This line creates a copy of the current state of the chunk for
-		 * visualization purposes. TODO: Remove every instance of this line and
-		 * then copy the entire method to generateChunk, and then return the
-		 * final version of the chunk instead of the log.
-		 */
-		//chunkLog.add(deepCopyChunk(chunk));
-
-		/*
-		 * Keep crawling forward step by step until the end of the chunk has
-		 * been reached. Inside this loop is where the magic happens.
-		 */
+		// Keep crawling forward step by step until the end of the chunk has been reached.
+		// Inside this loop is where the magic happens.
 		while (currentTile[0] != chunk[0].length - 1) {
-			chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+			chunk[currentTile[1]][currentTile[0]] = Tile.FULL; //Creates solid ground at the crawlers current position.
 
 			chunkLog.add(deepCopyChunk(chunk));
 			clearPossibilities(chunk); //Used for visualization only!
+			int stepValue = rng.nextInt(jumpStepChance + hookStepChance); //Randomize which kind of movement should be used next.
 
-			int stepValue = rng.nextInt(jumpStepChance + hookStepChance);
-
-			if (stepValue < jumpStepChance)
+			if (stepValue < jumpStepChance) //Select jumpStep
 				jumpStep(chunk, currentTile, chunkLog);
-			else if (stepValue < jumpStepChance + hookStepChance)
+			else if (stepValue < jumpStepChance + hookStepChance) //Select hookStep
 				hookStep(chunk, currentTile, chunkLog);
 
 			chunkLog.add(deepCopyChunk(chunk));
 		}
-		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
+
+		chunk[currentTile[1]][currentTile[0]] = Tile.FULL; //Create solid ground at the end of the chunk.
+		initY = currentTile[1]; //Save final Y value of the chunk so that it can seamlessly connect to the next one.
+
 		chunkLog.add(deepCopyChunk(chunk));
 		return chunkLog;
 	}
