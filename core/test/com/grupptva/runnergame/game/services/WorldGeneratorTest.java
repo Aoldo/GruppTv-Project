@@ -42,7 +42,7 @@ public class WorldGeneratorTest {
 	}
 
 	@Test
-	public void getJumpY() {
+	public void getJumpYTest() {
 		assertTrue(wg.getJumpY(4, -2, 3, 1) == 4f);
 	}
 
