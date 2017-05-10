@@ -36,14 +36,39 @@ public class WorldGeneratorTest {
 
 	@Test
 	public void getFramesToYValueTest() {
-		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10)
-				* 2);
+		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10) * 2);
 		assertEquals(wg.getFramesToYValue(4, -2, -5, 1), 5.15f, .1f);
 	}
 
 	@Test
 	public void getJumpYTest() {
 		assertTrue(wg.getJumpY(4, -2, 3, 1) == 4f);
+	}
+
+	@Test
+	public void calculateHookAttachOffsetsTest() {
+		float angle = 0.820305f;
+		float radius = 80f;
+		int tileSize = 20;
+
+		List<Integer[]> expectedList = new ArrayList<Integer[]>();
+		expectedList.add(new Integer[] { 0, 0 });
+		expectedList.add(new Integer[] { 0, 1 });
+		expectedList.add(new Integer[] { 1, 1 });
+		expectedList.add(new Integer[] { 1, 2 });
+		expectedList.add(new Integer[] { 2, 2 });
+		//Method should skip the final tile, probably
+
+		List<Integer[]> offsets = wg.calculateHookAttachOffsets(angle, radius, tileSize);
+
+		for (Integer[] offset : offsets) {
+			System.out.println(Arrays.toString(offset));
+		}
+		for (int i = 0; i < offsets.size(); i++) {
+			for (int u = 0; u < offsets.get(i).length; u++) {
+				assertTrue(offsets.get(i)[u] == expectedList.get(i)[u]);
+			}
+		}
 	}
 
 	@Test
@@ -144,16 +169,14 @@ public class WorldGeneratorTest {
 	public void calculateJumpGridTest() {
 		//Don't worry about it.
 		boolean[][] result1 = new boolean[][] { { false, false, false, false, true },
-				{ false, false, false, false, true },
-				{ false, false, false, false, true },
+				{ false, false, false, false, true }, { false, false, false, false, true },
 				{ false, false, false, false, true }, { true, false, false, true, true },
 				{ true, false, false, true, false }, { true, true, false, true, false },
 				{ true, true, true, true, false } };
 
 		assertArrayEquals(wg.calculateJumpGrid(4, -2, 1, 1), result1);
 
-		boolean[][] result2 = new boolean[][] {
-				{ false, false, false, false, false, false, false, true },
+		boolean[][] result2 = new boolean[][] { { false, false, false, false, false, false, false, true },
 				{ false, false, false, false, false, false, false, true },
 				{ false, false, false, false, false, false, true, true },
 				{ false, false, false, false, false, false, true, false },
@@ -176,8 +199,7 @@ public class WorldGeneratorTest {
 
 	@Test
 	public void deepCopyChunk_ShouldNotBeReference() {
-		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY },
-				{ Tile.EMPTY, Tile.EMPTY } };
+		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY }, { Tile.EMPTY, Tile.EMPTY } };
 
 		Tile[][] chunkCopy = wg.deepCopyChunk(chunk);
 		chunk[0][0] = Tile.FULL;
