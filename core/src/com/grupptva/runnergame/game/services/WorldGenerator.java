@@ -330,18 +330,28 @@ public class WorldGenerator {
 		return null;
 	}
 
-	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius, float tileSize) {
+	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius, int tileSize) {
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
 
+		//TODO: Implement similar method to calculateJumpGrid. Also refactor that to reuse code.
+		
+		//Check vertical lines
 		float maxX = (float) (maxRadius * Math.cos(angle));
 
-		//Step through every tile horizontally. 
-		for (double x = (tileSize / 2); x < maxX; x += tileSize) {
-			double r = x / Math.cos(angle);
+		//Check horizontal lines
+		float maxY = (float) (maxRadius * Math.sin(angle));
 
-			int y = (int) (r * Math.sin(angle));
-			offsets.add(new Integer[] { (int) x, y });
+
+		//Remove duplicates
+		for (int i = 0; i < offsets.size(); i++) {
+			for (int u = i + 1; u < offsets.size(); u++) {
+				if (offsets.get(i)[0] == offsets.get(u)[0] && offsets.get(i)[1] == offsets.get(u)[1]) {
+					offsets.remove(u);
+					u--;
+				}
+			}
 		}
+
 		return offsets;
 	}
 
