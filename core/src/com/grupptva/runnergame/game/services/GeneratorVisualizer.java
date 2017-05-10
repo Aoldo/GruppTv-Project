@@ -28,7 +28,7 @@ public class GeneratorVisualizer implements ScenePlugin {
 		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-		generator = new WorldGenerator(7f, -0.4f, 1.5f, 8, 1l, 40, 20, 0);
+		generator = new WorldGenerator(7f, -0.4f, 1.5f, 9, 1l, 40, 20, 0);
 
 		chunkLog = generator.generateChunkLog(10);
 	}
