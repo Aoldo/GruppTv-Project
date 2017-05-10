@@ -1,11 +1,13 @@
-package com.grupptva.runnergame.worldgenerator;
+package com.grupptva.runnergame.game.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import com.grupptva.runnergame.world.Chunk;
+import com.grupptva.runnergame.game.model.world.Chunk;
 
 /**
  * 
@@ -21,6 +23,8 @@ public class WorldGenerator {
 	int jumpStepChance = 100;
 	int hookStepChance = 30;
 	int runnerStepChance = 0;
+
+	int initY;
 
 	int currentTileExtraBuffer = 3;
 
@@ -42,12 +46,12 @@ public class WorldGenerator {
 	 * The offsets compared to the "current tile" that the character can attach
 	 * it's hook to.
 	 */
-	List<Integer[]> hookAttachOffsets;
+	List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
 	/**
 	 * The offsets compared to the "current tile" that the character can jump
 	 * and land on.
 	 */
-	List<Integer[]> jumpOffsets;
+	List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 	/**
 	 * The offsets compared to the "current tile"-which the hook is attached to
 	 * that the character can land on.
@@ -55,8 +59,7 @@ public class WorldGenerator {
 	 * TODO: This might depend on the radius of the hook and will probably cause
 	 * issues later, need to figure out a fix.
 	 */
-	List<Integer[]> hookJumpOffsets;
-	Long seed;
+	List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
 
 	/**
 	 * Creates a new WorldGenerator, parameters are the coordinates in the grid
@@ -70,23 +73,25 @@ public class WorldGenerator {
 	 * @param hookJumpOffsets
 	 * @param seed
 	 */
-	public WorldGenerator(List<Integer[]> hookAttachOffsets, List<Integer[]> jumpOffsets,
-			List<Integer[]> hookJumpOffsets, Long seed, int chunkWidth, int chunkHeight) {
+	public WorldGenerator(float v0y, float a, float vx, int tileSize, Long seed,
+			int chunkWidth, int chunkHeight, int initY) {
+		this.initY = initY;
 
 		this.chunkHeight = chunkHeight;
 		this.chunkWidth = chunkWidth;
 
-		//Temporary solution to possible offsets
-		jumpOffsets.add(new Integer[] { 1, 0 });
-		jumpOffsets.add(new Integer[] { 2, 2 });
-		jumpOffsets.add(new Integer[] { 3, 2 });
-		jumpOffsets.add(new Integer[] { 3, 1 });
-		jumpOffsets.add(new Integer[] { 3, 0 });
-		jumpOffsets.add(new Integer[] { 3, -1 });
-		jumpOffsets.add(new Integer[] { 4, -1 });
-		jumpOffsets.add(new Integer[] { 3, -2 });
-		jumpOffsets.add(new Integer[] { 4, -2 });
+		jumpOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
 
+
+		/*
+		 * Temporary solution to possible offsets jumpOffsets.add(new Integer[]
+		 * { 1, 0 }); jumpOffsets.add(new Integer[] { 2, 2 });
+		 * jumpOffsets.add(new Integer[] { 3, 2 }); jumpOffsets.add(new
+		 * Integer[] { 3, 1 }); jumpOffsets.add(new Integer[] { 3, 0 });
+		 * jumpOffsets.add(new Integer[] { 3, -1 }); jumpOffsets.add(new
+		 * Integer[] { 4, -1 }); jumpOffsets.add(new Integer[] { 3, -2 });
+		 * jumpOffsets.add(new Integer[] { 4, -2 });
+		 */
 		hookAttachOffsets.add(new Integer[] { 2, 4 });
 
 		hookJumpOffsets.add(new Integer[] { 0, -5 });
@@ -130,7 +135,262 @@ public class WorldGenerator {
 		rng = new Random(seed);
 	}
 
-	public Chunk generateChunk(int initY) {
+	float getFramesToApexOfJump(float v0y, float a) {
+		//v=v_0+a*t, v = 0 => t=v_0/a
+		return Math.abs(v0y / (a));
+	}
+
+	float getRelativeHeightOfApex(float v0y, float a) {
+		//integrate v=v_0+a*t dt <=> y = v_0*t-(a*t^2)/2
+		float t = getFramesToApexOfJump(v0y, a);
+		return getJumpY(v0y, a, t);
+	}
+
+	float getFramesToYValue(float v0y, float a, float y, float y0) {
+		float sqrt = (float) Math.sqrt(2 * a * y - 2 * a * y0 + v0y * v0y);
+		//Get the furthest future time, ie rightmost point with that y value.
+		if (sqrt - v0y > -sqrt - v0y)
+			sqrt *= -1;
+
+		return (sqrt - v0y) / a;
+	}
+
+	private int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize,
+			float vx) {
+		int[] size = new int[] { 0, 0 };
+		float maxY = getRelativeHeightOfApex(v0y, a);
+		size[1] = (int) Math.ceil(maxY / tileSize) * 2; //*2 due to going up to the apex of the jump and then down to -apex
+		float t = getFramesToYValue(v0y, a, -maxY, 0);
+
+		size[0] = (int) Math.ceil((t * vx) / tileSize);
+		return size;
+	}
+
+	private boolean[][] createEmptyJumpGrid(int[] size) {
+		return new boolean[size[1]][size[0]];
+	}
+
+	private float getJumpY(float v0y, float a, float t) {
+		return (v0y * t) + ((a * t * t) / 2);
+	}
+
+	float getJumpY(float v0y, float a, float t, float xTranslation) {
+		return (v0y * (t - xTranslation))
+				+ ((a * (t - xTranslation) * (t - xTranslation)) / 2);
+	}
+
+	boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
+		boolean[][] jumpGrid = createEmptyJumpGrid(
+				getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
+		//boolean[][] jumpGrid = new boolean[100][10];
+
+		//Calculations are done by simulating a point performing the jump and checking where it can land.
+		//Starting y position of character is in the middle of the testing grid, since possible locations are [yApex, -yApex]
+		//ie the character can gain or lose up to yApex in height.
+		float y0 = jumpGrid.length * tileSize / 2;
+
+		//In order to get every tile that the jump parabola intersects with, the (X or Y) coordinates between tiles are sent into the 
+		//parabolas equation. The (Y or X respectively) solution is then used to select the who use the solution as a coordinate and 
+		//who are connected to the initial "line between" coordinate. See http://i.imgur.com/6e25A1N.png for graphical illustration.
+
+		List<float[]> points = new ArrayList<float[]>();
+		//Do x lines   | 
+		for (int x = 0; x < jumpGrid[0].length * tileSize; x += tileSize) {
+			float y = getJumpY(v0y, a, x) + y0;
+			int normY = (int) (y / tileSize);
+			int normX = (int) (x / tileSize);
+			points.add(new float[] { normX, normY });
+		}
+		int index = 0;
+		for (; index < points.size(); index++) {
+			//Add tiles (x,y) and (x-1,y)
+			int x = (int) points.get(index)[0];
+			int y = (int) points.get(index)[1];
+			//Make sure it is inside bounds.
+			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
+				jumpGrid[y][x] = true;
+				if (x >= 1)
+					jumpGrid[y][x - 1] = true;
+			}
+		}
+
+		//Do y lines   _
+		float framesToApex = getFramesToApexOfJump(v0y, a);
+		float framesToZero = 2 * framesToApex;
+		for (int y = 0; y < jumpGrid.length * tileSize; y += tileSize) {
+
+			float adjustedY = y - y0;
+
+			float x = getFramesToYValue(v0y, a, adjustedY, 0);
+
+			int normY = (int) (y / tileSize);
+			int normX = (int) (x / tileSize);
+			points.add(new float[] { normX, normY });
+
+			if (x < framesToZero) {
+				float dx = x - framesToApex;
+				float leftX = framesToApex - dx;
+				float normLeftX = (int) (leftX / tileSize);
+
+				points.add(new float[] { normLeftX, normY });
+			}
+		}
+		for (; index < points.size(); index++) {
+			//Add tiles (x,y) and (x,y-1)
+			int x = (int) points.get(index)[0];
+			int y = (int) points.get(index)[1];
+			//Make sure it is inside bounds.
+			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
+				jumpGrid[y][x] = true;
+				if (y >= 1)
+					jumpGrid[y - 1][x] = true;
+			}
+		}
+		return jumpGrid;
+	}
+
+	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize,
+			float vx) {
+		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx);
+		int halfGridHeight = jumpGrid.length / 2;
+		List<Integer[]> trueIndexes = getTrueIndexes(jumpGrid);
+		List<Integer[]> landingIndexes = getLandingIndexes(trueIndexes);
+
+		//Offset Y values so top half is positive and bottom half negative
+		for (Integer[] index : landingIndexes) {
+			index[1] -= halfGridHeight;
+		}
+
+		return landingIndexes;
+	}
+
+	/**
+	 * Returns the indexes of every true value in {@param tiles}.
+	 * 
+	 * @param tiles
+	 * @return List of indexes.
+	 */
+	List<Integer[]> getTrueIndexes(boolean[][] tiles) {
+		List<Integer[]> indexes = new ArrayList<Integer[]>();
+
+		for (int y = 0; y < tiles.length; y++) {
+			for (int x = 0; x < tiles[0].length; x++) {
+				if (tiles[y][x] == true)
+					indexes.add(new Integer[] { x, y });
+			}
+		}
+		return indexes;
+	}
+
+	/**
+	 * Sorts primarily by ascending X (index[0]), a secondarily by Y (index[1]).
+	 * Secondary is ascending for the left half of the list and descending for
+	 * the right half. This is done because it's used to sort the jump which is
+	 * a negative parabola.
+	 * 
+	 * @param jumpIndexes
+	 *            List to be sorted.
+	 * @return Sorted list.
+	 */
+	List<Integer[]> sortJumpIndexes(List<Integer[]> jumpIndexes) {
+		//Sort everything by ascending X, with equals to the left of apex sorted by ascending Y
+		//and equals to the right of apex by descending Y.
+		jumpIndexes = mergeSort(jumpIndexes, 0);
+
+		//Failsafe so that it splits between different X values, otherwise it wont sort properly
+		int midX = jumpIndexes.get(jumpIndexes.size() / 2)[0];
+		int lowestMidXIndex = jumpIndexes.size() / 2;
+		while (lowestMidXIndex > 1 && jumpIndexes.get(lowestMidXIndex - 1)[0] == midX) {
+			lowestMidXIndex--;
+		}
+
+		List<Integer[]> left = jumpIndexes.subList(0, lowestMidXIndex);
+		List<Integer[]> right = jumpIndexes.subList(lowestMidXIndex, jumpIndexes.size());
+
+		left = mergeSort(left, 1);
+		right = mergeSort(right, 1);
+		Collections.reverse(right);
+		left.addAll(right);
+		left = mergeSort(left, 0);
+
+		return left;
+	}
+
+	/**
+	 * Sorts {@param list} by the ascending value of Integer[index].
+	 * 
+	 * @param list
+	 *            List of Integer[] to be sorted.
+	 * @param index
+	 * @return Sorted list.
+	 */
+	List<Integer[]> mergeSort(List<Integer[]> list, int index) {
+		if (list.size() <= 1) {
+			return list;
+		}
+		List<Integer[]> left = new ArrayList<Integer[]>();
+		List<Integer[]> right = new ArrayList<Integer[]>();
+
+		//Split list
+		for (int i = 0; i < list.size(); i++) {
+			if (i < list.size() / 2) {
+				left.add(list.get(i));
+			} else {
+				right.add(list.get(i));
+			}
+		}
+
+		left = mergeSort(left, index);
+		right = mergeSort(right, index);
+
+		return merge(left, right, index);
+	}
+
+	List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right, int index) {
+		List<Integer[]> result = new ArrayList<Integer[]>();
+
+		while (left.size() > 0 && right.size() > 0) {
+			if (left.get(0)[index] <= right.get(0)[index]) {
+				result.add(left.get(0));
+				left.remove(0);
+			} else {
+				result.add(right.get(0));
+				right.remove(0);
+			}
+		}
+
+		while (left.size() > 0) {
+			result.add(left.get(0));
+			left.remove(0);
+		}
+		while (right.size() > 0) {
+			result.add(right.get(0));
+			right.remove(0);
+		}
+		return result;
+	}
+
+	/**
+	 * Sorts the jumpIndexes list and then checks every tile if it is below the
+	 * previous tile. Adds all of those tiles to list and returns them.
+	 * 
+	 * @param jumpIndexes
+	 * @return
+	 */
+	List<Integer[]> getLandingIndexes(List<Integer[]> jumpIndexes) {
+		jumpIndexes = sortJumpIndexes(jumpIndexes);
+
+		List<Integer[]> landingIndexes = new ArrayList<Integer[]>();
+		for (int i = jumpIndexes.size() / 2; i < jumpIndexes.size(); i++) {
+			//TODO: Currently adds diagonal as landing, check if viable, if not: change to vertical by checking x= x
+			if (jumpIndexes.get(i)[1] < jumpIndexes.get(i - 1)[1]) {
+				landingIndexes.add(jumpIndexes.get(i));
+			}
+		}
+		return landingIndexes;
+	}
+
+	public Chunk generateChunk() {
 		Tile[][] chunk = new Tile[chunkHeight][chunkWidth];
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
@@ -164,20 +424,23 @@ public class WorldGenerator {
 		}
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 
+		int finalY = currentTile[1];
+		initY = finalY;
+
 		return new Chunk(convertChunkToWorldModel(chunk));
 	}
 
-	private com.grupptva.runnergame.world.Tile[][] convertChunkToWorldModel(
+	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(
 			Tile[][] chunk) {
 
-		com.grupptva.runnergame.world.Tile[][] newChunk = new com.grupptva.runnergame.world.Tile[chunk[0].length][chunk.length];
+		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[chunk[0].length][chunk.length];
 
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
 				if (chunk[y][x] == Tile.FULL || chunk[y][x] == Tile.POSSIBLEHOOK) {
-					newChunk[x][y] = com.grupptva.runnergame.world.Tile.OBSTACLE;
+					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.OBSTACLE;
 				} else {
-					newChunk[x][y] = com.grupptva.runnergame.world.Tile.EMPTY;
+					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.EMPTY;
 				}
 			}
 		}

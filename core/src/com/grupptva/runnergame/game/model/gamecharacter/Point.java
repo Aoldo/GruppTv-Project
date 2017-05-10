@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.gamecharacter;
+package com.grupptva.runnergame.game.model.gamecharacter;
 
 /**
  * Created by agnesmardh on 2017-04-26.
