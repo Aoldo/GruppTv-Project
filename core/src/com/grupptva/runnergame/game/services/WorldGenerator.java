@@ -317,6 +317,38 @@ public class WorldGenerator {
 		return jumpGrid;
 	}
 
+	List<List<Integer[]>> calculateHookLandingOffsets(float angle, float maxRadius, float tileSize) {
+		// Calculate hook attach offsets
+		// For each offset
+		// 		Calculate hook offsets
+		// 		For each offset
+		// 			Calculate jump offsets, depends on angle between hook target etcetc
+		// 		Add all to list
+		// 			Remove dupes
+		//Leads to one list of offsets for every possible attachment point
+
+		return null;
+	}
+
+	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius, float tileSize) {
+		List<Integer[]> offsets = new ArrayList<Integer[]>();
+
+		float maxX = (float) (maxRadius * Math.cos(angle));
+
+		//Step through every tile horizontally. 
+		for (double x = (tileSize / 2); x < maxX; x += tileSize) {
+			double r = x / Math.cos(angle);
+
+			int y = (int) (r * Math.sin(angle));
+			offsets.add(new Integer[] { (int) x, y });
+		}
+		return offsets;
+	}
+
+	List<Integer[]> calculateHookOffsets(Integer[] attachOffset) {
+		return null;
+	}
+
 	/**
 	 * Calculates the offset of every tile the character can jump to and land
 	 * on, based on the second grade equation that makes up its jump movement.
