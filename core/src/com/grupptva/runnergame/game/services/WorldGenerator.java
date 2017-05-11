@@ -372,7 +372,6 @@ public class WorldGenerator {
 			//Normalize the values to get an index/offset instead.
 			int normX = (int) (x / tileSize);
 			int normY = (int) (y / tileSize);
-			System.out.println("y" + y);
 			//Add offsets (x,y) and (x-1,y)
 			if (normX > 0 && normY > 0 && normX - 1 > 0) {
 				offsets.add(new Integer[] { normX, normY });
@@ -381,7 +380,6 @@ public class WorldGenerator {
 		}
 		//Check horizontal lines
 		float maxY = (float) (maxRadius * Math.sin(angle));
-		System.out.println("mY" + maxY);
 		for (double y = 0; y < maxY; y += tileSize) {
 			double r = (float) (y / Math.sin(angle));
 			double x = r * Math.cos(angle);
