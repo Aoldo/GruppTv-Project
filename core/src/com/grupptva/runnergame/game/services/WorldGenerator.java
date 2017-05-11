@@ -384,13 +384,9 @@ public class WorldGenerator {
 	 * @param a
 	 *            The acceleration due to gravity. Should be negative.
 	 * @param tileSize
-	 *            TODO: Supposed to be the size of every tile in the world,
-	 *            actually sending in that value give the expected results.
-	 *            Currently sending in slightly less than half of the tileSize
-	 *            gives appropriate results ????
+	 *            The width&height of a tile.
 	 * @param vx
-	 *            TODO: Supposed to be the constant x velocity of the character.
-	 *            Might not be used properly, but should still be needed.
+	 *            The constant X velocity of the character.
 	 * @return A list containing the offsets, in relation to the tile the
 	 *         character is at, that the character can reach by jumping.
 	 */
@@ -876,7 +872,7 @@ public class WorldGenerator {
 			for (int i = 0; i < validJumpIndexes.size(); i++) {
 				indexWeights[i] = 10;
 				if (jumpOffsets.get(i)[1] > 0) {
-					indexWeights[i] *= jumpOffsets.get(i)[1]*5; //5 arbitrary weight amount.
+					indexWeights[i] *= jumpOffsets.get(i)[1] * 5; //5 arbitrary weight amount.
 				}
 				totalWeights += indexWeights[i];
 			}
