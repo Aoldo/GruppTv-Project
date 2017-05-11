@@ -463,7 +463,6 @@ public class WorldGenerator {
 				&& jumpIndexes.get(lowestMidXIndex - 1)[0] == currentX) {
 			lowestMidXIndex--;
 		}
-		System.out.println(lowestMidXIndex);
 
 		//Split the list.
 		List<Integer[]> left = jumpIndexes.subList(0, lowestMidXIndex);
