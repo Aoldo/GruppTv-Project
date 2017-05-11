@@ -29,9 +29,9 @@ public class HighScores implements ScenePlugin  {
 	Integer screenWidth = Gdx.graphics.getWidth();
 	Integer screenHeight = Gdx.graphics.getHeight();
 	
-	public HighScores(RunnerGame runnerGame, Integer screenWidth, Integer screenHeight) {
-		//this.listener = listener;
-		
+	public HighScores(MenuListener listener, Integer screenWidth, Integer screenHeight) {
+		this.listener = listener;
+				
 		returnButton = new MenuButton(screenWidth / 2 - 80, screenHeight / 2 - 200, 160, 40,
 				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.3f, 0.6f, 1f, 1));
 		
