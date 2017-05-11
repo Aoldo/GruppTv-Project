@@ -341,6 +341,19 @@ public class WorldGenerator {
 		return null;
 	}
 
+	/**
+	 * Draws a line of length {@param maxRadius} at angle {@param angle}, then
+	 * calculates which tiles the line overlaps and returns their offset
+	 * compared to the intial tile the line started at.
+	 * 
+	 * @param angle
+	 *            The angle of the hook/line.
+	 * @param maxRadius
+	 *            The maximum length of the line.
+	 * @param tileSize
+	 *            The width/height of every tile.
+	 * @return A list containing every overlapped tiles offset.
+	 */
 	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius,
 			int tileSize) {
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
@@ -356,6 +369,7 @@ public class WorldGenerator {
 			double r = (float) (x / Math.cos(angle));
 			double y = r * Math.sin(angle);
 
+			//Normalize the values to get an index/offset instead.
 			int normX = (int) (x / tileSize);
 			int normY = (int) (y / tileSize);
 			System.out.println("y" + y);
@@ -372,6 +386,7 @@ public class WorldGenerator {
 			double r = (float) (y / Math.sin(angle));
 			double x = r * Math.cos(angle);
 
+			//Normalize the values to get an index/offset instead.
 			int normX = (int) (x / tileSize);
 			int normY = (int) (y / tileSize);
 			//Add offsets (x,y) and (x,y-1)
