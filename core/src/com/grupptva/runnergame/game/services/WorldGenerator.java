@@ -345,14 +345,41 @@ public class WorldGenerator {
 			int tileSize) {
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
 
-		//TODO: Implement similar method to calculateJumpGrid. Also refactor that to reuse code.
+		//TODO: similar to calculateJumpGrid, refactor?
+
+		//Doubles used to prevent having to cast all the time. 
+		//Faster than float? 
 
 		//Check vertical lines
-		float maxX = (float) (maxRadius * Math.cos(angle));
+		double maxX = maxRadius * Math.cos(angle);
+		for (double x = 0; x < maxX; x += tileSize) {
+			double r = (float) (x / Math.cos(angle));
+			double y = r * Math.sin(angle);
 
+			int normX = (int) (x / tileSize);
+			int normY = (int) (y / tileSize);
+			System.out.println("y" + y);
+			//Add offsets (x,y) and (x-1,y)
+			if (normX > 0 && normY > 0 && normX - 1 > 0) {
+				offsets.add(new Integer[] { normX, normY });
+				offsets.add(new Integer[] { normX - 1, normY });
+			}
+		}
 		//Check horizontal lines
 		float maxY = (float) (maxRadius * Math.sin(angle));
+		System.out.println("mY" + maxY);
+		for (double y = 0; y < maxY; y += tileSize) {
+			double r = (float) (y / Math.sin(angle));
+			double x = r * Math.cos(angle);
 
+			int normX = (int) (x / tileSize);
+			int normY = (int) (y / tileSize);
+			//Add offsets (x,y) and (x,y-1)
+			if (normX > 0 && normY > 0 && normY - 1 > 0) {
+				offsets.add(new Integer[] { normX, normY });
+				offsets.add(new Integer[] { normX, normY - 1 });
+			}
+		}
 		removeDuplicates(offsets);
 
 		return offsets;
