@@ -27,41 +27,25 @@ public class MainMenu implements ScenePlugin {
 	Map<String, BitmapFont> buttonBF;
 
 	BitmapFont buttons;
-	private String hookHeroString;
 
-	// BitmapFont startGameBF;
-	private String startGameString;
+	private String startGameString, highScoresString, quitGameString;
 
-	// BitmapFont highScoresBF;
-	private String highScoresString;
-
-	// BitmapFont quitGameBF;
-	private String quitGameString;
-
-	MenuButton startGame;
-	MenuButton highScores;
-	MenuButton quitGame;
+	MenuButton startGame, highScores, quitGame;
 
 	MenuListener listener;
 	
 	Texture img;
 
-	int screenWidth = Gdx.graphics.getWidth();
-	int screenHeight = Gdx.graphics.getHeight();
+	Integer screenWidth = Gdx.graphics.getWidth();
+	Integer screenHeight = Gdx.graphics.getHeight();
 	
-
-	public int getScreenWidth() {
-		return Gdx.graphics.getWidth();
-	}
-
-	public int getScreenHeight() {
-		return Gdx.graphics.getHeight();
-	}
-
 	// private static ArrayList<MenuButton> menuButtons = new ArrayList<MenuButton>();
 
-	public MainMenu(MenuListener listener) {
+	public MainMenu(MenuListener listener, Integer screenWidth, Integer screenHeight) {
 		buttons = new BitmapFont();
+		
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
 		
 		this.listener = listener;
 
@@ -69,17 +53,9 @@ public class MainMenu implements ScenePlugin {
 		buttonTitles = new HashMap();
 		buttonTitles.put("startgame", "Start Game");
 
-		//hookHeroString = "Hook Hero";
-		//hookHeroBF = new BitmapFont();
-
 		startGameString = "Start Game";
-		// startGameBF = new BitmapFont();
-
 		highScoresString = "Highscores";
-		// highScoresBF = new BitmapFont();
-
 		quitGameString = "Quit Game";
-		// quitGameBF = new BitmapFont();
 
 		startGame = new MenuButton(screenWidth / 2 - 80, screenHeight / 2 + 40, 160, 40,
 				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.3f, 0.6f, 1f, 1));
@@ -90,7 +66,7 @@ public class MainMenu implements ScenePlugin {
 	}
 
 	public void render(ShapeRenderer sr, MenuButton button) {
-		if (button.collides(-80, 40, this)) {
+		if (button.collides(-80, 40, screenWidth, screenHeight)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				sr.setColor(button.pressed);
 			}
@@ -142,21 +118,21 @@ public class MainMenu implements ScenePlugin {
 		// Button collision detection
 		// TODO: Click detection on release rather than click & 
 		//       change rect colour on click/add feedback
-		if (startGame.collides(-80, 40, this)) {
+		if (startGame.collides(-80, 40, screenWidth, screenHeight)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				System.out.println("Start game pressed!");
 				startGame();
 				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
 			}
 
-		} else if (highScores.collides(-80, -20, this)) {
+		} else if (highScores.collides(-80, -20, screenWidth, screenHeight)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				System.out.println("Highscores pressed!");
 				enterHighscores();
 				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
 			}
 
-		} else if (quitGame.collides(-80, -80, this)) {
+		} else if (quitGame.collides(-80, -80, screenWidth, screenHeight)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				System.out.println("Quit game pressed!");
 				//sr.setColor(0.15f, 0.3f, 0.5f, 1);

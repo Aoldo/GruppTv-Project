@@ -32,6 +32,9 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	Texture img;
 	GameLogic gameLogic;
 	HighScores highscores;
+	
+	Integer screenWidth;
+	Integer screenHeight;
 
 	final double fastestTimeStep = 0.0041666; //240 fps
 	final double slowestTimeStep = 0.0166666; //60 fps
@@ -50,7 +53,9 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 		inputHandler = new InputHandler();
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
-		mainMenu = new MainMenu(this);
+		screenWidth = Gdx.graphics.getWidth();
+		screenHeight = Gdx.graphics.getHeight();
+		mainMenu = new MainMenu(this, screenWidth, screenHeight);
 		gv = new GeneratorVisualizer();
 		activePlugin = mainMenu;
 	}
@@ -64,20 +69,28 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	}
 	
 	public void enterHighscores() {
-		highscores = new HighScores(this);
+		highscores = new HighScores(this, screenWidth, screenHeight);
 		activePlugin = highscores;
 	}
 
 	public void exitHighscores() {
+		mainMenu = new MainMenu(this, screenWidth, screenHeight);
 		activePlugin = mainMenu;
 	}
 
 	public void startGameEvent() {
 		initGameLogic();
 	}
+	
+	public void updateScreenSize() {
+		screenWidth = Gdx.graphics.getWidth();
+		screenHeight = Gdx.graphics.getHeight();
+	}
 
 	@Override
 	public void render() {
+		updateScreenSize();
+		
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

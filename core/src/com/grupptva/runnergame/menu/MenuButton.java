@@ -35,12 +35,11 @@ public class MenuButton {
 		return height;
 	}
 
-	public boolean collides(float x, float y, MainMenu mainMenu) {
-
-		if (((Gdx.input.getX() < (mainMenu.getScreenWidth() / 2 + x + 160))
-				&& !(Gdx.input.getX() < mainMenu.getScreenWidth() / 2 + x))
-				&& (((Gdx.input.getY() < ((mainMenu.getScreenHeight() / 2 - y))))
-						&& !(Gdx.input.getY() < (((mainMenu.getScreenHeight() / 2 - y)))
+	public boolean collides(float x, float y, Integer screenWidth, Integer screenHeight) {
+		if (((Gdx.input.getX() < (screenWidth / 2 + x + 160))
+				&& !(Gdx.input.getX() < screenWidth / 2 + x))
+				&& (((Gdx.input.getY() < ((screenHeight / 2 - y))))
+						&& !(Gdx.input.getY() < (((screenHeight/ 2 - y)))
 								- 40))) {
 			return true;
 		} else {
