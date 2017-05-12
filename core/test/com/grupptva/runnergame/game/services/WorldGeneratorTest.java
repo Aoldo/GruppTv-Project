@@ -25,6 +25,16 @@ public class WorldGeneratorTest {
 	}
 
 	@Test
+	public void getCircleXTest() {
+		assertTrue(wg.getCircleX(5, -4) == 3);
+	}
+
+	@Test
+	public void getCircleYTest() {
+		assertTrue(wg.getCircleY(5, 3) == -4);
+	}
+
+	@Test
 	public void getFramesToApexOfJumpTest() {
 		assertTrue(wg.getFramesToApexOfJump(9.82f, -19.64f) == .5f);
 	}
@@ -36,8 +46,7 @@ public class WorldGeneratorTest {
 
 	@Test
 	public void getFramesToYValueTest() {
-		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10)
-				* 2);
+		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10) * 2);
 		assertEquals(wg.getFramesToYValue(4, -2, -5, 1), 5.15f, .1f);
 	}
 
@@ -49,18 +58,20 @@ public class WorldGeneratorTest {
 	@Test
 	public void calculateHookAttachOffsetsTest() {
 		float angle = 0.820305f;
-		float radius = 80f;
+		float radius = 100f;
 		int tileSize = 20;
 
 		List<Integer[]> expectedList = new ArrayList<Integer[]>();
-		expectedList.add(new Integer[] { 0, 0 });
-		expectedList.add(new Integer[] { 0, 1 });
 		expectedList.add(new Integer[] { 1, 1 });
 		expectedList.add(new Integer[] { 1, 2 });
 		expectedList.add(new Integer[] { 2, 2 });
-		//Method should skip the final tile, probably
+		expectedList.add(new Integer[] { 2, 3 });
+		expectedList.add(new Integer[] { 3, 3 });
 
 		List<Integer[]> offsets = wg.calculateHookAttachOffsets(angle, radius, tileSize);
+		//Sort list to make it easier to compare to expected.
+		offsets = wg.mergeSort(offsets, 1);
+		offsets =wg.mergeSort(offsets, 0);
 
 		for (Integer[] offset : offsets) {
 			System.out.println(Arrays.toString(offset));
@@ -174,16 +185,14 @@ public class WorldGeneratorTest {
 	public void calculateJumpGridTest() {
 		//Don't worry about it.
 		boolean[][] result1 = new boolean[][] { { false, false, false, false, true },
-				{ false, false, false, false, true },
-				{ false, false, false, false, true },
+				{ false, false, false, false, true }, { false, false, false, false, true },
 				{ false, false, false, false, true }, { true, false, false, true, true },
 				{ true, false, false, true, false }, { true, true, false, true, false },
 				{ true, true, true, true, false } };
 
 		assertArrayEquals(wg.calculateJumpGrid(4, -2, 1, 1), result1);
 
-		boolean[][] result2 = new boolean[][] {
-				{ false, false, false, false, false, false, false, true },
+		boolean[][] result2 = new boolean[][] { { false, false, false, false, false, false, false, true },
 				{ false, false, false, false, false, false, false, true },
 				{ false, false, false, false, false, false, true, true },
 				{ false, false, false, false, false, false, true, false },
@@ -206,8 +215,7 @@ public class WorldGeneratorTest {
 
 	@Test
 	public void deepCopyChunk_ShouldNotBeReference() {
-		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY },
-				{ Tile.EMPTY, Tile.EMPTY } };
+		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY }, { Tile.EMPTY, Tile.EMPTY } };
 
 		Tile[][] chunkCopy = wg.deepCopyChunk(chunk);
 		chunk[0][0] = Tile.FULL;
