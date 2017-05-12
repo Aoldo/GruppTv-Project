@@ -293,7 +293,7 @@ public class WorldGenerator {
 			//    _____
 			//    |/\ |
 			//    |  \|
-			//    ¯¯¯¯¯
+			//    -----
 			if (x < framesToZero) {
 				float dx = x - framesToApex; //Get distance to apex from rightmost x, since leftmost x is on the opposite side of the apex.
 				float leftX = framesToApex - dx; //The value of the leftmost x result form drawing the line.
@@ -341,12 +341,41 @@ public class WorldGenerator {
 	 */
 	List<Integer[]> calculateHookSwingOffsets(float r, int tileSize) {
 		//Circle equation: r^2 = x^2+y^2
+		List<Integer[]> offsets = new ArrayList<Integer[]>();
+
+		int normR = (int) (r / tileSize);
+		//Check vertical lines
+		for (float x = 0; x < r; x += tileSize) {
+			float y = getCircleY(r, x);
+			int normX = (int)(x / tileSize);
+			int normY = (int) Math.round(y / tileSize);
+
+			if (normY < 0 && normX >= 0 && normY >= -normR && normX < normR) {
+				offsets.add(new Integer[] { normX, normY });
+			}
+			if (normY < 0 && normX >= 0 && normY >= -normR && normX + 1 < normR) {
+				offsets.add(new Integer[] { normX + 1, normY });
+			}
+		}
 
 		//Check horizontal lines
+		for (float y = 0; y >= -r; y -= tileSize) {
+			float x = getCircleX(r, y);
+			int normX = (int)(x / tileSize);
+			int normY = (int) Math.round(y / tileSize);
+			System.out.println("x: " + normX + "  y: " + normY + "     " + x + "  " + y);
 
-		return null;
+			if (normY < 0 && normX >= 0 && normY >= -normR && normX < normR) {
+				offsets.add(new Integer[] { normX, normY });
+			}
+			if (normY < 0 && normX >= 0 && normY -1>= -normR && normX < normR)
+				offsets.add(new Integer[] { normX, normY - 1 });
+		}
+		removeDuplicates(offsets);
+
+		return offsets;
 	}
-	
+
 	float getCircleY(float r, float x) {
 		return (float) -Math.sqrt((r * r) - (x * x));
 	}
