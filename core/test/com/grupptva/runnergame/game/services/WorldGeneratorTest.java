@@ -87,7 +87,6 @@ public class WorldGeneratorTest {
 		int tileSize = 20;
 
 		List<Integer[]> expectedList = new ArrayList<Integer[]>();
-		expectedList.add(new Integer[] { 1, 1 });
 		expectedList.add(new Integer[] { 1, 2 });
 		expectedList.add(new Integer[] { 2, 2 });
 		expectedList.add(new Integer[] { 2, 3 });
