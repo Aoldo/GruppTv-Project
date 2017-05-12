@@ -31,7 +31,7 @@ public class WorldGenerator {
 	}
 
 	public enum Tile {
-		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND;
+		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND, HOOKTARGET;
 	}
 
 	/**
@@ -75,54 +75,8 @@ public class WorldGenerator {
 
 		jumpOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
 
-		/*
-		 * Temporary solution to possible offsets jumpOffsets.add(new Integer[]
-		 * { 1, 0 }); jumpOffsets.add(new Integer[] { 2, 2 });
-		 * jumpOffsets.add(new Integer[] { 3, 2 }); jumpOffsets.add(new
-		 * Integer[] { 3, 1 }); jumpOffsets.add(new Integer[] { 3, 0 });
-		 * jumpOffsets.add(new Integer[] { 3, -1 }); jumpOffsets.add(new
-		 * Integer[] { 4, -1 }); jumpOffsets.add(new Integer[] { 3, -2 });
-		 * jumpOffsets.add(new Integer[] { 4, -2 });
-		 */
-		//hookAttachOffsets.add(new Integer[] { 2, 4 });
-
 		initHookOffsets(v0y, a, vx, tileSize, angle, radius);
-		
-		
-		hookJumpOffsets.add(new Integer[] { 0, -5 });
-		hookJumpOffsets.add(new Integer[] { 1, -5 });
-		hookJumpOffsets.add(new Integer[] { 2, -5 });
-		hookJumpOffsets.add(new Integer[] { 3, -5 });
-		hookJumpOffsets.add(new Integer[] { 4, -5 });
-		hookJumpOffsets.add(new Integer[] { 5, -5 });
-		hookJumpOffsets.add(new Integer[] { 6, -5 });
-		hookJumpOffsets.add(new Integer[] { 7, -5 });
-		hookJumpOffsets.add(new Integer[] { 8, -5 });
-		hookJumpOffsets.add(new Integer[] { 9, -5 });
 
-		hookJumpOffsets.add(new Integer[] { 3, -4 });
-		hookJumpOffsets.add(new Integer[] { 4, -4 });
-		hookJumpOffsets.add(new Integer[] { 5, -4 });
-		hookJumpOffsets.add(new Integer[] { 6, -4 });
-		hookJumpOffsets.add(new Integer[] { 7, -4 });
-		hookJumpOffsets.add(new Integer[] { 8, -4 });
-		hookJumpOffsets.add(new Integer[] { 9, -4 });
-
-		hookJumpOffsets.add(new Integer[] { 5, -3 });
-		hookJumpOffsets.add(new Integer[] { 6, -3 });
-		hookJumpOffsets.add(new Integer[] { 7, -3 });
-		hookJumpOffsets.add(new Integer[] { 8, -3 });
-
-		hookJumpOffsets.add(new Integer[] { 5, -2 });
-		hookJumpOffsets.add(new Integer[] { 6, -2 });
-		hookJumpOffsets.add(new Integer[] { 7, -2 });
-
-		hookJumpOffsets.add(new Integer[] { 5, -1 });
-		hookJumpOffsets.add(new Integer[] { 6, -1 });
-		hookJumpOffsets.add(new Integer[] { 7, -1 });
-
-		hookJumpOffsets.add(new Integer[] { 6, 0 });
-		hookJumpOffsets.add(new Integer[] { 6, 1 });
 
 	}
 
@@ -333,7 +287,7 @@ public class WorldGenerator {
 	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize, float a, float v0y, float vx) {
 		List<Integer[]> landingOffsets = new ArrayList<Integer[]>();
 
-		float r = (float) Math.sqrt(attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1]);
+		float r = (float) Math.sqrt(tileSize*tileSize*(attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1]));
 
 		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize);
 
@@ -395,7 +349,6 @@ public class WorldGenerator {
 			float x = getCircleX(r, y);
 			int normX = (int) (x / tileSize);
 			int normY = (int) Math.round(y / tileSize);
-			System.out.println("x: " + normX + "  y: " + normY + "     " + x + "  " + y);
 
 			if (normY < 0 && normX >= 0 && normY >= -normR && normX < normR) {
 				offsets.add(new Integer[] { normX, normY });
@@ -683,7 +636,7 @@ public class WorldGenerator {
 
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
-				if (chunk[y][x] == Tile.FULL || chunk[y][x] == Tile.POSSIBLEHOOK) {
+				if (chunk[y][x] == Tile.FULL || chunk[y][x] == Tile.HOOKTARGET) {
 					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.OBSTACLE;
 				} else {
 					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.EMPTY;
@@ -849,22 +802,26 @@ public class WorldGenerator {
 	 */
 	private void hookStepPart2(Tile[][] chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
 			Integer[] currentTileCopy) {
+		int randomIndex = rng.nextInt(validHookAttachIndexes.size());
 		Integer[] offset = hookAttachOffsets
-				.get(validHookAttachIndexes.get(rng.nextInt(validHookAttachIndexes.size())));
+				.get(validHookAttachIndexes.get(randomIndex));
+		List<Integer[]> landOffsets = hookLandingOffsetList.get(randomIndex);
+		
 
 		currentTileCopy[0] += offset[0];
 		currentTileCopy[1] += offset[1];
 
-		List<Integer> validJumpIndexes = getValidOffsetIndexes(hookJumpOffsets, currentTileCopy);
-		if (validJumpIndexes.size() == 0) {
+		List<Integer> validLandIndexes = getValidOffsetIndexes(landOffsets, currentTileCopy);
+		if (validLandIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 			return;
 		}
-		setValidOffsetsToValue(chunk, hookJumpOffsets, validJumpIndexes, currentTileCopy, Tile.POSSIBLESTAND);
+		chunk[currentTileCopy[1]][currentTileCopy[0]] = Tile.HOOKTARGET;
+		setValidOffsetsToValue(chunk, landOffsets, validLandIndexes, currentTileCopy, Tile.POSSIBLESTAND);
 
-		offset = hookJumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+		offset = landOffsets.get(validLandIndexes.get(rng.nextInt(validLandIndexes.size())));
 
 		currentTile[0] = currentTileCopy[0] + offset[0];
 		currentTile[1] = currentTileCopy[1] + offset[1];
@@ -882,7 +839,7 @@ public class WorldGenerator {
 	private void clearPossibilities(Tile[][] chunk) {
 		for (int y = 0; y < chunk.length; y++) {
 			for (int x = 0; x < chunk[0].length; x++) {
-				if (chunk[y][x] != Tile.FULL && chunk[y][x] != Tile.POSSIBLEHOOK) {
+				if (chunk[y][x] != Tile.FULL && chunk[y][x] != Tile.HOOKTARGET) {
 					chunk[y][x] = Tile.EMPTY;
 				}
 			}
@@ -1009,7 +966,7 @@ public class WorldGenerator {
 			}
 			if (isValidIndex(currentTile[0] + extraOffset, currentTile[1])) {
 				currentTile[0] += extraOffset;
-				chunk[currentTile[1]][currentTile[0]] = Tile.POSSIBLEHOOK;
+				chunk[currentTile[1]][currentTile[0]] = Tile.POSSIBLEHOOK; //Used for visualization, turns tile purple
 
 				extraOffset = rng.nextInt(2);
 				for (int i = 1; i <= extraOffset; i++) {
