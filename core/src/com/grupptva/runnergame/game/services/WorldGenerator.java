@@ -18,7 +18,7 @@ public class WorldGenerator {
 	final int chunkHeight;
 	Random rng;
 
-	int jumpStepChance = 100;
+	int jumpStepChance = 0;
 	int hookStepChance = 30;
 	int runnerStepChance = 0;
 
@@ -84,8 +84,11 @@ public class WorldGenerator {
 		 * Integer[] { 4, -1 }); jumpOffsets.add(new Integer[] { 3, -2 });
 		 * jumpOffsets.add(new Integer[] { 4, -2 });
 		 */
-		hookAttachOffsets.add(new Integer[] { 2, 4 });
+		//hookAttachOffsets.add(new Integer[] { 2, 4 });
 
+		initHookOffsets(v0y, a, vx, tileSize, angle, radius);
+		
+		
 		hookJumpOffsets.add(new Integer[] { 0, -5 });
 		hookJumpOffsets.add(new Integer[] { 1, -5 });
 		hookJumpOffsets.add(new Integer[] { 2, -5 });
