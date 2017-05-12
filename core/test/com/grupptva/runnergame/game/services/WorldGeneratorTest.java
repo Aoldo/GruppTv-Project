@@ -25,6 +25,31 @@ public class WorldGeneratorTest {
 	}
 
 	@Test
+	public void calculateHookSwingOffsets() {
+		float r = 4;
+		int tileSize = 1;
+
+		List<Integer[]> expectedList = new ArrayList<Integer[]>();
+		expectedList.add(new Integer[] { 0, -4 });
+		expectedList.add(new Integer[] { 1, -4 });
+		expectedList.add(new Integer[] { 2, -4 });
+		expectedList.add(new Integer[] { 2, -3 });
+		expectedList.add(new Integer[] { 3, -3 });
+		expectedList.add(new Integer[] { 3, -2 });
+		expectedList.add(new Integer[] { 3, -1 });
+
+		List<Integer[]> offsets = wg.calculateHookSwingOffsets(r, tileSize);
+		offsets = wg.mergeSort(offsets, 1);
+		offsets = wg.mergeSort(offsets, 0);
+
+		for (int i = 0; i < offsets.size(); i++) {
+			for (int u = 0; u < offsets.get(i).length; u++) {
+				assertTrue(offsets.get(i)[u] == expectedList.get(i)[u]);
+			}
+		}
+	}
+
+	@Test
 	public void getCircleXTest() {
 		assertTrue(wg.getCircleX(5, -4) == 3);
 	}
@@ -71,11 +96,11 @@ public class WorldGeneratorTest {
 		List<Integer[]> offsets = wg.calculateHookAttachOffsets(angle, radius, tileSize);
 		//Sort list to make it easier to compare to expected.
 		offsets = wg.mergeSort(offsets, 1);
-		offsets =wg.mergeSort(offsets, 0);
+		offsets = wg.mergeSort(offsets, 0);
 
-		for (Integer[] offset : offsets) {
-			System.out.println(Arrays.toString(offset));
-		}
+		//		for (Integer[] offset : offsets) {
+		//			System.out.println(Arrays.toString(offset));
+		//		}
 		for (int i = 0; i < offsets.size(); i++) {
 			for (int u = 0; u < offsets.get(i).length; u++) {
 				assertTrue(offsets.get(i)[u] == expectedList.get(i)[u]);
@@ -148,10 +173,6 @@ public class WorldGeneratorTest {
 		sortList.add(new Integer[] { 0, 1 });
 
 		sortList = wg.sortJumpIndexes(sortList);
-
-		for (Integer[] i : sortList) {
-			System.out.println(Arrays.toString(i));
-		}
 
 		for (int i = 0; i < sortList.size(); i++) {
 			for (int u = 0; u < sortList.get(i).length; u++) {
