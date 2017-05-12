@@ -18,7 +18,7 @@ public class WorldGenerator {
 	final int chunkHeight;
 	Random rng;
 
-	int jumpStepChance = 0;
+	int jumpStepChance = 100;
 	int hookStepChance = 30;
 	int runnerStepChance = 0;
 
