@@ -21,7 +21,7 @@ public class WorldGeneratorTest {
 
 	@Before
 	public void init() {
-		wg = new WorldGenerator(7, -.4f, 1.5f, 25, 2l, 40, 20, 0);
+		wg = new WorldGenerator(7, -.4f, 1.5f, 25, 2l, 40, 20, 0, 1, 120);
 	}
 
 	@Test

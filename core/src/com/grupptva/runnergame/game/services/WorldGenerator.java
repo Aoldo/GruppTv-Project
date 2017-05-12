@@ -66,7 +66,8 @@ public class WorldGenerator {
 	 * @param seed
 	 */
 	public WorldGenerator(float v0y, float a, float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight,
-			int initY) {
+			int initY, float angle, float radius) {
+		rng = new Random(seed);
 		this.initY = initY;
 
 		this.chunkHeight = chunkHeight;
@@ -120,7 +121,15 @@ public class WorldGenerator {
 		hookJumpOffsets.add(new Integer[] { 6, 0 });
 		hookJumpOffsets.add(new Integer[] { 6, 1 });
 
-		rng = new Random(seed);
+	}
+
+	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
+
+	private void initHookOffsets(float v0y, float a, float vx, int tileSize, float angle, float maxRadius) {
+		hookAttachOffsets = calculateHookAttachOffsets(angle, maxRadius, tileSize);
+		for (Integer[] attachOffset : hookAttachOffsets) {
+			hookLandingOffsetList.add(calculateHookLandingOffsets(attachOffset,tileSize, a, v0y, vx));
+		}
 	}
 
 	/**
@@ -318,17 +327,37 @@ public class WorldGenerator {
 		return jumpGrid;
 	}
 
-	List<List<Integer[]>> calculateHookLandingOffsets(float angle, float maxRadius, float tileSize) {
-		// Calculate hook attach offsets
+	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize, float a, float v0y, float vx) {
+		List<Integer[]> landingOffsets = new ArrayList<Integer[]>();
+
+		float r = (float) Math.sqrt(attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1]);
+
+		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize);
+
+		for (Integer[] swingOffset : swingOffsets) {
+			float yVel = v0y; //TODO: Replace with dynamic vel when that is finished in character.
+
+			List<Integer[]> swingLandingOffsets = calculateJumpLandingOffsets(yVel, a, tileSize, vx);
+			for (Integer[] landingOffset : swingLandingOffsets) {
+				//Offset them by the swing position so that they are in relation to the attachment point
+				//instead of being in relation to the swing tile.
+				landingOffset[0] += swingOffset[0];
+				landingOffset[1] += swingOffset[1];
+			}
+			landingOffsets.addAll(swingLandingOffsets);
+		}
+
+		removeDuplicates(landingOffsets);
+
 		// For each offset
-		// 		Calculate hook offsets
+		// 		Calculate swing offsets
 		// 		For each offset
 		// 			Calculate jump offsets, depends on angle between hook target etcetc
 		// 		Add all to list
 		// 			Remove dupes
 		//Leads to one list of offsets for every possible attachment point
 
-		return null;
+		return landingOffsets;
 	}
 
 	/**
@@ -347,7 +376,7 @@ public class WorldGenerator {
 		//Check vertical lines
 		for (float x = 0; x < r; x += tileSize) {
 			float y = getCircleY(r, x);
-			int normX = (int)(x / tileSize);
+			int normX = (int) (x / tileSize);
 			int normY = (int) Math.round(y / tileSize);
 
 			if (normY < 0 && normX >= 0 && normY >= -normR && normX < normR) {
@@ -361,14 +390,14 @@ public class WorldGenerator {
 		//Check horizontal lines
 		for (float y = 0; y >= -r; y -= tileSize) {
 			float x = getCircleX(r, y);
-			int normX = (int)(x / tileSize);
+			int normX = (int) (x / tileSize);
 			int normY = (int) Math.round(y / tileSize);
 			System.out.println("x: " + normX + "  y: " + normY + "     " + x + "  " + y);
 
 			if (normY < 0 && normX >= 0 && normY >= -normR && normX < normR) {
 				offsets.add(new Integer[] { normX, normY });
 			}
-			if (normY < 0 && normX >= 0 && normY -1>= -normR && normX < normR)
+			if (normY < 0 && normX >= 0 && normY - 1 >= -normR && normX < normR)
 				offsets.add(new Integer[] { normX, normY - 1 });
 		}
 		removeDuplicates(offsets);
