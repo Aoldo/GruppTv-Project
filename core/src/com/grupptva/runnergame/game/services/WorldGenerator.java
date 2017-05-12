@@ -447,7 +447,7 @@ public class WorldGenerator {
 			int normX = (int) (x / tileSize);
 			int normY = (int) (y / tileSize);
 			//Add offsets (x,y) and (x-1,y)
-			if (normX > 0 && normY > 0 && normX - 1 > 0) {
+			if ((normX > 1 && normY > 1)) {
 				offsets.add(new Integer[] { normX, normY });
 				offsets.add(new Integer[] { normX - 1, normY });
 			}
@@ -462,7 +462,7 @@ public class WorldGenerator {
 			int normX = (int) (x / tileSize);
 			int normY = (int) (y / tileSize);
 			//Add offsets (x,y) and (x,y-1)
-			if (normX > 0 && normY > 0 && normY - 1 > 0) {
+			if ((normX > 1 && normY > 1) ) {
 				offsets.add(new Integer[] { normX, normY });
 				offsets.add(new Integer[] { normX, normY - 1 });
 			}
