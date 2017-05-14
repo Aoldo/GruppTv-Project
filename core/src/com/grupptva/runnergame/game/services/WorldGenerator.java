@@ -474,9 +474,6 @@ public class WorldGenerator {
 		}
 	}
 
-	List<Integer[]> calculateHookOffsets(Integer[] attachOffset) {
-		return null;
-	}
 
 	/**
 	 * Calculates the offset of every tile the character can jump to and land
