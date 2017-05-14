@@ -1,6 +1,5 @@
 package com.grupptva.runnergame.game.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.grupptva.runnergame.ScenePlugin;
