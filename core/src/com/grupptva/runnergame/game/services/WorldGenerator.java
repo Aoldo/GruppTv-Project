@@ -30,22 +30,32 @@ public class WorldGenerator {
 		NONE, SMALL, MEDIUM, HUGE;
 	}
 
+	/**
+	 * 
+	 * @author Mattias
+	 *
+	 */
 	public enum Tile {
 		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND, HOOKTARGET;
 	}
 
 	/**
 	 * The offsets compared to the "current tile" that the character can attach
-	 * it's hook to.
+	 * its hook to.
 	 */
-	List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
+	List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>(); //TODO: Create object to store this and hookLandingOffsetList?
 	/**
 	 * The offsets compared to the "current tile" that the character can jump
 	 * and land on.
 	 */
 	List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
+	/**
+	 * A list of lists that have the offsets the character can land on after
+	 * using the hook the offset at the exact same index inside @see
+	 * hookAttachoffsets.
+	 */
+	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();	//TODO: Create object to store this and hookAttachOffset?
 
 	/**
 	 * Creates a new WorldGenerator, parameters are the coordinates in the grid
@@ -72,7 +82,6 @@ public class WorldGenerator {
 		initHookOffsets(v0y, a, vx, tileSize, angle, radius);
 
 	}
-
 
 	/**
 	 * Initializes the offsets used in hookStep.
@@ -614,7 +623,7 @@ public class WorldGenerator {
 				right.remove(0);
 			}
 		}
-		//Adds the remaining values to the result, only the list with things left in it's loop will run.
+		//Adds the remaining values to the result, only the list with things left in its loop will run.
 		while (left.size() > 0) {
 			result.add(left.get(0));
 			left.remove(0);
@@ -750,7 +759,7 @@ public class WorldGenerator {
 	/**
 	 * Called if the next step of generation is a step where the character has
 	 * to hook a tile and then jump to another. Detects all possible locations
-	 * the character can attach it's hook to, from {@param currentTile}. This is
+	 * the character can attach its hook to, from {@param currentTile}. This is
 	 * followed by selecting one of them and detecting every location the
 	 * character can jump to, from the selected tile, and finally selecting one
 	 * of those. Updates {@param chunk} to include all possible hook locations
