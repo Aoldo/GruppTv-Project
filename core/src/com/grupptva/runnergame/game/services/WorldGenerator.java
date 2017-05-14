@@ -44,14 +44,8 @@ public class WorldGenerator {
 	 * and land on.
 	 */
 	List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
-	/**
-	 * The offsets compared to the "current tile"-which the hook is attached to
-	 * that the character can land on.
-	 * 
-	 * TODO: This might depend on the radius of the hook and will probably cause
-	 * issues later, need to figure out a fix.
-	 */
-	List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
+
+	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
 
 	/**
 	 * Creates a new WorldGenerator, parameters are the coordinates in the grid
@@ -79,8 +73,23 @@ public class WorldGenerator {
 
 	}
 
-	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
 
+	/**
+	 * Initializes the offsets used in hookStep.
+	 * 
+	 * @param v0y
+	 *            The initial Y velocity of the characters jump.
+	 * @param a
+	 *            The constant acceleration of the character.
+	 * @param vx
+	 *            The constant X velocity of the character.
+	 * @param tileSize
+	 *            The width and height of a tile.
+	 * @param angle
+	 *            The angle that the hook is launched at.
+	 * @param maxRadius
+	 *            The maximum radius of the hook.
+	 */
 	private void initHookOffsets(float v0y, float a, float vx, int tileSize, float angle, float maxRadius) {
 		hookAttachOffsets = calculateHookAttachOffsets(angle, maxRadius, tileSize);
 		for (Integer[] attachOffset : hookAttachOffsets) {
@@ -89,7 +98,7 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * Calculates the amount of frames, from y=0, to reach the apex of the
+	 * Calculates the amount of frames, from origin, to reach the apex of the
 	 * characters jump.
 	 * 
 	 * @param v0y
@@ -104,7 +113,7 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * Calculates the height of the apex of a jump, relative to Y=0.
+	 * Calculates the height of the apex of a jump, relative to origin.
 	 * 
 	 * @param v0y
 	 *            The initial Y velocity of the character.
@@ -143,9 +152,9 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * Calculates the size of a jump starting at y=0, then going to y=apex and
-	 * then going to y=-apex. The dimensions are then normalized with
-	 * {@param tileSize}.
+	 * Calculates the width and height of a jump starting at y=0, then going up
+	 * to y=apex and then going down to y=-apex. The dimensions are then
+	 * normalized with {@param tileSize}.
 	 * 
 	 * @param v0y
 	 *            The initial Y velocity of the character.
@@ -181,22 +190,37 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * Returns the Y value that the time(x value) corresponds to, in the
-	 * constant acceleration equation made out of the initial velocity v0y and
-	 * acceleration a.
+	 * Given an initial Y velocity, a constant Y acceleration and a time/X
+	 * value: returns the Y value that corresponds to the X value in the
+	 * constant acceleration equation made out of the initial Y values.
 	 * 
 	 * @param v0y
 	 *            The initial velocity
 	 * @param a
 	 *            The constant acceleration.
 	 * @param t
-	 *            The time/frame/x value
+	 *            The time/X value
 	 * @return The corresponding Y value.
 	 */
 	private float getJumpY(float v0y, float a, float t) {
 		return (v0y * t) + ((a * t * t) / 2);
 	}
 
+	/**
+	 * 
+	 * Same as @see getJumpY except the equation/parabola is translated across
+	 * the x-axis by {@param xTranslatio}
+	 * 
+	 * @param v0y
+	 *            The initial velocity
+	 * @param a
+	 *            The constant acceleration.
+	 * @param t
+	 *            The time/X value
+	 * @param xTranslation
+	 *            The translation across X-axis
+	 * @return
+	 */
 	float getJumpY(float v0y, float a, float t, float xTranslation) {
 		return (v0y * (t - xTranslation)) + ((a * (t - xTranslation) * (t - xTranslation)) / 2);
 	}
@@ -283,18 +307,31 @@ public class WorldGenerator {
 		return jumpGrid;
 	}
 
+	/**
+	 * Calculates which tiles the character can land on by swinging from
+	 * {@param attachOffset}.
+	 * 
+	 * @param attachOffset
+	 * @param tileSize
+	 * @param a
+	 * @param v0y
+	 * @param vx
+	 * @return A list containing every single offset, in relation to the
+	 *         attachOffset, that the character can land on.
+	 */
 	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize, float a, float v0y, float vx) {
 		List<Integer[]> landingOffsets = new ArrayList<Integer[]>();
 
 		float r = (float) Math
-				.sqrt(tileSize * tileSize * (attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1]));
+				.sqrt(tileSize * tileSize * (attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1])); //Radius of rope/distance to attachOffset
 
-		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize);
+		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize); //Tiles character collide with while swinging.
 
 		for (Integer[] swingOffset : swingOffsets) {
 			float yVel = v0y; //TODO: Replace with dynamic vel when that is finished in character.
 
 			List<Integer[]> swingLandingOffsets = calculateJumpLandingOffsets(yVel, a, tileSize, vx);
+
 			for (Integer[] landingOffset : swingLandingOffsets) {
 				//Offset them by the swing position so that they are in relation to the attachment point
 				//instead of being in relation to the swing tile.
@@ -303,16 +340,7 @@ public class WorldGenerator {
 			}
 			landingOffsets.addAll(swingLandingOffsets);
 		}
-
 		removeDuplicates(landingOffsets);
-
-		// For each offset
-		// 		Calculate swing offsets
-		// 		For each offset
-		// 			Calculate jump offsets, depends on angle between hook target etcetc
-		// 		Add all to list
-		// 			Remove dupes
-		//Leads to one list of offsets for every possible attachment point
 
 		return landingOffsets;
 	}
