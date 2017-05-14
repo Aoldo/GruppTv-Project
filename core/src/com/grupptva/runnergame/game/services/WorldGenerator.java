@@ -77,7 +77,6 @@ public class WorldGenerator {
 
 		initHookOffsets(v0y, a, vx, tileSize, angle, radius);
 
-
 	}
 
 	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
@@ -85,7 +84,7 @@ public class WorldGenerator {
 	private void initHookOffsets(float v0y, float a, float vx, int tileSize, float angle, float maxRadius) {
 		hookAttachOffsets = calculateHookAttachOffsets(angle, maxRadius, tileSize);
 		for (Integer[] attachOffset : hookAttachOffsets) {
-			hookLandingOffsetList.add(calculateHookLandingOffsets(attachOffset,tileSize, a, v0y, vx));
+			hookLandingOffsetList.add(calculateHookLandingOffsets(attachOffset, tileSize, a, v0y, vx));
 		}
 	}
 
@@ -202,7 +201,7 @@ public class WorldGenerator {
 		return (v0y * (t - xTranslation)) + ((a * (t - xTranslation) * (t - xTranslation)) / 2);
 	}
 
-	boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
+	boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) { //TODO: Rewrite entire method to not use boolean grid, shouldn't be needed.
 		//Create a grid of false booleans. Size depends on how far the character can reach by jumping.
 		boolean[][] jumpGrid = createEmptyJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
 
@@ -287,7 +286,8 @@ public class WorldGenerator {
 	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize, float a, float v0y, float vx) {
 		List<Integer[]> landingOffsets = new ArrayList<Integer[]>();
 
-		float r = (float) Math.sqrt(tileSize*tileSize*(attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1]));
+		float r = (float) Math
+				.sqrt(tileSize * tileSize * (attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1]));
 
 		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize);
 
@@ -415,7 +415,7 @@ public class WorldGenerator {
 			int normX = (int) (x / tileSize);
 			int normY = (int) (y / tileSize);
 			//Add offsets (x,y) and (x,y-1)
-			if ((normX > 1 && normY > 1) ) {
+			if ((normX > 1 && normY > 1)) {
 				offsets.add(new Integer[] { normX, normY });
 				offsets.add(new Integer[] { normX, normY - 1 });
 			}
@@ -803,10 +803,8 @@ public class WorldGenerator {
 	private void hookStepPart2(Tile[][] chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
 			Integer[] currentTileCopy) {
 		int randomIndex = rng.nextInt(validHookAttachIndexes.size());
-		Integer[] offset = hookAttachOffsets
-				.get(validHookAttachIndexes.get(randomIndex));
+		Integer[] offset = hookAttachOffsets.get(validHookAttachIndexes.get(randomIndex));
 		List<Integer[]> landOffsets = hookLandingOffsetList.get(randomIndex);
-		
 
 		currentTileCopy[0] += offset[0];
 		currentTileCopy[1] += offset[1];
