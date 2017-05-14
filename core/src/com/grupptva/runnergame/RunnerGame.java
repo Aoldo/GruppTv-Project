@@ -47,6 +47,8 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	InputHandler inputHandler;
 
 	ScenePlugin activePlugin;
+	
+	HighScoresData highscoredata;
 
 	@Override
 	public void create() {
@@ -95,6 +97,8 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		timeAccumulator += Gdx.graphics.getDeltaTime();
+		
+		//highscoredata.playerScore++;
 
 		debugTimeStep();
 

@@ -49,7 +49,7 @@ public class MainMenu implements ScenePlugin {
 		
 		this.listener = listener;
 
-		img = new Texture(Gdx.files.internal("mainmenubg2.png"));
+		img = new Texture(Gdx.files.internal("bg.png"));
 		buttonTitles = new HashMap();
 		buttonTitles.put("startgame", "Start Game");
 

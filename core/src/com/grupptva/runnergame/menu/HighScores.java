@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -23,11 +24,29 @@ public class HighScores implements ScenePlugin  {
 	
 	Texture img;
 	
-	BitmapFont buttons;
-	private String returnButtonString;
+	//TODO: Move to HighScoresData
+	int highScores[] = new int[10];
+	String[] names = new String[10];
+	
+	BitmapFont font;
+	BitmapFont headerFont;
+	BitmapFont highscoresFont;
+	
+	int hFontWidth;
+	
+	final int maxScoreCount = 10;
+	/////////////////////////////
+	
+	private String returnString;
+	private String highScoresString;
+	private String scores;
+	
+	GlyphLayout layout;
 	
 	Integer screenWidth = Gdx.graphics.getWidth();
 	Integer screenHeight = Gdx.graphics.getHeight();
+	
+	float textWidth;
 	
 	public HighScores(MenuListener listener, Integer screenWidth, Integer screenHeight) {
 		this.listener = listener;
@@ -38,10 +57,30 @@ public class HighScores implements ScenePlugin  {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		
-		buttons = new BitmapFont();
-		returnButtonString = "Return";
+		font = new BitmapFont();
+		headerFont = new BitmapFont();
+		highscoresFont = new BitmapFont();
 		
-		img = new Texture(Gdx.files.internal("mainmenubg2.png"));
+		headerFont.getData().setScale(1.7f);
+		
+		returnString = "Return";
+		highScoresString = "Highscores";
+		scores = "";
+		
+		img = new Texture(Gdx.files.internal("bg.png"));
+		
+		//hFontWidth = headerFont.getBounds(highScoresMenuString).width;
+		
+		layout = new GlyphLayout(font, highScoresString);
+		textWidth = layout.width;
+				
+		//names = new String["ggr", ""];
+		
+		// Initiate the highscore menu with placeholders
+		for (int i = 0; i < maxScoreCount; i++) {
+			highScores[i] = 0;
+			names[i] = "---";
+		}
 	}
 	
 	public void render(ShapeRenderer sr, MenuButton button) {
@@ -63,7 +102,13 @@ public class HighScores implements ScenePlugin  {
 	}
 	
 	public void renderText(Batch batch) {
-		buttons.draw(batch, returnButtonString, 296, 66);
+		font.draw(batch, returnString, 296, 66);
+		headerFont.draw(batch, highScoresString, (screenWidth/2-textWidth), 395);
+		
+		for (int i = 0; i < highScores.length; i++) {
+			scores = String.format("%2d. %20s %5s", i+1, highScores[i], names[i]);
+			highscoresFont.draw(batch, scores, (screenWidth/2-textWidth), (330 - 20 * i));
+		}		
 	}
 	
 	private void exitHighscores() {
@@ -76,8 +121,6 @@ public class HighScores implements ScenePlugin  {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				System.out.println("Return button pressed!");
 				exitHighscores();
-				//startGame();
-				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
 			}
 		}
 	}
