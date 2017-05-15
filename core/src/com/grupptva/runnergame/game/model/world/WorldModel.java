@@ -13,6 +13,11 @@ public class WorldModel {
 	private Chunk[] chunks;
 
 	/**
+	 * The container which contains the world represented by a {@link Tile} matrix.
+	 */
+	private Tile[][] grid;
+
+	/**
 	 * The position of the grid.
 	 */
 	private float position;
