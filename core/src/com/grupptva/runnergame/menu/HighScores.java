@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.grupptva.runnergame.RunnerGame;
 import com.grupptva.runnergame.ScenePlugin;
 
 public class HighScores implements ScenePlugin  {
@@ -78,7 +77,7 @@ public class HighScores implements ScenePlugin  {
 		
 		// Initiate the highscore menu with placeholders
 		for (int i = 0; i < maxScoreCount; i++) {
-			highScores[i] = 0;
+			highScores[i] = (int) (Math.random() * (50 - 0));
 			names[i] = "---";
 		}
 	}
@@ -106,7 +105,7 @@ public class HighScores implements ScenePlugin  {
 		headerFont.draw(batch, highScoresString, (screenWidth/2-textWidth), 395);
 		
 		for (int i = 0; i < highScores.length; i++) {
-			scores = String.format("%2d. %20s %5s", i+1, highScores[i], names[i]);
+			scores = String.format("%02d. %20s %5s", i+1, highScores[i], names[i]);
 			highscoresFont.draw(batch, scores, (screenWidth/2-textWidth), (330 - 20 * i));
 		}		
 	}
