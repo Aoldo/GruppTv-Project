@@ -72,6 +72,17 @@ public class WorldModel {
 	public void moveLeft(float distance){
 		setPosition(getPosition() - distance);
 	}
+	
+	/**
+	 * Returns the nth column of Tiles counting from the left.
+	 * @param n  the number of the column to get.
+	 *
+	 * @return the nth column.
+	 */
+	public Tile[] getColumn(int n){
+		return getChunksInRightOrder()[n / getChunksInRightOrder()[0].getWidth()]
+				.getTiles()[n % getChunksInRightOrder()[0].getWidth()];
+	}
 
 	// Getters and setters
 
