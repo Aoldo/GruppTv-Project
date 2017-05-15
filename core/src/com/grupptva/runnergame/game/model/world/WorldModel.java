@@ -80,8 +80,8 @@ public class WorldModel {
 	 * @return the nth column.
 	 */
 	public Tile[] getColumn(int n){
-		return getChunksInRightOrder()[n / getChunksInRightOrder()[0].getWidth()]
-				.getTiles()[n % getChunksInRightOrder()[0].getWidth()];
+		return getChunksInRightOrder()[(n - 1) / getChunksInRightOrder()[0].getWidth()]
+				.getTiles()[(n - 1) % getChunksInRightOrder()[0].getWidth()];
 	}
 
 	// Getters and setters
