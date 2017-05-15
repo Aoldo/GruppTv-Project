@@ -17,6 +17,7 @@ import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * 
@@ -154,6 +155,41 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		}
 	}
 
+	// -----------------------------------------------------------------------------------
+	// COLLISION WORK IN PROGRESS!!!
+	//                                   BEGINNING
+	// -----------------------------------------------------------------------------------
+	
+	
+	private void handlePossibleCollision(){
+		// 1) Calculate which column the character is in
+		// 2) Get columns to check
+		// 3) Check collision with those columns
+	}
+	
+	private List<Tile[]> getChunksToCheck(int columnCharacterIsIn){
+		// 1) Get the column that the character is in and the one after that
+		throw new NotImplementedException();
+	}
+	
+	private int calculateWhichColumnCharacterIsIn(){
+		// EASY!!!!
+		throw new NotImplementedException();
+	}
+	
+	private void handleCollisionWithColumns(List<Tile[]> columns, float
+			firstColumnXValue) {
+		// handle collision ( you know how don'tcha! ;) )
+		throw new NotImplementedException();
+	}
+	
+	
+	// -----------------------------------------------------------------------------------
+	// COLLISION WORK IN PROGRESS!!!
+	//                                      END
+	// -----------------------------------------------------------------------------------
+	
+	
 	private void checkCharacterCollision() {
 		//if collision
 		//send needed data to character:
