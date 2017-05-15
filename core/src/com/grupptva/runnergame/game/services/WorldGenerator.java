@@ -867,6 +867,7 @@ public class WorldGenerator {
 			return;
 
 		hookStepPart2(chunk, currentTile, validHookAttachIndexes, currentTileCopy);
+		createPlatform(chunk, currentTile);
 	}
 
 	/**
@@ -888,6 +889,7 @@ public class WorldGenerator {
 		chunkLog.add(deepCopyChunk(chunk));
 
 		hookStepPart2(chunk, currentTile, validHookAttachIndexes, currentTileCopy);
+		createPlatform(chunk, currentTile);
 	}
 
 	/**
@@ -1008,7 +1010,7 @@ public class WorldGenerator {
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 		chunkLog.add(deepCopyChunk(chunk));
 
-		jumpStepPart2(chunk, currentTile);
+		createPlatform(chunk, currentTile);
 	}
 
 	/**
@@ -1028,7 +1030,7 @@ public class WorldGenerator {
 
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 
-		jumpStepPart2(chunk, currentTile);
+		createPlatform(chunk, currentTile);
 	}
 
 	/**
@@ -1082,14 +1084,16 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * The second half of the jumpStep method. Split into two for easy
-	 * implementation of logging the generation {@See jumpStep(..) &
-	 * jumpStep(..,chunkLog)}.
+	 * Adds a platform to the chunk, using currentTile as the leftmost tile.
+	 * Size depends on currentTileExtraBuffer.
 	 * 
 	 * @param chunk
+	 *            Chunk being generated.
 	 * @param currentTile
+	 *            Leftmost position of platform. Updates to a tile inside the
+	 *            platform.
 	 */
-	private void jumpStepPart2(Tile[][] chunk, Integer[] currentTile) {
+	private void createPlatform(Tile[][] chunk, Integer[] currentTile) {
 		if (currentTileExtraBuffer > 0) {
 			int extraOffset = rng.nextInt(currentTileExtraBuffer) + 1;
 			for (int i = 0; i <= extraOffset; i++) {
