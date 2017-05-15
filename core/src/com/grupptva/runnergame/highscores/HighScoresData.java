@@ -16,9 +16,15 @@ import com.grupptva.runnergame.menu.HighScores;
 	//	int highScores[] = new int[maxScoreCount];
 	//	String[] names = new String[maxScoreCount];
 		
-		HighScore[] highscores;
-		
 		Preferences prefs = Gdx.app.getPreferences("Highscore List");
+
+		HighScore[] highscores = new HighScore[maxScoreCount];
+				
+		public void initScores() {
+			for (int i = 0; i < highscores.length; i++) {
+				highscores[i] = new HighScore();
+			}
+		}
 		
 		// Initiates the highscore menu with placeholders
 	    public void initHighScore() {
@@ -29,7 +35,7 @@ import com.grupptva.runnergame.menu.HighScores;
 	    }
 		
 	    public HighScoresData() {
-	    	highscores = new HighScore[maxScoreCount];
+	    	initScores();
 	    	initHighScore();
 	    }
 	    
