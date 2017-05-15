@@ -1,5 +1,7 @@
 package com.grupptva.runnergame.menu;
 
+import java.lang.reflect.Array;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.ScenePlugin;
+import com.grupptva.runnergame.highscores.HighScoresData;
 
 public class HighScores implements ScenePlugin  {
 	
@@ -24,8 +27,8 @@ public class HighScores implements ScenePlugin  {
 	Texture img;
 	
 	//TODO: Move to HighScoresData
-	int highScores[] = new int[10];
-	String[] names = new String[10];
+	//int highScores[] = new int[10];
+	//String[] names = new String[10];
 	
 	BitmapFont font;
 	BitmapFont headerFont;
@@ -47,8 +50,18 @@ public class HighScores implements ScenePlugin  {
 	
 	float textWidth;
 	
+	HighScoresData hs;
+		
 	public HighScores(MenuListener listener, Integer screenWidth, Integer screenHeight) {
+		
+		// TODO: If highscore save file empty = initiate it with placeholders
+//		if (true) {
+//			HighScoresData.initHighScore();
+//		}
+		
 		this.listener = listener;
+		
+		hs = new HighScoresData();
 				
 		returnButton = new MenuButton(screenWidth / 2 - 80, screenHeight / 2 - 200, 160, 40,
 				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.3f, 0.6f, 1f, 1));
@@ -67,19 +80,10 @@ public class HighScores implements ScenePlugin  {
 		scores = "";
 		
 		img = new Texture(Gdx.files.internal("bg.png"));
-		
-		//hFontWidth = headerFont.getBounds(highScoresMenuString).width;
-		
+				
 		layout = new GlyphLayout(font, highScoresString);
 		textWidth = layout.width;
 				
-		//names = new String["ggr", ""];
-		
-		// Initiate the highscore menu with placeholders
-		for (int i = 0; i < maxScoreCount; i++) {
-			highScores[i] = (int) (Math.random() * (50 - 0));
-			names[i] = "---";
-		}
 	}
 	
 	public void render(ShapeRenderer sr, MenuButton button) {
@@ -104,10 +108,7 @@ public class HighScores implements ScenePlugin  {
 		font.draw(batch, returnString, 296, 66);
 		headerFont.draw(batch, highScoresString, (screenWidth/2-textWidth), 395);
 		
-		for (int i = 0; i < highScores.length; i++) {
-			scores = String.format("%02d. %20s %5s", i+1, highScores[i], names[i]);
-			highscoresFont.draw(batch, scores, (screenWidth/2-textWidth), (330 - 20 * i));
-		}		
+	
 	}
 	
 	private void exitHighscores() {
