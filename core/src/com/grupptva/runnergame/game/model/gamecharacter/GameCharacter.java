@@ -1,7 +1,5 @@
 package com.grupptva.runnergame.game.model.gamecharacter;
 
-import java.awt.*;
-
 /**
  * Created by agnesmardh on 2017-04-21.
  */
@@ -10,7 +8,7 @@ public class GameCharacter {
 	private float gravity = -0.4f;
 	private float yVelocity;
 	private float jumpInitialVelocity = 7f;
-	private float maxHookVelocity = 7f;
+	private float hookVelocity = 3f;
 	private float xVelocity = 1.5f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
@@ -29,6 +27,8 @@ public class GameCharacter {
 		if(attachedWithHook){
 			hookExtended = hookLength <= position.getDistance(hookPosition);
 			if(hookExtended){
+				setyVelocity(0);
+				hookVelocity += 0.1f;
 				swing();
 			}
 			moveHook();
@@ -84,7 +84,8 @@ public class GameCharacter {
 	public void removeHook() {
 		attachedWithHook = false;
 		position.setY(position.getY() + 1);
-		yVelocity += maxHookVelocity;
+		yVelocity += hookVelocity;
+		hookVelocity = 0f;
 		collidingWithGround = false;
 		hookExtended = false;
 	}
