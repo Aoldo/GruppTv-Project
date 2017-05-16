@@ -15,20 +15,19 @@ import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
+import com.grupptva.runnergame.game.services.CollisionHandler;
 import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-/**
- * 
- * @author Mattias revised by Karl and Agnes
- */
+
 public class GameLogic implements ScenePlugin, InputProcessor {
 	GameRenderer gameRenderer;
 	// private character
 	private GameCharacter character;
 	private WorldModel world;
 	private WorldGenerator generator;
+	private CollisionHandler collisionHandler;
 
 	private int chunkWidth = 40;
 	private int chunkHeight = 20;
@@ -51,6 +50,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		gameRenderer = new GameRenderer();
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
+		collisionHandler = new CollisionHandler(character, world, tileSize);
 
 		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
 		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
@@ -85,13 +85,20 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	}
 
 	public void update() {
-		world.moveLeft(pixelsPerFrame);
-		handlePossibleCharacterCollision();
-		character.update();
-		if (world.getPosition() < -tileSize * chunkWidth) {
-			world.incrementStartIndex();
-			world.setPosition(0);
+		if(character.isDead()) {
+			character.setDead(false);
+			reset();
+		} else {
+			world.moveLeft(pixelsPerFrame);
+			collisionHandler.handlePossibleCollision();
+			character.update();
+			if (world.getPosition() < -tileSize * chunkWidth) {
+				world.incrementStartIndex();
+				world.setPosition(0);
+
+			}
 		}
+
 		//move world here or world.update()?
 		//world.moveLeft(pixelsPerFrame);
 	}
@@ -149,41 +156,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		}
 	}
 
-	// -----------------------------------------------------------------------------------
-	// COLLISION WORK IN PROGRESS!!!
-	//                                   BEGINNING
-	// -----------------------------------------------------------------------------------
-	
-	
-	private void handlePossibleCollision(){
-		// 1) Calculate which column the character is in
-		// 2) Get columns to check
-		// 3) Check collision with those columns
-	}
-	
-	private List<Tile[]> getChunksToCheck(int columnCharacterIsIn){
-		// 1) Get the column that the character is in and the one after that
-		throw new NotImplementedException();
-	}
-	
-	private int calculateWhichColumnCharacterIsIn(){
-		// EASY!!!!
-		throw new NotImplementedException();
-	}
-	
-	private void handleCollisionWithColumns(List<Tile[]> columns, float
-			firstColumnXValue) {
-		// handle collision ( you know how don'tcha! ;) )
-		throw new NotImplementedException();
-	}
-	
-	
-	// -----------------------------------------------------------------------------------
-	// COLLISION WORK IN PROGRESS!!!
-	//                                      END
-	// -----------------------------------------------------------------------------------
-
-
 	public WorldModel getWorld() {
 		return world;
 	}
@@ -198,6 +170,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				generator.generateChunk() });
 		world.setPosition(0);
 		world.setStartIndex(0);
+		collisionHandler.setGameCharacter(character);
 	}
 
 	@Override
