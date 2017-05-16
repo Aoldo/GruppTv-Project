@@ -94,12 +94,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		}
 		//move world here or world.update()?
 		//world.moveLeft(pixelsPerFrame);
-		checkCharacterCollision();
-
-		/*
-		 * if(isCharacterCollidingFromBelow()){ handleCollisionFromBelow(); }
-		 * if(isCharacterCollidingFromRight()){ handleCollisionFromRight(); }
-		 */
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
@@ -188,13 +182,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	// COLLISION WORK IN PROGRESS!!!
 	//                                      END
 	// -----------------------------------------------------------------------------------
-	
-	
-	private void checkCharacterCollision() {
-		//if collision
-		//send needed data to character:
-		//character.handleCollisionFromBelow(10);
-	}
+
 
 	public WorldModel getWorld() {
 		return world;
