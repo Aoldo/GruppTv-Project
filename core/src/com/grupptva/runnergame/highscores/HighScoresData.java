@@ -39,10 +39,14 @@ import com.grupptva.runnergame.menu.HighScores;
 	    	initHighScore();
 	    }
 	    
-	    public int getHighScore(HighScore h) {
-	    	return h.score;
+	    public int getHighScore(int index) {
+	    	return highscores[index].getScore();
 	    }
 	    
+	    public String getName(int index) {
+	    	return highscores[index].getName();
+	    }
+	    	    
 	//	public void sortHighScores() {
 	//		for (int i = 0; i < highScores.length; i++) {
 	//			
