@@ -17,6 +17,7 @@ public class GameCharacter {
 	private float hookLength;
 	private final float hookAngle = 1;
 	private final float pixelsPerFrame;
+	private boolean isDead = false;
 
 	public GameCharacter(float x, float y, float pixelsPerFrame) {
 		position = new Point(x, y);
@@ -70,7 +71,6 @@ public class GameCharacter {
 	}
 
 	public void handleCollisionFromBelow(float yCoordinate) {
-
 		setyVelocity(0);
 		position.setLocation(position.getX(), yCoordinate);
 	}
@@ -130,4 +130,11 @@ public class GameCharacter {
 		return attachedWithHook;
 	}
 
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void setDead(boolean dead) {
+		isDead = dead;
+	}
 }
