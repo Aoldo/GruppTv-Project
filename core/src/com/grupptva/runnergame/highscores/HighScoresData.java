@@ -28,7 +28,7 @@ import com.grupptva.runnergame.menu.HighScores;
 		
 		// Initiates the highscore menu with placeholders
 	    public void initHighScore() {
-			for (int i = 0; i < maxScoreCount; i++) {
+			for (int i = 0; i < highscores.length; i++) {
 				this.highscores[i].score = (int) (Math.random() * (50 - 0));
 				this.highscores[i].name = "---";
 			}  
@@ -37,6 +37,10 @@ import com.grupptva.runnergame.menu.HighScores;
 	    public HighScoresData() {
 	    	initScores();
 	    	initHighScore();
+	    }
+	    
+	    public int getHighScore(HighScore h) {
+	    	return h.score;
 	    }
 	    
 	//	public void sortHighScores() {

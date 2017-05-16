@@ -108,7 +108,10 @@ public class HighScores implements ScenePlugin  {
 		font.draw(batch, returnString, 296, 66);
 		headerFont.draw(batch, highScoresString, (screenWidth/2-textWidth), 395);
 		
-	
+		for (int i = 0; i < (hs.getLength()); i++) {
+			scores = String.format("%02d. %20s %5s", i+1, hs.highscore[i].getScore(), hs[i].getName());
+			highscoresFont.draw(batch, scores, (screenWidth/2-textWidth), (330 - 20 * i));
+		}		
 	}
 	
 	private void exitHighscores() {
