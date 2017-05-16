@@ -37,7 +37,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	private int tileSize = 20;
 
-	private float pixelsPerFrame = 1.5f;
+	private float pixelsPerFrame = 3f;
 
 	private final int jumpKeyCode = Input.Keys.SPACE;
 	private final int hookKeyCode = Input.Keys.H;
@@ -56,7 +56,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
 		generator = new WorldGenerator(character.getJumpInitialVelocity(),
-				character.getGravity(), pixelsPerFrame, 8, 4l, chunkWidth, chunkHeight, 0);
+				character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 120);
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -92,7 +92,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 			world.setPosition(0);
 		}
 		//move world here or world.update()?
-		world.moveLeft(pixelsPerFrame);
+		//world.moveLeft(pixelsPerFrame);
 		checkCharacterCollision();
 
 		/*
