@@ -3,11 +3,11 @@ package com.grupptva.runnergame.game.services;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.*;
 
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
 
@@ -21,7 +21,42 @@ public class WorldGeneratorTest {
 
 	@Before
 	public void init() {
-		wg = new WorldGenerator(7, -.4f, 1.5f, 25, 2l, 40, 20, 0);
+		wg = new WorldGenerator(1.5f, 25, 2l, 40, 20, 0, new GameCharacter(30f, 150f, 3f));
+	}
+
+	@Test
+	public void calculateHookSwingOffsets() {
+		float r = 4;
+		int tileSize = 1;
+
+		List<Integer[]> expectedList = new ArrayList<Integer[]>();
+		expectedList.add(new Integer[] { 0, -4 });
+		expectedList.add(new Integer[] { 1, -4 });
+		expectedList.add(new Integer[] { 2, -4 });
+		expectedList.add(new Integer[] { 2, -3 });
+		expectedList.add(new Integer[] { 3, -3 });
+		expectedList.add(new Integer[] { 3, -2 });
+		expectedList.add(new Integer[] { 3, -1 });
+
+		List<Integer[]> offsets = wg.calculateHookSwingOffsets(r, tileSize);
+		offsets = wg.mergeSort(offsets, 1);
+		offsets = wg.mergeSort(offsets, 0);
+
+		for (int i = 0; i < offsets.size(); i++) {
+			for (int u = 0; u < offsets.get(i).length; u++) {
+				assertTrue(offsets.get(i)[u] == expectedList.get(i)[u]);
+			}
+		}
+	}
+
+	@Test
+	public void getCircleXTest() {
+		assertTrue(wg.getCircleX(5, -4) == 3);
+	}
+
+	@Test
+	public void getCircleYTest() {
+		assertTrue(wg.getCircleY(5, 3) == -4);
 	}
 
 	@Test
@@ -36,14 +71,40 @@ public class WorldGeneratorTest {
 
 	@Test
 	public void getFramesToYValueTest() {
-		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10)
-				* 2);
+		assertTrue(wg.getFramesToYValue(10, -10, 0, 0) == wg.getFramesToApexOfJump(10, 10) * 2);
 		assertEquals(wg.getFramesToYValue(4, -2, -5, 1), 5.15f, .1f);
 	}
 
 	@Test
-	public void getJumpY() {
+	public void getJumpYTest() {
 		assertTrue(wg.getJumpY(4, -2, 3, 1) == 4f);
+	}
+
+	@Test
+	public void calculateHookAttachOffsetsTest() {
+		float angle = 0.820305f;
+		float radius = 100f;
+		int tileSize = 20;
+
+		List<Integer[]> expectedList = new ArrayList<Integer[]>();
+		expectedList.add(new Integer[] { 1, 2 });
+		expectedList.add(new Integer[] { 2, 2 });
+		expectedList.add(new Integer[] { 2, 3 });
+		expectedList.add(new Integer[] { 3, 3 });
+
+		List<Integer[]> offsets = wg.calculateHookAttachOffsets(angle, radius, tileSize);
+		//Sort list to make it easier to compare to expected.
+		offsets = wg.mergeSort(offsets, 1);
+		offsets = wg.mergeSort(offsets, 0);
+
+		//		for (Integer[] offset : offsets) {
+		//			System.out.println(Arrays.toString(offset));
+		//		}
+		for (int i = 0; i < offsets.size(); i++) {
+			for (int u = 0; u < offsets.get(i).length; u++) {
+				assertTrue(offsets.get(i)[u] == expectedList.get(i)[u]);
+			}
+		}
 	}
 
 	@Test
@@ -91,8 +152,8 @@ public class WorldGeneratorTest {
 		expectedList.add(new Integer[] { 0, 2 });
 		expectedList.add(new Integer[] { 1, 3 });
 		expectedList.add(new Integer[] { 1, 5 });
-		expectedList.add(new Integer[] { 2, 2 });
-		expectedList.add(new Integer[] { 2, 1 });
+		expectedList.add(new Integer[] { 2, 7 });
+		expectedList.add(new Integer[] { 2, 6 });
 		expectedList.add(new Integer[] { 3, 5 });
 		expectedList.add(new Integer[] { 3, 3 });
 		expectedList.add(new Integer[] { 4, 2 });
@@ -102,12 +163,12 @@ public class WorldGeneratorTest {
 		sortList.add(new Integer[] { 4, 1 });
 		sortList.add(new Integer[] { 0, 2 });
 		sortList.add(new Integer[] { 1, 5 });
-		sortList.add(new Integer[] { 2, 1 });
+		sortList.add(new Integer[] { 2, 6 });
 		sortList.add(new Integer[] { 1, 3 });
 		sortList.add(new Integer[] { 3, 5 });
 		sortList.add(new Integer[] { 3, 3 });
 		sortList.add(new Integer[] { 4, 2 });
-		sortList.add(new Integer[] { 2, 2 });
+		sortList.add(new Integer[] { 2, 7 });
 		sortList.add(new Integer[] { 0, 1 });
 
 		sortList = wg.sortJumpIndexes(sortList);
@@ -124,13 +185,13 @@ public class WorldGeneratorTest {
 		List<Integer[]> landingOffsets = wg.calculateJumpLandingOffsets(4, -2, 1, 1);
 		List<Integer[]> expectedOffsets = new ArrayList<Integer[]>();
 
-		expectedOffsets.add(new Integer[] { 3, 2 });
-		expectedOffsets.add(new Integer[] { 3, 1 });
-		expectedOffsets.add(new Integer[] { 3, 0 });
-		expectedOffsets.add(new Integer[] { 4, -1 });
-		expectedOffsets.add(new Integer[] { 4, -2 });
-		expectedOffsets.add(new Integer[] { 4, -3 });
-		expectedOffsets.add(new Integer[] { 4, -4 });
+		expectedOffsets.add(new Integer[] { 4, 2 });
+		expectedOffsets.add(new Integer[] { 4, 1 });
+		expectedOffsets.add(new Integer[] { 4, 0 });
+		expectedOffsets.add(new Integer[] { 5, -1 });
+		expectedOffsets.add(new Integer[] { 5, -2 });
+		expectedOffsets.add(new Integer[] { 5, -3 });
+		expectedOffsets.add(new Integer[] { 5, -4 });
 
 		for (int i = 0; i < landingOffsets.size(); i++) {
 			for (int u = 0; u < landingOffsets.get(i).length; u++) {
@@ -144,16 +205,14 @@ public class WorldGeneratorTest {
 	public void calculateJumpGridTest() {
 		//Don't worry about it.
 		boolean[][] result1 = new boolean[][] { { false, false, false, false, true },
-				{ false, false, false, false, true },
-				{ false, false, false, false, true },
+				{ false, false, false, false, true }, { false, false, false, false, true },
 				{ false, false, false, false, true }, { true, false, false, true, true },
 				{ true, false, false, true, false }, { true, true, false, true, false },
 				{ true, true, true, true, false } };
 
 		assertArrayEquals(wg.calculateJumpGrid(4, -2, 1, 1), result1);
 
-		boolean[][] result2 = new boolean[][] {
-				{ false, false, false, false, false, false, false, true },
+		boolean[][] result2 = new boolean[][] { { false, false, false, false, false, false, false, true },
 				{ false, false, false, false, false, false, false, true },
 				{ false, false, false, false, false, false, true, true },
 				{ false, false, false, false, false, false, true, false },
@@ -176,8 +235,7 @@ public class WorldGeneratorTest {
 
 	@Test
 	public void deepCopyChunk_ShouldNotBeReference() {
-		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY },
-				{ Tile.EMPTY, Tile.EMPTY } };
+		Tile[][] chunk = new Tile[][] { { Tile.EMPTY, Tile.EMPTY }, { Tile.EMPTY, Tile.EMPTY } };
 
 		Tile[][] chunkCopy = wg.deepCopyChunk(chunk);
 		chunk[0][0] = Tile.FULL;

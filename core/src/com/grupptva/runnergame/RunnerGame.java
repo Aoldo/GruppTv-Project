@@ -44,7 +44,7 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	MainMenu mainMenu;
 	GeneratorVisualizer gv;
 	
-	InputHandler inputHandler;
+	//InputHandler inputHandler;
 
 	ScenePlugin activePlugin;
 	
@@ -52,7 +52,7 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 
 	@Override
 	public void create() {
-		inputHandler = new InputHandler();
+		//inputHandler = new InputHandler();
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
 		screenWidth = Gdx.graphics.getWidth();
@@ -101,12 +101,14 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 		//highscoredata.playerScore++;
 
 		debugTimeStep();
+		
+		Gdx.graphics.setTitle(String.valueOf(Gdx.graphics.getRawDeltaTime()));
 
-		while (timeAccumulator > 0) {
+		while (timeAccumulator > currentTimeStep) {
 			timeAccumulator -= currentTimeStep;
 
 			//--------------------Do logic here-------------------
-			inputHandler.update();
+			//inputHandler.update();
 			activePlugin.update();
 		}
 

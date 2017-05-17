@@ -36,7 +36,16 @@ public class Chunk {
 	public Chunk(int width, int height) {
 		setWidth(width);
 		setHeight(height);
-		setTiles(new Tile[getWidth()][getHeight()]);
+		tiles = new Tile[getWidth()][getHeight()];
+		fillWith(Tile.EMPTY);
+	}
+	
+	public void fillWith(Tile tile){
+		for(int i = 0; i < getWidth(); i++){
+			for(int j = 0; j < getHeight(); j++){
+				setTile(i,j,tile);
+			}
+		}
 	}
 	
 	public Tile[][] getTiles() {
@@ -63,5 +72,9 @@ public class Chunk {
 	
 	private void setHeight(int height) {
 		this.height = height;
+	}
+	
+	public void setTile(int col, int row, Tile tile){
+		tiles[col][row] = tile;
 	}
 }

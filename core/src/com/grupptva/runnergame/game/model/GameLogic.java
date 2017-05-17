@@ -15,11 +15,12 @@ import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
+import com.grupptva.runnergame.game.services.CollisionHandler;
 import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
 
 /**
- * 
+ *
  * @author Mattias revised by Karl and Agnes
  */
 public class GameLogic implements ScenePlugin, InputProcessor {
@@ -28,6 +29,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private GameCharacter character;
 	private WorldModel world;
 	private WorldGenerator generator;
+	private CollisionHandler collisionHandler;
 
 	private int chunkWidth = 40;
 	private int chunkHeight = 20;
@@ -37,7 +39,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	private int tileSize = 20;
 
-	private float pixelsPerFrame = 1.5f;
+	private float pixelsPerFrame = 3f;
 
 	private final int jumpKeyCode = Input.Keys.SPACE;
 	private final int hookKeyCode = Input.Keys.H;
@@ -52,13 +54,10 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		gameRenderer = new GameRenderer();
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
+		collisionHandler = new CollisionHandler(character, world, tileSize);
 
-		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
-		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
-		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
-		generator = new WorldGenerator(character.getJumpInitialVelocity(),
-				character.getGravity(), pixelsPerFrame, 8, 4l, chunkWidth, chunkHeight, 0);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -86,24 +85,22 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	}
 
 	public void update() {
-		
-		score++;
-		
-		world.moveLeft(pixelsPerFrame);
-		handlePossibleCharacterCollision();
-		character.update();
-		if (world.getPosition() < -tileSize * chunkWidth) {
-			world.incrementStartIndex();
-			world.setPosition(0);
+
+		if(character.isDead()) {
+			character.setDead(false);
+			reset();
+		} else {
+			world.moveLeft(pixelsPerFrame);
+			collisionHandler.handlePossibleCollision();
+			character.update();
+			if (world.getPosition() < -tileSize * chunkWidth) {
+				world.incrementStartIndex();
+				world.setPosition(0);
+				world.updateChunk(generator.generateChunk());
+			}
 		}
 		//move world here or world.update()?
-		world.moveLeft(pixelsPerFrame);
-		checkCharacterCollision();
-
-		/*
-		 * if(isCharacterCollidingFromBelow()){ handleCollisionFromBelow(); }
-		 * if(isCharacterCollidingFromRight()){ handleCollisionFromRight(); }
-		 */
+		//world.moveLeft(pixelsPerFrame);
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
@@ -159,12 +156,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		}
 	}
 
-	private void checkCharacterCollision() {
-		//if collision
-		//send needed data to character:
-		//character.handleCollisionFromBelow(10);
-	}
-
 	public WorldModel getWorld() {
 		return world;
 	}
@@ -175,10 +166,13 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
+
 		world.setChunks(new Chunk[] { c, generator.generateChunk(),
 				generator.generateChunk() });
 		world.setPosition(0);
 		world.setStartIndex(0);
+		collisionHandler.setGameCharacter(character);
 	}
 
 	@Override

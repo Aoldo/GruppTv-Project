@@ -1,9 +1,9 @@
 package com.grupptva.runnergame.game.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.grupptva.runnergame.ScenePlugin;
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -24,11 +24,7 @@ public class GeneratorVisualizer implements ScenePlugin {
 	List<Tile[][]> chunkLog;
 
 	public GeneratorVisualizer() {
-		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
-		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
-		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
-
-		generator = new WorldGenerator(7f, -0.4f, 1.5f, 8, 1l, 40, 20, 0);
+		generator = new WorldGenerator(3f, 20, 4l, 40, 20, 0, new GameCharacter(30f, 150f, 3f));
 
 		chunkLog = generator.generateChunkLog(10);
 	}
