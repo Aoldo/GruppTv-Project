@@ -23,6 +23,9 @@ public class GameCharacter {
 	}
 
 	public void update() {
+		if(!collidingWithGround && !hookExtended){
+			fall();
+		}
 		if(attachedWithHook){
 			hookExtended = hookLength <= position.getDistance(hookPosition);
 			if(hookExtended){
@@ -31,9 +34,7 @@ public class GameCharacter {
 			}
 			moveHook();
 		}
-		if(!collidingWithGround && !hookExtended){
-			fall();
-		}
+		
 	}
 
 	void moveY(float distance) {
