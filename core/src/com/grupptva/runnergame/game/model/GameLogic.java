@@ -18,9 +18,11 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.services.CollisionHandler;
 import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-
+/**
+ *
+ * @author Mattias revised by Karl and Agnes
+ */
 public class GameLogic implements ScenePlugin, InputProcessor {
 	GameRenderer gameRenderer;
 	// private character
@@ -98,7 +100,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 			}
 		}
-
 		//move world here or world.update()?
 		//world.moveLeft(pixelsPerFrame);
 	}

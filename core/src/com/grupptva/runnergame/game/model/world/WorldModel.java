@@ -70,6 +70,10 @@ public class WorldModel {
 		return tempArr;
 	}
 
+	public void updateChunk(Chunk chunk){
+		chunks[(startIndex + chunks.length - 1) % chunks.length ] = chunk;
+	}
+
 	/**
 	 * Moves the chunks in the world a distance to the left.
 	 * @param distance  the distance to move the world.
