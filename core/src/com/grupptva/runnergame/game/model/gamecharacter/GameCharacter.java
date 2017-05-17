@@ -9,7 +9,6 @@ public class GameCharacter {
 	private float yVelocity;
 	private float jumpInitialVelocity = 7f;
 	private float hookVelocity = 3f;
-	private float xVelocity = 1.5f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
 	private boolean hookExtended = false;
@@ -29,7 +28,6 @@ public class GameCharacter {
 			hookExtended = hookLength <= position.getDistance(hookPosition);
 			if(hookExtended){
 				setyVelocity(0);
-				hookVelocity += 0.1f;
 				swing();
 			}
 			moveHook();
@@ -82,10 +80,15 @@ public class GameCharacter {
 	}
 
 	public void removeHook() {
+		float y1 = hookPosition.getY();
+		float y2 = position.getY();
+		float x1 = hookPosition.getX();
+		float x2 = position.getX();
+		double angle = Math.atan((y2 - y1)/(x2 - x1))+3.1415f/2;
+		hookVelocity = (float) Math.sin(angle) * 7;
 		attachedWithHook = false;
 		position.setY(position.getY() + 1);
-		yVelocity += hookVelocity;
-		hookVelocity = 0f;
+		yVelocity = hookVelocity;
 		collidingWithGround = false;
 		hookExtended = false;
 	}
