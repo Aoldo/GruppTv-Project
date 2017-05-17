@@ -85,7 +85,7 @@ public class GameCharacter {
 		float x1 = hookPosition.getX();
 		float x2 = position.getX();
 		double angle = Math.atan((y2 - y1)/(x2 - x1))+3.1415f/2;
-		hookVelocity = (float) Math.sin(angle) * 7;
+		hookVelocity = (float) Math.sin(angle) * jumpInitialVelocity;
 		attachedWithHook = false;
 		position.setY(position.getY() + 1);
 		yVelocity = hookVelocity;
