@@ -118,7 +118,56 @@ public class CollisionHandlerTest {
 
 	@Test
 	public void testHandlePossibleCollision() {
-	
+		Chunk[] chunks = new Chunk[3];
+		chunks[0] = new Chunk(10,10);
+		chunks[1] = new Chunk(10,10);
+		chunks[2] = new Chunk(10,10);
+		
+		Tile[][] tmp = new Tile[10][10];
+		for(int i = 0; i < 10; i++){
+			for (int j = 0; j < 10; j++){
+				if((i + j) % 3 == 1){
+					tmp[i][j] = Tile.OBSTACLE;
+				}else{
+					tmp[i][j] = Tile.EMPTY;
+				}
+			}
+		}
+		chunks[0].setTiles(tmp);
+		world.setChunks(chunks);
+		
+		// Creates diagonals with obstacles like this:
+		// (Shown as they would be portrayed in-game)
+		//
+		// X = Obstacle
+		//
+		//      0   1   2   3   4   5   6   7   8   9
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  9 |   | X |   |   | X |   |   | X |   |   |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  8 |   |   | X |   |   | X |   |   | X |   |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  7 | X |   |   | X |   |   | X |   |   | X |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  6 |   | X |   |   | X |   |   | X |   |   |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  5 |   |   | X |   |   | X |   |   | X |   |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  4 | X |   |   | X |   |   | X |   |   | X |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  3 |   | X |   |   | X |   |   | X |   |   |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  2 |   |   | X |   |   | X |   |   | X |   |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  1 | X |   |   | X |   |   | X |   |   | X |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		//  0 |   | X |   |   | X |   |   | X |   |   |
+		//    |---|---|---|---|---|---|---|---|---|---|
+		
+		gameCharacter.setPosition(new Point(1.5f * tileSize, 1.5f * tileSize));
+		collisionHandler.handlePossibleCollision();
+		Assert.assertEquals(true, gameCharacter.isDead());
+		
 	}
 
 	@Test
