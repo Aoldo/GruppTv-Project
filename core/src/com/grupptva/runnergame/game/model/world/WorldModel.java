@@ -13,6 +13,11 @@ public class WorldModel {
 	private Chunk[] chunks;
 
 	/**
+	 * The container which contains the world represented by a {@link Tile} matrix.
+	 */
+	private Tile[][] grid;
+
+	/**
 	 * The position of the grid.
 	 */
 	private float position;
@@ -65,12 +70,27 @@ public class WorldModel {
 		return tempArr;
 	}
 
+	public void updateChunk(Chunk chunk){
+		chunks[(startIndex + chunks.length - 1) % chunks.length ] = chunk;
+	}
+
 	/**
 	 * Moves the chunks in the world a distance to the left.
 	 * @param distance  the distance to move the world.
 	 */
 	public void moveLeft(float distance){
 		setPosition(getPosition() - distance);
+	}
+	
+	/**
+	 * Returns the nth column of Tiles counting from the left.
+	 * @param n  the number of the column to get.
+	 *
+	 * @return the nth column.
+	 */
+	public Tile[] getColumn(int n){
+		return getChunksInRightOrder()[(n - 1) / getChunksInRightOrder()[0].getWidth()]
+				.getTiles()[(n - 1) % getChunksInRightOrder()[0].getWidth()];
 	}
 
 	// Getters and setters
