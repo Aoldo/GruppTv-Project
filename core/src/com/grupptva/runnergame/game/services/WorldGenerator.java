@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 
 /**
@@ -49,10 +50,7 @@ public class WorldGenerator {
 	 *
 	 */
 	public enum BufferPresets {
-		NONE,
-		SMALL,
-		MEDIUM,
-		HUGE;
+		NONE, SMALL, MEDIUM, HUGE;
 	}
 
 	/**
@@ -63,11 +61,7 @@ public class WorldGenerator {
 	 * @author Mattias
 	 */
 	public enum Tile {
-		EMPTY,
-		FULL,
-		POSSIBLEHOOK,
-		POSSIBLESTAND,
-		HOOKTARGET;
+		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND, HOOKTARGET;
 	}
 
 	/**
@@ -100,8 +94,14 @@ public class WorldGenerator {
 	 * @param hookJumpOffsets
 	 * @param seed
 	 */
-	public WorldGenerator(float v0y, float a, float vx, int tileSize, Long seed,
-			int chunkWidth, int chunkHeight, int initY, float angle, float radius) {
+	public WorldGenerator(float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight, int initY,
+			GameCharacter character) {
+
+		float v0y = character.getJumpInitialVelocity();
+		float a = character.getGravity();
+		float angle = 1;
+		float radius = 75f;
+
 		rng = new Random(seed);
 		this.initY = initY;
 
@@ -110,8 +110,7 @@ public class WorldGenerator {
 
 		jumpOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
 
-		initHookOffsets(v0y, a, vx, tileSize, angle, radius);
-
+		initHookOffsets(v0y, a, vx, tileSize, angle, radius, character);
 	}
 
 	/**
@@ -130,12 +129,11 @@ public class WorldGenerator {
 	 * @param maxRadius
 	 *            The maximum radius of the hook.
 	 */
-	private void initHookOffsets(float v0y, float a, float vx, int tileSize, float angle,
-			float maxRadius) {
+	private void initHookOffsets(float v0y, float a, float vx, int tileSize, float angle, float maxRadius,
+			GameCharacter character) {
 		hookAttachOffsets = calculateHookAttachOffsets(angle, maxRadius, tileSize);
 		for (Integer[] attachOffset : hookAttachOffsets) {
-			hookLandingOffsetList
-					.add(calculateHookLandingOffsets(attachOffset, tileSize, a, v0y, vx));
+			hookLandingOffsetList.add(calculateHookLandingOffsets(attachOffset, tileSize, a, v0y, vx, character));
 		}
 	}
 
@@ -208,8 +206,7 @@ public class WorldGenerator {
 	 *            Constant X velocity of the character.
 	 * @return The size of the jump grid.
 	 */
-	private int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize,
-			float vx) {
+	private int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize, float vx) {
 		int[] size = new int[] { 0, 0 };
 		float maxY = getRelativeHeightOfApex(v0y, a);
 		size[1] = (int) Math.ceil(maxY / tileSize) * 2; //*2 due to going up to the apex of the jump and then down to -apex
@@ -265,8 +262,7 @@ public class WorldGenerator {
 	 * @return
 	 */
 	float getJumpY(float v0y, float a, float t, float xTranslation) {
-		return (v0y * (t - xTranslation))
-				+ ((a * (t - xTranslation) * (t - xTranslation)) / 2);
+		return (v0y * (t - xTranslation)) + ((a * (t - xTranslation) * (t - xTranslation)) / 2);
 	}
 
 	/**
@@ -286,8 +282,7 @@ public class WorldGenerator {
 	 */
 	boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
 		//Create a grid of false booleans. Size depends on how far the character can reach by jumping.
-		boolean[][] jumpGrid = createEmptyJumpGrid(
-				getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
+		boolean[][] jumpGrid = createEmptyJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
 
 		//Calculations are done by simulating a point performing the jump and checking where it can land.
 		//Starting y position of character is in the middle of the testing grid, since possible locations are [-yApex, yApex]
@@ -379,24 +374,20 @@ public class WorldGenerator {
 	 * @return A list containing every single offset, in relation to the
 	 *         attachOffset, that the character can land on.
 	 */
-	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize,
-			float a, float v0y, float vx) {
+	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize, float a, float v0y, float vx,
+			GameCharacter character) {
 		List<Integer[]> landingOffsets = new ArrayList<Integer[]>();
 
 		float r = (float) Math
-				.sqrt(tileSize * tileSize * (attachOffset[0] * attachOffset[0]
-						+ attachOffset[1] * attachOffset[1])); //Radius of rope/distance to attachOffset
+				.sqrt(tileSize * tileSize * (attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1])); //Radius of rope/distance to attachOffset
 
 		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize); //Tiles character collide with while swinging.
 
 		for (Integer[] swingOffset : swingOffsets) {
-			float angle = (float) Math.atan2(swingOffset[1], swingOffset[0])
-					+ 3.1415f / 2;
-			float yVel = (float) Math.sin(angle) * v0y; //TODO: Replace with character.getReleaseVelocity method call or something?
+			float yVel = character.getReleaseVelocity(swingOffset[0], swingOffset[1], 0, 0);
 
 			if (yVel > 0) {
-				List<Integer[]> swingLandingOffsets = calculateJumpLandingOffsets(yVel, a,
-						tileSize, vx);
+				List<Integer[]> swingLandingOffsets = calculateJumpLandingOffsets(yVel, a, tileSize, vx);
 
 				for (Integer[] landingOffset : swingLandingOffsets) {
 					//Offset them by the swing position so that they are in relation to the attachment point
@@ -498,8 +489,7 @@ public class WorldGenerator {
 	 *            The width/height of every tile.
 	 * @return A list containing every overlapped tile's offset.
 	 */
-	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius,
-			int tileSize) {
+	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius, int tileSize) {
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
 
 		//TODO: similar to calculateJumpGrid, refactor?
@@ -552,8 +542,7 @@ public class WorldGenerator {
 		//Remove duplicates
 		for (int i = 0; i < offsets.size(); i++) {
 			for (int u = i + 1; u < offsets.size(); u++) {
-				if (offsets.get(i)[0] == offsets.get(u)[0]
-						&& offsets.get(i)[1] == offsets.get(u)[1]) {
+				if (offsets.get(i)[0] == offsets.get(u)[0] && offsets.get(i)[1] == offsets.get(u)[1]) {
 					offsets.remove(u);
 					u--;
 				}
@@ -576,8 +565,7 @@ public class WorldGenerator {
 	 * @return A list containing the offsets, in relation to the tile the
 	 *         character is at, that the character can reach by jumping.
 	 */
-	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize,
-			float vx) {
+	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize, float vx) {
 		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx); //Grid of tiles that the character might be able to reach by jumping.
 		int halfGridHeight = jumpGrid.length / 2; //Save half of grid height, since grid height [-apexY, apexY] of jump, and character starts at 0.
 		List<Integer[]> trueIndexes = getTrueIndexes(jumpGrid);
@@ -641,8 +629,7 @@ public class WorldGenerator {
 
 		//Failsafe so that it splits between different X values, otherwise it wont sort properly
 		int lowestMidXIndex = currentIndex;
-		while (lowestMidXIndex > 1
-				&& jumpIndexes.get(lowestMidXIndex - 1)[0] == currentX) {
+		while (lowestMidXIndex > 1 && jumpIndexes.get(lowestMidXIndex - 1)[0] == currentX) {
 			lowestMidXIndex--;
 		}
 
@@ -708,8 +695,7 @@ public class WorldGenerator {
 	 *            sorting.
 	 * @return
 	 */
-	private List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right,
-			int index) {
+	private List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right, int index) {
 		List<Integer[]> result = new ArrayList<Integer[]>();
 
 		//Loops until either list is empty.
@@ -767,8 +753,7 @@ public class WorldGenerator {
 	 * @param chunk
 	 * @return
 	 */
-	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(
-			Tile[][] chunk) {
+	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(Tile[][] chunk) {
 
 		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[chunk[0].length][chunk.length];
 
@@ -884,8 +869,7 @@ public class WorldGenerator {
 	 * @param currentTile
 	 */
 	private void hookStep(Tile[][] chunk, Integer[] currentTile) {
-		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets,
-				currentTile);
+		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
 
 		//In order to prevent changes to currentTile in case there is no valid path after the hook attachment point has been set.
 		Integer[] currentTileCopy = new Integer[] { currentTile[0], currentTile[1] };
@@ -904,10 +888,8 @@ public class WorldGenerator {
 	 * @see hookStep
 	 * @param chunkLog
 	 */
-	private void hookStep(Tile[][] chunk, Integer[] currentTile,
-			List<Tile[][]> chunkLog) {
-		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets,
-				currentTile);
+	private void hookStep(Tile[][] chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
+		List<Integer> validHookAttachIndexes = getValidOffsetIndexes(hookAttachOffsets, currentTile);
 
 		//In order to prevent changes to currentTile in case there is no valid path after the hook attachment point has been set.
 		Integer[] currentTileCopy = new Integer[] { currentTile[0], currentTile[1] };
@@ -932,16 +914,15 @@ public class WorldGenerator {
 	 * @param currentTileCopy
 	 * @return
 	 */
-	private boolean hookStepPart1(Tile[][] chunk, Integer[] currentTile,
-			List<Integer> validHookAttachIndexes, Integer[] currentTileCopy) {
+	private boolean hookStepPart1(Tile[][] chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
+			Integer[] currentTileCopy) {
 		if (validHookAttachIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
 			//TODO: Better solution.
 			currentTile[0] = chunkWidth - 1;
 			return false;
 		}
-		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes,
-				currentTileCopy, Tile.POSSIBLEHOOK);
+		setValidOffsetsToValue(chunk, hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
 		return true;
 	}
 
@@ -955,8 +936,8 @@ public class WorldGenerator {
 	 * @param validHookAttachIndexes
 	 * @param currentTileCopy
 	 */
-	private void hookStepPart2(Tile[][] chunk, Integer[] currentTile,
-			List<Integer> validHookAttachIndexes, Integer[] currentTileCopy) {
+	private void hookStepPart2(Tile[][] chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
+			Integer[] currentTileCopy) {
 		int randomIndex = rng.nextInt(validHookAttachIndexes.size());
 		Integer[] offset = hookAttachOffsets.get(validHookAttachIndexes.get(randomIndex));
 		List<Integer[]> landOffsets = hookLandingOffsetList.get(randomIndex);
@@ -964,8 +945,7 @@ public class WorldGenerator {
 		currentTileCopy[0] += offset[0];
 		currentTileCopy[1] += offset[1];
 
-		List<Integer> validLandIndexes = getValidOffsetIndexes(landOffsets,
-				currentTileCopy);
+		List<Integer> validLandIndexes = getValidOffsetIndexes(landOffsets, currentTileCopy);
 		if (validLandIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
 			//TODO: Better solution.
@@ -973,11 +953,9 @@ public class WorldGenerator {
 			return;
 		}
 		chunk[currentTileCopy[1]][currentTileCopy[0]] = Tile.HOOKTARGET;
-		setValidOffsetsToValue(chunk, landOffsets, validLandIndexes, currentTileCopy,
-				Tile.POSSIBLESTAND);
+		setValidOffsetsToValue(chunk, landOffsets, validLandIndexes, currentTileCopy, Tile.POSSIBLESTAND);
 
-		offset = landOffsets
-				.get(validLandIndexes.get(rng.nextInt(validLandIndexes.size())));
+		offset = landOffsets.get(validLandIndexes.get(rng.nextInt(validLandIndexes.size())));
 
 		currentTile[0] = currentTileCopy[0] + offset[0];
 		currentTile[1] = currentTileCopy[1] + offset[1];
@@ -1035,8 +1013,7 @@ public class WorldGenerator {
 	 * @param chunkLog
 	 *            A list of every interation of the chunk being generated.ö
 	 */
-	private void jumpStep(Tile[][] chunk, Integer[] currentTile,
-			List<Tile[][]> chunkLog) {
+	private void jumpStep(Tile[][] chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
 		if (!jumpStepPart1(chunk, currentTile)) //Ends the jumpStep if there are no viable places to jump to.
 			return;
 
@@ -1084,11 +1061,9 @@ public class WorldGenerator {
 
 			return false;
 		}
-		setValidOffsetsToValue(chunk, jumpOffsets, validJumpIndexes, currentTile,
-				Tile.POSSIBLESTAND);
+		setValidOffsetsToValue(chunk, jumpOffsets, validJumpIndexes, currentTile, Tile.POSSIBLESTAND);
 
-		Integer[] offset = jumpOffsets
-				.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+		Integer[] offset = jumpOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
 
 		//If to close to the bottom of the chunk: used weighted random selection instead
 		//where tiles above the character are weighted higher and thus have an increased chance 
@@ -1184,8 +1159,8 @@ public class WorldGenerator {
 	 * @param value
 	 *            The type of tile to set every valid chunk index to.
 	 */
-	private void setValidOffsetsToValue(Tile[][] chunk, List<Integer[]> offsets,
-			List<Integer> validIndexes, Integer[] currentTile, Tile value) {
+	private void setValidOffsetsToValue(Tile[][] chunk, List<Integer[]> offsets, List<Integer> validIndexes,
+			Integer[] currentTile, Tile value) {
 		for (Integer index : validIndexes) {
 			int x = offsets.get(index)[0] + currentTile[0];
 			int y = offsets.get(index)[1] + currentTile[1];
@@ -1207,8 +1182,7 @@ public class WorldGenerator {
 	 *            The position that the offsets are in relation to.
 	 * @return An integer list with the index of every valid offset.
 	 */
-	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets,
-			Integer[] currentTile) {
+	private List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile) {
 		List<Integer> validIndexes = new ArrayList<Integer>();
 
 		for (int i = 0; i < offsets.size(); i++) {

@@ -3,6 +3,7 @@ package com.grupptva.runnergame.game.services;
 import java.util.List;
 
 import com.grupptva.runnergame.ScenePlugin;
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -23,7 +24,7 @@ public class GeneratorVisualizer implements ScenePlugin {
 	List<Tile[][]> chunkLog;
 
 	public GeneratorVisualizer() {
-		generator = new WorldGenerator(7f, -0.4f, 3f, 20, 4l, 40, 20, 0, 1, 120);
+		generator = new WorldGenerator(3f, 20, 4l, 40, 20, 0, new GameCharacter(30f, 150f, 3f));
 
 		chunkLog = generator.generateChunkLog(10);
 	}

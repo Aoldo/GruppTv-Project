@@ -72,9 +72,9 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 
 		debugTimeStep();
 		
-		Gdx.graphics.setTitle(String.valueOf(Gdx.graphics.getFramesPerSecond()));
+		Gdx.graphics.setTitle(String.valueOf(Gdx.graphics.getRawDeltaTime()));
 
-		while (timeAccumulator > 0) {
+		while (timeAccumulator > currentTimeStep) {
 			timeAccumulator -= currentTimeStep;
 
 			//--------------------Do logic here-------------------

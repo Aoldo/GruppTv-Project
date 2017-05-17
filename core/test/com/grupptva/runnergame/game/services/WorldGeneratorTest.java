@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.*;
 
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
 
@@ -20,7 +21,7 @@ public class WorldGeneratorTest {
 
 	@Before
 	public void init() {
-		wg = new WorldGenerator(7, -.4f, 1.5f, 25, 2l, 40, 20, 0, 1, 120);
+		wg = new WorldGenerator(1.5f, 25, 2l, 40, 20, 0, new GameCharacter(30f, 150f, 3f));
 	}
 
 	@Test
