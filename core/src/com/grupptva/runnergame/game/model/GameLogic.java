@@ -90,6 +90,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		if (world.getPosition() < -tileSize * chunkWidth) {
 			world.incrementStartIndex();
 			world.setPosition(0);
+			world.updateChunk(generator.generateChunk());
 		}
 		//move world here or world.update()?
 		//world.moveLeft(pixelsPerFrame);
