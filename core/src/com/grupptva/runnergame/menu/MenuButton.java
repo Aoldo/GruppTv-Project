@@ -16,8 +16,7 @@ public class MenuButton {
 	public int x, y, width, height;
 	public Color pressed, notPressed;
 
-	public MenuButton(int x, int y, int width, int height, Color pressed,
-			Color notPressed) {
+	public MenuButton(int x, int y, int width, int height, Color pressed, Color notPressed) {
 		//menuButtons.add(this);
 		this.x = x;
 		this.y = y;

@@ -21,35 +21,39 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.ScenePlugin;
 
 public class MainMenu implements ScenePlugin {
-
+	
+	MenuListener listener;
+	
+	MainMenuRenderer render;
+	
 	//TODO: Turn the BitmapFonts and the Strings into arrays
 	Map<String, String> buttonTitles;
 	Map<String, BitmapFont> buttonBF;
 
 	BitmapFont buttons;
-
-	private String startGameString, highScoresString, quitGameString;
+	
+	String startGameString, highScoresString, quitGameString;
 
 	MenuButton startGame, highScores, quitGame;
-
-	MenuListener listener;
 	
 	Texture img;
-
+	
 	Integer screenWidth = Gdx.graphics.getWidth();
 	Integer screenHeight = Gdx.graphics.getHeight();
 	
 	// private static ArrayList<MenuButton> menuButtons = new ArrayList<MenuButton>();
 
 	public MainMenu(MenuListener listener, Integer screenWidth, Integer screenHeight) {
-		buttons = new BitmapFont();
+		this.listener = listener;
+		render = new MainMenuRenderer(this);
 		
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		
-		this.listener = listener;
-
+		buttons = new BitmapFont();
+			
 		img = new Texture(Gdx.files.internal("bg.png"));
+		
 		buttonTitles = new HashMap();
 		buttonTitles.put("startgame", "Start Game");
 
@@ -63,43 +67,18 @@ public class MainMenu implements ScenePlugin {
 				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.3f, 0.6f, 1f, 1));
 		quitGame = new MenuButton(screenWidth / 2 - 80, screenHeight / 2 - 80, 160, 40,
 				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.3f, 0.6f, 1f, 1));
-	}
-
-	public void render(ShapeRenderer sr, MenuButton button) {
-		if (button.collides(-80, 40, screenWidth, screenHeight)) {
-			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				sr.setColor(button.pressed);
-			}
-		} else
-			sr.setColor(button.notPressed);
-		sr.rect(button.x, button.y, button.width, button.height);
-	}
-
-	public void renderBackground(Batch batch) {
-		batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-	}
-
-	public void renderButtons(ShapeRenderer sr) {
-		render(sr, startGame);
-		render(sr, highScores);
-		render(sr, quitGame);
-	}
-
-	public void renderText(Batch batch) {
-		buttons.draw(batch, startGameString, 284, 305);
-		buttons.draw(batch, highScoresString, 284, 246);
-		buttons.draw(batch, quitGameString, 284, 186);
+		
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
 		batch.begin();
-		renderBackground(batch);
+		render.renderBackground(batch);
 		batch.end();
 		sr.begin(ShapeType.Filled);
-		renderButtons(sr);
+		render.renderButtons(sr);
 		sr.end();
 		batch.begin();
-		renderText(batch);
+		render.renderText(batch);
 		batch.end();
 	}
 	
@@ -112,7 +91,6 @@ public class MainMenu implements ScenePlugin {
 	{
 		listener.enterHighscores();
 	}
-
 	
 	public void update() {
 		// Button collision detection
