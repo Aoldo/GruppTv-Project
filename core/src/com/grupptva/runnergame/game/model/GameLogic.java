@@ -42,6 +42,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private final int jumpKeyCode = Input.Keys.SPACE;
 	private final int hookKeyCode = Input.Keys.H;
 	private final int resetKeyCode = Input.Keys.R;
+	
+	long score = 0;
 
 	//
 	public GameLogic() {
@@ -84,6 +86,9 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	}
 
 	public void update() {
+		
+		score++;
+		
 		world.moveLeft(pixelsPerFrame);
 		handlePossibleCharacterCollision();
 		character.update();

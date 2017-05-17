@@ -1,6 +1,8 @@
 package com.grupptva.runnergame.highscores;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -18,34 +20,36 @@ import com.grupptva.runnergame.menu.HighScores;
 		
 		Preferences prefs = Gdx.app.getPreferences("HookITHighScores");
 
-		HighScore[] highscores = new HighScore[maxScoreCount];
+		//HighScore[] highscores = new HighScore[maxScoreCount];
+		List<HighScore> highscores = new ArrayList<HighScore>();
 				
-		public void initScores() {
-			for (int i = 0; i < highscores.length; i++) {
-				highscores[i] = new HighScore();
-			}
-		}
+//		public void initScores() {
+//			for (int i = 0; i < maxScoreCount; i++) {
+//				highscores.add(new HighScore());
+//			}
+//		}
 		
 		// Initiates the highscore menu with placeholders
-	    public void initHighScore() {
-			for (int i = 0; i < highscores.length; i++) {
-				//this.highscores[i].score = (int) (Math.random() * (50 - 0));
-				this.highscores[i].score = 0;
-				this.highscores[i].name = "---";
-			}  
-	    }
+//	    public void initHighScore() {
+//			for (int i = 0; i < maxScoreCount; i++) {
+//				//this.highscores[i].score = (int) (Math.random() * (50 - 0));
+//				this.highscores.get(i).score = 0;
+//				this.highscores.get(i).name = "---";
+//			}  
+//	    }
 		
 	    public HighScoresData() {
-	    	initScores();
-	    	initHighScore();
+	    	//initScores();
+	    	//initHighScore();
+	    	loadHighscores();
 	    }
 	    
 	    public int getHighScore(int index) {
-	    	return highscores[index].getScore();
+	    	return highscores.get(index).getScore();
 	    }
 	    
 	    public String getName(int index) {
-	    	return highscores[index].getName();
+	    	return highscores.get(index).getName();
 	    }
 	    	    
 	//	public void sortHighScores() {
@@ -58,11 +62,13 @@ import com.grupptva.runnergame.menu.HighScores;
 			return highscores;
 	    }
 		
-		public void addScore() {
-			for (int i = 0; i < (getLength()); i++) {
-				prefs.putInteger("highscore", getHighScore(i));
-			}
+		public void addScore(HighScore h) {
+			highscores.add(h);
 			//sortHighScores();
+			if (highscores.size() > 10) {
+				highscores.remove(highscores.size()-1);
+			}
+			saveHighscores();
 		}
 		
 		public void removeScore() {
@@ -70,29 +76,24 @@ import com.grupptva.runnergame.menu.HighScores;
 		}
 		
 		public int getLength() {
-			return highscores.length;
+			return highscores.size();
 		}
-		
-	//	@Override
-	//	public int compare(HighScoresData o1, HighScoresData o2) {
-	//		if ((o1.score) > (o2.score)) {
-	//			return 1;
-	//		} else if ((o1.score) < (o2.score)) {
-	//			return -1;
-	//		} else {
-	//			return 0;
-	//		}
-	//	}
-	
-		public static void saveHighscore(Preferences prefs) {
-		//prefs.putInteger(key, val);	
-		//prefs.putString("name", h.getName());
+
+		public void saveHighscores() {
+			for (int i = 0; i < maxScoreCount; i++) {
+				prefs.putInteger("score"+i, getHighScore(i)+i);
+				prefs.putString("name"+i, getName(i));
+			}
+			prefs.flush();
 		}
 					
-		// public static Highscores loadHighscore() { }
-		
+		public void loadHighscores() { 
+			for (int i = 0; i < maxScoreCount; i++) {
+				int s = prefs.getInteger("score"+i, 0);
+				String n = prefs.getString("name"+i, "---");
+				
+				highscores.add(new HighScore(s, n));
+			}
+		}
 		// int namn 4 bokstäver namn
-		
-		// Preferences prefs = Gdx.app.getPreferences("My Preferences");
-
 }
