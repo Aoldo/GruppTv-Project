@@ -8,7 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.grupptva.runnergame.RunnerGame;
-import com.grupptva.runnergame.menu.HighScores;
+import com.grupptva.runnergame.menu.HighScoreMenu;
 
 	//public class HighScoresData implements Comparable<HighScoresData> {
 	public class HighScoresData {
@@ -81,7 +81,7 @@ import com.grupptva.runnergame.menu.HighScores;
 
 		public void saveHighscores() {
 			for (int i = 0; i < maxScoreCount; i++) {
-				prefs.putInteger("score"+i, getHighScore(i)+i);
+				prefs.putInteger("score"+i, getHighScore(i));
 				prefs.putString("name"+i, getName(i));
 			}
 			prefs.flush();

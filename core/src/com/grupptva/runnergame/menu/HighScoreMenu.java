@@ -16,7 +16,7 @@ import com.grupptva.runnergame.ScenePlugin;
 import com.grupptva.runnergame.highscores.HighScore;
 import com.grupptva.runnergame.highscores.HighScoresData;
 
-public class HighScores implements ScenePlugin  {
+public class HighScoreMenu implements ScenePlugin  {
 	
 	//metod i konstruktorn
 	//logik
@@ -53,7 +53,7 @@ public class HighScores implements ScenePlugin  {
 	
 	HighScoresData hs;
 		
-	public HighScores(MenuListener listener, Integer screenWidth, Integer screenHeight) {
+	public HighScoreMenu(MenuListener listener, Integer screenWidth, Integer screenHeight) {
 		
 		// TODO: If highscore save file empty = initiate it with placeholders
 //		if (true) {

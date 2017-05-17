@@ -13,7 +13,7 @@ import com.grupptva.runnergame.controller.InputHandler;
 import com.grupptva.runnergame.game.model.GameLogic;
 import com.grupptva.runnergame.game.services.GeneratorVisualizer;
 import com.grupptva.runnergame.highscores.HighScoresData;
-import com.grupptva.runnergame.menu.HighScores;
+import com.grupptva.runnergame.menu.HighScoreMenu;
 import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuListener;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -31,7 +31,7 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	SpriteBatch batch;
 	Texture img;
 	GameLogic gameLogic;
-	HighScores highscores;
+	HighScoreMenu highscores;
 	
 	Integer screenWidth;
 	Integer screenHeight;
@@ -71,7 +71,7 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	}
 	
 	public void enterHighscores() {
-		highscores = new HighScores(this, screenWidth, screenHeight);
+		highscores = new HighScoreMenu(this, screenWidth, screenHeight);
 		activePlugin = highscores;
 	}
 

@@ -45,9 +45,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private final int hookKeyCode = Input.Keys.H;
 	private final int resetKeyCode = Input.Keys.R;
 	
-	long score = 0;
+	int score = 0;
 
-	//
 	public GameLogic() {
 		Gdx.input.setInputProcessor(this);
 
@@ -55,7 +54,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
 		collisionHandler = new CollisionHandler(character, world, tileSize);
-
 
 		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
 
@@ -85,9 +83,12 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	}
 
 	public void update() {
+		
+		score++;
 
 		if(character.isDead()) {
 			character.setDead(false);
+			//gamoverMenu.update(); den får ha update (render sköts i gameRenderer)
 			reset();
 		} else {
 			world.moveLeft(pixelsPerFrame);
