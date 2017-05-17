@@ -66,7 +66,7 @@ public class WorldModel {
 	}
 
 	public void updateChunk(Chunk chunk){
-		chunks[chunks.length % (startIndex + chunks.length - 1)] = chunk;
+		chunks[(startIndex + chunks.length - 1) % chunks.length ] = chunk;
 	}
 
 	/**
