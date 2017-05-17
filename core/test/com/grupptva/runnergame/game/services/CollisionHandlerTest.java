@@ -1,6 +1,7 @@
 package com.grupptva.runnergame.game.services;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.game.model.gamecharacter.Point;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
@@ -88,7 +89,31 @@ public class CollisionHandlerTest {
 
 	@Test
 	public void testHandleCollisionWithColumns() {
-	
+		List<Tile[]> columns = new ArrayList<Tile[]>();
+		columns.add(new Tile[] {
+				Tile.EMPTY,
+				Tile.EMPTY,
+				Tile.EMPTY,
+				Tile.EMPTY,
+				Tile.EMPTY
+		});
+		columns.add(new Tile[] {
+				Tile.EMPTY,
+				Tile.OBSTACLE,
+				Tile.EMPTY,
+				Tile.EMPTY,
+				Tile.OBSTACLE
+		});
+		float firstColumnXValue = 0;
+		gameCharacter.setDead(false);
+		gameCharacter.setPosition(new Point(tileSize / 2f, 3.5f * tileSize));
+		collisionHandler.handleCollisionWithColumns(columns, firstColumnXValue);
+		Assert.assertEquals(true, gameCharacter.isDead());
+		gameCharacter.setDead(false);
+		
+		gameCharacter.setPosition(new Point(tileSize / 2f, 1.75f * tileSize));
+		collisionHandler.handleCollisionWithColumns(columns, firstColumnXValue);
+		Assert.assertEquals(false, gameCharacter.isDead());
 	}
 
 	@Test
