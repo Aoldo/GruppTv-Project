@@ -164,6 +164,10 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
+
+		generator = new WorldGenerator(character.getJumpInitialVelocity(),
+				character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
+		
 		world.setChunks(new Chunk[] { c, generator.generateChunk(),
 				generator.generateChunk() });
 		world.setPosition(0);
