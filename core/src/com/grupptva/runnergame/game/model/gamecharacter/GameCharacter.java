@@ -8,7 +8,6 @@ public class GameCharacter {
 	private float gravity = -0.4f;
 	private float yVelocity;
 	private float jumpInitialVelocity = 7f;
-	private float hookVelocity = 3f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
 	private boolean hookExtended = false;
@@ -80,17 +79,20 @@ public class GameCharacter {
 	}
 
 	public void removeHook() {
-		float y1 = hookPosition.getY();
-		float y2 = position.getY();
-		float x1 = hookPosition.getX();
-		float x2 = position.getX();
-		double angle = Math.atan((y2 - y1)/(x2 - x1))+3.1415f/2;
-		hookVelocity = (float) Math.sin(angle) * jumpInitialVelocity;
+		float hookYPos = hookPosition.getY();
+		float characterYPos = position.getY();
+		float hookPositionXPos = hookPosition.getX();
+		float characterXPos = position.getX();
+		yVelocity = getReleaseVelocity(hookPositionXPos, hookYPos, characterXPos, characterYPos);
 		attachedWithHook = false;
 		position.setY(position.getY() + 1);
-		yVelocity = hookVelocity;
 		collidingWithGround = false;
 		hookExtended = false;
+	}
+
+	public float getReleaseVelocity(float hookXPos, float hookYPos, float characterXPos, float characterYPos) {
+		double angle = Math.atan((characterYPos - hookYPos)/(characterXPos - hookXPos))+3.1415f/2;
+		return (float) Math.sin(angle) * jumpInitialVelocity;
 	}
 
 	private void moveHook() {
