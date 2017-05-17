@@ -54,9 +54,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		world = new WorldModel();
 		collisionHandler = new CollisionHandler(character, world, tileSize);
 
-		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
-		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
-		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
 
 		generator = new WorldGenerator(character.getJumpInitialVelocity(),
 				character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
