@@ -64,7 +64,7 @@ public class WorldGenerator {
 			int chanceCounter = 0;
 			for (int i = 0; i < steps.size(); i++) {
 				if (stepValue < steps.get(i).chance + chanceCounter) {
-					steps.get(i).step(chunk, currentTile);
+					steps.get(i).step(chunk, currentTile, chunkLog);
 					break;
 				}
 				chanceCounter += steps.get(i).chance;
