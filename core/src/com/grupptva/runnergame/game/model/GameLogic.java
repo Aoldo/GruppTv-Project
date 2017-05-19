@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.ScenePlugin;
-import com.grupptva.runnergame.controller.InputListener;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
@@ -19,7 +18,6 @@ import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
 
 /**
- * 
  * @author Mattias revised by Karl and Agnes
  */
 public class GameLogic implements ScenePlugin, InputProcessor {
@@ -76,11 +74,11 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				}
 			}
 		}
-		world.setChunks(new Chunk[] { c, d, c });
+		world.setChunks(new Chunk[]{c, d, c});
 
 		//TODO: First 3 chunks should be a tutorial.
 		world.setChunks(
-				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
+				new Chunk[]{c, generator.generateChunk(), generator.generateChunk()});
 	}
 
 	public void update() {
@@ -124,9 +122,9 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				float tileYPos = row * tileSize;
 				if (world.getChunksInRightOrder()[0].getTiles()[col][row] != Tile.EMPTY
 						&& 2 * Math.abs(character.getPosition().getX() - tileXPos) <= 2
-								* tileSize
+						* tileSize
 						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <= 2
-								* tileSize) {
+						* tileSize) {
 					// handle collision
 					character.handleCollisionFromBelow(tileYPos + tileSize);
 					character.setCollidingWithGround(true);
@@ -143,9 +141,9 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				float tileYPos = row * tileSize;
 				if (world.getChunksInRightOrder()[1].getTiles()[col][row] != Tile.EMPTY
 						&& 2 * Math.abs(character.getPosition().getX() - tileXPos) <= 2
-								* tileSize
+						* tileSize
 						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <= 2
-								* tileSize) {
+						* tileSize) {
 					// handle collision
 					character.handleCollisionFromBelow(tileYPos + tileSize);
 					character.setCollidingWithGround(true);
@@ -170,8 +168,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
-		world.setChunks(new Chunk[] { c, generator.generateChunk(),
-				generator.generateChunk() });
+		world.setChunks(new Chunk[]{c, generator.generateChunk(),
+				generator.generateChunk()});
 		world.setPosition(0);
 		world.setStartIndex(0);
 	}
@@ -197,7 +195,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	public boolean keyUp(int keycode) {
 		switch (keycode) {
 			case hookKeyCode:
-				if(character.isAttachedWithHook())
+				if (character.isAttachedWithHook())
 					character.removeHook();
 				return true;
 			default:
