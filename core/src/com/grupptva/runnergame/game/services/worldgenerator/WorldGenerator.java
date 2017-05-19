@@ -125,11 +125,6 @@ public class WorldGenerator {
 	 */
 	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(Tile[][] tiles) {
 
-		System.out.println("______________gen");
-		for(int y = 0; y < tiles.length; y++)
-		{
-			System.out.println(Arrays.toString(tiles[y]));
-		}
 		
 		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[tiles[0].length][tiles.length];
 
@@ -141,12 +136,6 @@ public class WorldGenerator {
 					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.EMPTY;
 				}
 			}
-		}
-		
-		System.out.println("______________world");
-		for(int y = 0; y < newChunk.length; y++)
-		{
-			System.out.println(Arrays.toString(newChunk[y]));
 		}
 		
 		return newChunk;
