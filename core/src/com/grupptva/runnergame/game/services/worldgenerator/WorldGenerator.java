@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game.services;
+package com.grupptva.runnergame.game.services.worldgenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;

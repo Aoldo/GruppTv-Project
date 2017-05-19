@@ -1,10 +1,10 @@
-package com.grupptva.runnergame.game.services;
+package com.grupptva.runnergame.game.services.worldgenerator;
 
 import java.util.List;
 
 import com.grupptva.runnergame.ScenePlugin;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
+import com.grupptva.runnergame.game.services.worldgenerator.WorldGenerator.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

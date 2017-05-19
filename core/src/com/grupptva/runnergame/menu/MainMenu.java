@@ -43,12 +43,11 @@ public class MainMenu implements ScenePlugin {
 	MenuButton quitGame;
 
 	MenuListener listener;
-	
+
 	Texture img;
 
 	int screenWidth = Gdx.graphics.getWidth();
 	int screenHeight = Gdx.graphics.getHeight();
-	
 
 	public int getScreenWidth() {
 		return Gdx.graphics.getWidth();
@@ -62,10 +61,10 @@ public class MainMenu implements ScenePlugin {
 
 	public MainMenu(MenuListener listener) {
 		buttons = new BitmapFont();
-		
+
 		this.listener = listener;
 
-		img = new Texture(Gdx.files.internal("core/assets/mainmenubg2.png"));
+		img = new Texture(Gdx.files.internal("mainmenubg2.png"));
 		buttonTitles = new HashMap();
 		buttonTitles.put("startgame", "Start Game");
 
@@ -126,13 +125,11 @@ public class MainMenu implements ScenePlugin {
 		renderText(batch);
 		batch.end();
 	}
-	private void startGame()
-	{
+
+	private void startGame() {
 		listener.startGameEvent();
 	}
-	
-	
-	
+
 	public void update() {
 		// Button collision detection
 		// TODO: Click detection on release rather than click & 

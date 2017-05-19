@@ -16,7 +16,7 @@ import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.services.CollisionHandler;
-import com.grupptva.runnergame.game.services.WorldGenerator;
+import com.grupptva.runnergame.game.services.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
 
 /**

@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.controller.InputHandler;
 import com.grupptva.runnergame.game.model.GameLogic;
-import com.grupptva.runnergame.game.services.GeneratorVisualizer;
+import com.grupptva.runnergame.game.services.worldgenerator.GeneratorVisualizer;
 import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuListener;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
