@@ -303,7 +303,6 @@ class JumpStep extends GeneratorStep {
 
 		List<Integer[]> landingIndexes = new ArrayList<Integer[]>();
 		for (int i = jumpIndexes.size() / 2; i < jumpIndexes.size(); i++) {
-			//TODO: Currently adds diagonal as landing, check if viable, if not: change to vertical by checking x= x
 			if (jumpIndexes.get(i)[1] < jumpIndexes.get(i - 1)[1]) {
 				landingIndexes.add(jumpIndexes.get(i));
 			}
