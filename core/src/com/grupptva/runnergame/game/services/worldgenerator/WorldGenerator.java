@@ -17,6 +17,17 @@ public class WorldGenerator {
 	int initY;
 	Random rng;
 
+	/**
+	 * Creates a new instance of WorldGenerator.
+	 * 
+	 * @param vx Constant horizontal speed of the character, relative to the world.
+	 * @param tileSize Size of a tile in the world.
+	 * @param seed Seed for the random number generator.
+	 * @param chunkWidth Width of the world, in tiles.
+	 * @param chunkHeight Height of the world, in tiles. 
+	 * @param initY Characters starting Y position, in tiles.
+	 * @param character The character.
+	 */
 	public WorldGenerator(float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight, int initY,
 			GameCharacter character) {
 
@@ -29,6 +40,10 @@ public class WorldGenerator {
 		steps.add(new JumpStep(vx, tileSize, character, rng, 100));
 	}
 
+	/**
+	 * Returns the total sum of every steps chance of occuring.
+	 * @return Sum of all step chances.
+	 */
 	private int getChanceSum() {
 		int sum = 0;
 		for (GeneratorStep s : steps) {
