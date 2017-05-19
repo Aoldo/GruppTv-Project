@@ -8,8 +8,6 @@ public class GameCharacter {
 	private float gravity = -0.4f;
 	private float yVelocity;
 	private float jumpInitialVelocity = 7f;
-	private float hookVelocity = 3f;
-	private float xVelocity = 1.5f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
 	private boolean hookExtended = false;
@@ -17,6 +15,7 @@ public class GameCharacter {
 	private float hookLength;
 	private final float hookAngle = 1;
 	private final float pixelsPerFrame;
+	private boolean isDead = false;
 
 	public GameCharacter(float x, float y, float pixelsPerFrame) {
 		position = new Point(x, y);
@@ -24,18 +23,18 @@ public class GameCharacter {
 	}
 
 	public void update() {
+		if(!collidingWithGround && !hookExtended){
+			fall();
+		}
 		if(attachedWithHook){
 			hookExtended = hookLength <= position.getDistance(hookPosition);
 			if(hookExtended){
 				setyVelocity(0);
-				hookVelocity += 0.1f;
 				swing();
 			}
 			moveHook();
 		}
-		if(!collidingWithGround && !hookExtended){
-			fall();
-		}
+		
 	}
 
 	void moveY(float distance) {
@@ -70,7 +69,6 @@ public class GameCharacter {
 	}
 
 	public void handleCollisionFromBelow(float yCoordinate) {
-
 		setyVelocity(0);
 		position.setLocation(position.getX(), yCoordinate);
 	}
@@ -82,12 +80,20 @@ public class GameCharacter {
 	}
 
 	public void removeHook() {
+		float hookYPos = hookPosition.getY();
+		float characterYPos = position.getY();
+		float hookPositionXPos = hookPosition.getX();
+		float characterXPos = position.getX();
+		yVelocity = getReleaseVelocity(hookPositionXPos, hookYPos, characterXPos, characterYPos);
 		attachedWithHook = false;
 		position.setY(position.getY() + 1);
-		yVelocity += hookVelocity;
-		hookVelocity = 0f;
 		collidingWithGround = false;
 		hookExtended = false;
+	}
+
+	public float getReleaseVelocity(float hookXPos, float hookYPos, float characterXPos, float characterYPos) {
+		double angle = Math.atan((characterYPos - hookYPos)/(characterXPos - hookXPos))+3.1415f/2;
+		return (float) Math.sin(angle) * jumpInitialVelocity;
 	}
 
 	private void moveHook() {
@@ -130,4 +136,11 @@ public class GameCharacter {
 		return attachedWithHook;
 	}
 
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void setDead(boolean dead) {
+		isDead = dead;
+	}
 }

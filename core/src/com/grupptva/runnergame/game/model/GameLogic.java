@@ -1,8 +1,5 @@
 package com.grupptva.runnergame.game.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -14,7 +11,9 @@ import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
-import com.grupptva.runnergame.game.services.WorldGenerator;
+import com.grupptva.runnergame.game.services.collision.CollisionChecker;
+import com.grupptva.runnergame.game.services.worldgenerator.WorldGenerator;
+import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
 import com.grupptva.runnergame.game.view.GameRenderer;
 
 /**
@@ -26,6 +25,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private GameCharacter character;
 	private WorldModel world;
 	private WorldGenerator generator;
+	private ICollisionChecker collisionChecker;
+	private CollisionLogic collisionLogic;
 
 	private int chunkWidth = 40;
 	private int chunkHeight = 20;
@@ -35,7 +36,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	private int tileSize = 20;
 
-	private float pixelsPerFrame = 1.5f;
+	private float pixelsPerFrame = 3f;
 
 	private final int jumpKeyCode = Input.Keys.SPACE;
 	private final int hookKeyCode = Input.Keys.H;
@@ -49,12 +50,12 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
 
-		List<Integer[]> hookAttachOffsets = new ArrayList<Integer[]>();
-		List<Integer[]> hookJumpOffsets = new ArrayList<Integer[]>();
-		List<Integer[]> jumpOffsets = new ArrayList<Integer[]>();
+		collisionChecker = new CollisionChecker();
+		collisionLogic = new CollisionLogic(character, world, tileSize, collisionChecker);
 
-		generator = new WorldGenerator(character.getJumpInitialVelocity(),
-				character.getGravity(), pixelsPerFrame, 8, 4l, chunkWidth, chunkHeight, 0);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
+		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
+		//		character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -82,21 +83,21 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	}
 
 	public void update() {
-		world.moveLeft(pixelsPerFrame);
-		handlePossibleCharacterCollision();
-		character.update();
-		if (world.getPosition() < -tileSize * chunkWidth) {
-			world.incrementStartIndex();
-			world.setPosition(0);
+		if (character.isDead()) {
+			character.setDead(false);
+			reset();
+		} else {
+			world.moveLeft(pixelsPerFrame);
+			collisionLogic.handlePossibleCollision();
+			character.update();
+			if (world.getPosition() < -tileSize * chunkWidth) {
+				world.incrementStartIndex();
+				world.setPosition(0);
+				world.updateChunk(generator.generateChunk());
+			}
 		}
 		//move world here or world.update()?
-		world.moveLeft(pixelsPerFrame);
-		checkCharacterCollision();
-
-		/*
-		 * if(isCharacterCollidingFromBelow()){ handleCollisionFromBelow(); }
-		 * if(isCharacterCollidingFromRight()){ handleCollisionFromRight(); }
-		 */
+		//world.moveLeft(pixelsPerFrame);
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
@@ -104,58 +105,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		gameRenderer.renderCharacter(tileSize, character, sr);
 		gameRenderer.renderWorld(tileSize, getWorld(), sr);
 		sr.end();
-	}
-
-	private void handlePossibleCharacterCollision() {
-		int indexOfFirstVisibleCol = ((int) Math.abs(world.getPosition()) / tileSize)
-				% chunkWidth;
-		//out.println(indexOfFirstVisibleCol);
-		character.setCollidingWithGround(false);
-
-		for (int col = indexOfFirstVisibleCol; col < world.getChunksInRightOrder()[0]
-				.getTiles().length; col++) {
-
-			for (int row = 0; row < world.getChunksInRightOrder()[0]
-					.getTiles()[col].length; row++) {
-
-				float tileXPos = world.getPosition() + col * tileSize;
-				float tileYPos = row * tileSize;
-				if (world.getChunksInRightOrder()[0].getTiles()[col][row] != Tile.EMPTY
-						&& 2 * Math.abs(character.getPosition().getX() - tileXPos) <= 2
-						* tileSize
-						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <= 2
-						* tileSize) {
-					// handle collision
-					character.handleCollisionFromBelow(tileYPos + tileSize);
-					character.setCollidingWithGround(true);
-				}
-			}
-		}
-		for (int col = 0; col < 5; col++) {
-
-			for (int row = 0; row < world.getChunksInRightOrder()[1]
-					.getTiles()[col].length; row++) {
-
-				float tileXPos = world.getPosition() + col * tileSize
-						+ chunkWidth * tileSize;
-				float tileYPos = row * tileSize;
-				if (world.getChunksInRightOrder()[1].getTiles()[col][row] != Tile.EMPTY
-						&& 2 * Math.abs(character.getPosition().getX() - tileXPos) <= 2
-						* tileSize
-						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <= 2
-						* tileSize) {
-					// handle collision
-					character.handleCollisionFromBelow(tileYPos + tileSize);
-					character.setCollidingWithGround(true);
-				}
-			}
-		}
-	}
-
-	private void checkCharacterCollision() {
-		//if collision
-		//send needed data to character:
-		//character.handleCollisionFromBelow(10);
 	}
 
 	public WorldModel getWorld() {
@@ -168,10 +117,13 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
-		world.setChunks(new Chunk[]{c, generator.generateChunk(),
-				generator.generateChunk()});
+
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth, chunkHeight, 0, character);
+
+		world.setChunks(new Chunk[]{c, generator.generateChunk(), generator.generateChunk()});
 		world.setPosition(0);
 		world.setStartIndex(0);
+		collisionLogic.setGameCharacter(character);
 	}
 
 	@Override
