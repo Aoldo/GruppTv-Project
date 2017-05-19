@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.grupptva.runnergame.game.services.worldgenerator.WorldGeneratorOLD.Tile;
 
 class GeneratorChunk {
 	public Tile[][] tiles;
