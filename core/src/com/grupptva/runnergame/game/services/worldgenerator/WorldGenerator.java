@@ -1,6 +1,7 @@
 package com.grupptva.runnergame.game.services.worldgenerator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -105,15 +106,11 @@ public class WorldGenerator {
 				}
 				chanceCounter += steps.get(i).chance;
 			}
-			//___OLD___
-			//if (stepValue < jumpStepChance) //Select jumpStep
-			//	jumpStep(chunk, currentTile);
-			//else if (stepValue < jumpStepChance + hookStepChance) //Select hookStep
-			//	hookStep(chunk, currentTile);
 		}
 		chunk.tiles[currentTile[1]][currentTile[0]] = Tile.FULL; //Create solid ground at the end of the chunk.
 		initY = currentTile[1]; //Save final Y value of the chunk so that it can seamlessly connect to the next one.
-
+		
+		
 		return new Chunk(convertChunkToWorldModel(chunk.tiles)); //Convert the chunk into one that is usable by the world, and return it.
 	}
 
@@ -123,22 +120,35 @@ public class WorldGenerator {
 	 * for the visualization of the generation, that don't exist in the actual
 	 * world.
 	 * 
-	 * @param chunk
+	 * @param tiles
 	 * @return
 	 */
-	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(Tile[][] chunk) {
+	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(Tile[][] tiles) {
 
-		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[chunk[0].length][chunk.length];
+		System.out.println("______________gen");
+		for(int y = 0; y < tiles.length; y++)
+		{
+			System.out.println(Arrays.toString(tiles[y]));
+		}
+		
+		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[tiles[0].length][tiles.length];
 
-		for (int y = 0; y < chunk.length; y++) {
-			for (int x = 0; x < chunk[0].length; x++) {
-				if (chunk[y][x] == Tile.FULL || chunk[y][x] == Tile.HOOKTARGET) {
+		for (int y = 0; y < tiles.length; y++) {
+			for (int x = 0; x < tiles[0].length; x++) {
+				if (tiles[y][x] == Tile.FULL || tiles[y][x] == Tile.HOOKTARGET) {
 					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.OBSTACLE;
 				} else {
 					newChunk[x][y] = com.grupptva.runnergame.game.model.world.Tile.EMPTY;
 				}
 			}
 		}
+		
+		System.out.println("______________world");
+		for(int y = 0; y < newChunk.length; y++)
+		{
+			System.out.println(Arrays.toString(newChunk[y]));
+		}
+		
 		return newChunk;
 	}
 
