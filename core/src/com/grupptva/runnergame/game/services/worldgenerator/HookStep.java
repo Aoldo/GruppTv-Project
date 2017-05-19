@@ -19,6 +19,8 @@ class HookStep extends GeneratorStep {
 		float radius = 75f;
 
 		this.rng = rng;
+		
+		
 
 		initHookOffsets(v0y, a, vx, tileSize, angle, radius, character);
 	}

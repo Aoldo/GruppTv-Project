@@ -11,7 +11,6 @@ abstract class GeneratorStep {
 	
 	Random rng;
 	
-	
 	public abstract void step(GeneratorChunk chunk, Integer[] currentTile);
 
 	public abstract void step(GeneratorChunk chunk, Integer[] currentTile,

@@ -14,6 +14,7 @@ class JumpStep extends GeneratorStep {
 			Random rng, int chance) {
 		float v0y = character.getJumpInitialVelocity();
 		float a = character.getGravity();
+		this.chance = chance;
 
 		this.rng = rng;
 
