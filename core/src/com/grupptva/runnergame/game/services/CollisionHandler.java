@@ -67,41 +67,41 @@ public class CollisionHandler {
 		//out.printf("X: %f%nY: %f%n%n", getGameCharacter().getPosition().getX(), getGameCharacter().getPosition().getY());
 		if (tile != Tile.EMPTY) {
 			if (Math.abs(dx) <= getTileSize() && Math.abs(dy) <= getTileSize()) { // is there a collision?
-				out.printf("Y: %f%n", getGameCharacter().getPosition().getY());
-				out.printf("tileXPos: %f%ntileYPos: %f%n", tileXPos, tileYPos);
+				//out.printf("Y: %f%n", getGameCharacter().getPosition().getY());
+				//out.printf("tileXPos: %f%ntileYPos: %f%n", tileXPos, tileYPos);
 				if (dy > dx) { // Is it
 					//out.println("dy > dx");
 					//out.printf("%f > %f%n", dy, dx);
 					if (dy >= -dx) {
 						//out.printf("%f > -%f%n", dy, dx);
 						//bottom
-						out.println("bottom");
+						//out.println("bottom");
 						handleBottomCollision(tileYPos);
 					} else {
 						//right
 						//kill character
-						out.println("right");
+						//out.println("right");
 						handleRightCollision();
 					}
 				} else {
-					out.println("dy <= dx");
+					//out.println("dy <= dx");
 					if (dy != dx) {
 						if (dy > -dx) {
 							//left
-							out.println("left");
+							//out.println("left");
 							handleLeftCollision(tileYPos);
 						} else {
 							//top
 							//kill character
-							out.println("top");
+							//out.println("top");
 							handleTopCollision();
 						}
 					} else if (dy > 0 && dx > 0){
 						//bottom
-						out.println("bottom");
+						//out.println("bottom");
 						handleBottomCollision(tileYPos);
 					} else {
-						out.println("top");
+						//out.println("top");
 						handleTopCollision();
 					}
 				}

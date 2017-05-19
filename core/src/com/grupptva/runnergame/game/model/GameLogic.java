@@ -55,8 +55,9 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		collisionHandler = new CollisionHandler(character, world, tileSize);
 
 
-		generator = new WorldGenerator(character.getJumpInitialVelocity(),
-				character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
+		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
+		//		character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -165,8 +166,10 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 
-		generator = new WorldGenerator(character.getJumpInitialVelocity(),
-				character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth, chunkHeight, 0, character);
+
+		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
+		//		character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
 		
 		world.setChunks(new Chunk[] { c, generator.generateChunk(),
 				generator.generateChunk() });
