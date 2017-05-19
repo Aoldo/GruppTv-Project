@@ -16,7 +16,7 @@ import com.grupptva.runnergame.game.services.worldgenerator.WorldGeneratorOLD.Ti
  * @author Mattias
  *
  */
-public class WorldGeneratorTest {
+public class WorldGeneratorOLDTest {
 	WorldGeneratorOLD wg;
 
 	@Before

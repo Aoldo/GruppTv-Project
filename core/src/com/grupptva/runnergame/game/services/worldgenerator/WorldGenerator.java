@@ -37,6 +37,50 @@ public class WorldGenerator {
 	}
 
 	/**
+	 * Generates a chunk, but unlike generateChunk this method returns every
+	 * single iteration of the chunks generation. Used for visualization
+	 * purposes, SHOULD NOT BE CALLED IN THE GAME.
+	 * 
+	 * @param initY
+	 *            The Y value of the leftmost tile, the starting point.
+	 * @return A list containing every iteration of the generated chunk.
+	 */
+	public List<Tile[][]> generateChunkLog(int initY) {
+		List<Tile[][]> chunkLog = new ArrayList<Tile[][]>();
+		GeneratorChunk chunk = new GeneratorChunk(chunkWidth, chunkHeight); //The generated chunk. Currently empty.
+
+		Integer[] currentTile = { 0, initY }; //Represents current position of the "crawler" that simulates possible character movement through the chunk.
+
+		// Keep crawling forward step by step until the end of the chunk has been reached.
+		// Inside this loop is where the magic happens.
+		while (currentTile[0] != chunk.width - 1) {
+			chunk.tiles[currentTile[1]][currentTile[0]] = Tile.FULL; //Creates solid ground at the crawlers current position.
+
+			chunkLog.add(chunk.deepCopyTiles());
+			chunk.clearPossibilities(); //Used for visualization, removes info from previous log, reduces visual bloat
+
+			int stepValue = rng.nextInt(getChanceSum()); //Randomize which kind of movement should be used next.
+
+			int chanceCounter = 0;
+			for (int i = 0; i < steps.size(); i++) {
+				if (stepValue < steps.get(i).chance + chanceCounter) {
+					steps.get(i).step(chunk, currentTile);
+					break;
+				}
+				chanceCounter += steps.get(i).chance;
+			}
+
+			chunk.clearPossibilities();
+		}
+
+		chunk.tiles[currentTile[1]][currentTile[0]] = Tile.FULL; //Create solid ground at the end of the chunk.
+		initY = currentTile[1]; //Save final Y value of the chunk so that it can seamlessly connect to the next one.
+
+		chunkLog.add(chunk.deepCopyTiles());
+		return chunkLog;
+	}
+
+	/**
 	 * Creates the next chunk of the world.
 	 * 
 	 * @return The created chunk.
