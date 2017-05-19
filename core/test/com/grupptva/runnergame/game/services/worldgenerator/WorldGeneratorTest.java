@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game.services;
+package com.grupptva.runnergame.game.services.worldgenerator;
 
 import static org.junit.Assert.*;
 
@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.*;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.services.WorldGenerator;
-import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
+import com.grupptva.runnergame.game.services.worldgenerator.WorldGeneratorOLD;
+import com.grupptva.runnergame.game.services.worldgenerator.WorldGeneratorOLD.Tile;
 
 /**
  * 
@@ -17,11 +17,11 @@ import com.grupptva.runnergame.game.services.WorldGenerator.Tile;
  *
  */
 public class WorldGeneratorTest {
-	WorldGenerator wg;
+	WorldGeneratorOLD wg;
 
 	@Before
 	public void init() {
-		wg = new WorldGenerator(1.5f, 25, 2l, 40, 20, 0, new GameCharacter(30f, 150f, 3f));
+		wg = new WorldGeneratorOLD(1.5f, 25, 2l, 40, 20, 0, new GameCharacter(30f, 150f, 3f));
 	}
 
 	@Test
