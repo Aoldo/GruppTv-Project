@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.services.worldgenerator.Chunk;
-import com.grupptva.runnergame.game.services.worldgenerator.Chunk.Tile;
+import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk;
+import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
 
 class JumpStep extends GeneratorStep {
-	public JumpStep(float vx, int tileSize, int chunkWidth, int chunkHeight, int initY,
-			GameCharacter character, Random rng) {
+	public JumpStep(float vx, int tileSize, GameCharacter character,
+			Random rng, int chance) {
 		float v0y = character.getJumpInitialVelocity();
 		float a = character.getGravity();
 
@@ -20,7 +20,6 @@ class JumpStep extends GeneratorStep {
 		landingOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
 	}
 
-	Random rng;
 	List<Integer[]> landingOffsets;
 
 	/**
@@ -31,9 +30,8 @@ class JumpStep extends GeneratorStep {
 	 * @param chunk
 	 * @param currentTile
 	 */
-	private boolean jumpStepPart1(Chunk chunk, Integer[] currentTile) {
-		List<Integer> validJumpIndexes = chunk.getValidOffsetIndexes(landingOffsets,
-				currentTile);
+	private boolean jumpStepPart1(GeneratorChunk chunk, Integer[] currentTile) {
+		List<Integer> validJumpIndexes = chunk.getValidOffsetIndexes(landingOffsets, currentTile);
 		if (validJumpIndexes.size() == 0) {
 			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
 			//TODO: Better solution.
@@ -41,11 +39,9 @@ class JumpStep extends GeneratorStep {
 
 			return false;
 		}
-		chunk.setValidOffsetsToValue(landingOffsets, validJumpIndexes, currentTile,
-				Tile.POSSIBLESTAND);
+		chunk.setValidOffsetsToValue(landingOffsets, validJumpIndexes, currentTile, Tile.POSSIBLESTAND);
 
-		Integer[] offset = landingOffsets
-				.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
+		Integer[] offset = landingOffsets.get(validJumpIndexes.get(rng.nextInt(validJumpIndexes.size())));
 
 		//If to close to the bottom of the chunk: used weighted random selection instead
 		//where tiles above the character are weighted higher and thus have an increased chance 
@@ -87,7 +83,8 @@ class JumpStep extends GeneratorStep {
 	 * @param chunkLog
 	 *            A list of every interation of the chunk being generated.ö
 	 */
-	public void step(Chunk chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
+	@Override
+	public void step(GeneratorChunk chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
 		if (!jumpStepPart1(chunk, currentTile)) //Ends the jumpStep if there are no viable places to jump to.
 			return;
 
@@ -109,7 +106,8 @@ class JumpStep extends GeneratorStep {
 	 * @param currentTile
 	 *            The "character's" current position.
 	 */
-	public void step(Chunk chunk, Integer[] currentTile) {
+	@Override
+	public void step(GeneratorChunk chunk, Integer[] currentTile) {
 		if (!jumpStepPart1(chunk, currentTile)) //Ends the jumpStep if there are no viable places to jump to.
 			return;
 
@@ -151,8 +149,7 @@ class JumpStep extends GeneratorStep {
 	 * @return A list containing the offsets, in relation to the tile the
 	 *         character is at, that the character can reach by jumping.
 	 */
-	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize,
-			float vx) {
+	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize, float vx) {
 		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx); //Grid of tiles that the character might be able to reach by jumping.
 		int halfGridHeight = jumpGrid.length / 2; //Save half of grid height, since grid height [-apexY, apexY] of jump, and character starts at 0.
 		List<Integer[]> trueIndexes = getTrueIndexes(jumpGrid);
@@ -198,8 +195,7 @@ class JumpStep extends GeneratorStep {
 
 		//Failsafe so that it splits between different X values, otherwise it wont sort properly
 		int lowestMidXIndex = currentIndex;
-		while (lowestMidXIndex > 1
-				&& jumpIndexes.get(lowestMidXIndex - 1)[0] == currentX) {
+		while (lowestMidXIndex > 1 && jumpIndexes.get(lowestMidXIndex - 1)[0] == currentX) {
 			lowestMidXIndex--;
 		}
 
@@ -265,8 +261,7 @@ class JumpStep extends GeneratorStep {
 	 *            sorting.
 	 * @return
 	 */
-	private List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right,
-			int index) {
+	private List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right, int index) {
 		List<Integer[]> result = new ArrayList<Integer[]>();
 
 		//Loops until either list is empty.
@@ -384,8 +379,7 @@ class JumpStep extends GeneratorStep {
 	 *            Constant X velocity of the character.
 	 * @return The size of the jump grid.
 	 */
-	private int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize,
-			float vx) {
+	private int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize, float vx) {
 		int[] size = new int[] { 0, 0 };
 		float maxY = getRelativeHeightOfApex(v0y, a);
 		size[1] = (int) Math.ceil(maxY / tileSize) * 2; //*2 due to going up to the apex of the jump and then down to -apex
@@ -441,8 +435,7 @@ class JumpStep extends GeneratorStep {
 	 * @return
 	 */
 	float getJumpY(float v0y, float a, float t, float xTranslation) {
-		return (v0y * (t - xTranslation))
-				+ ((a * (t - xTranslation) * (t - xTranslation)) / 2);
+		return (v0y * (t - xTranslation)) + ((a * (t - xTranslation) * (t - xTranslation)) / 2);
 	}
 
 	/**
@@ -462,8 +455,7 @@ class JumpStep extends GeneratorStep {
 	 */
 	boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
 		//Create a grid of false booleans. Size depends on how far the character can reach by jumping.
-		boolean[][] jumpGrid = createEmptyJumpGrid(
-				getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
+		boolean[][] jumpGrid = createEmptyJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
 
 		//Calculations are done by simulating a point performing the jump and checking where it can land.
 		//Starting y position of character is in the middle of the testing grid, since possible locations are [-yApex, yApex]
@@ -541,17 +533,5 @@ class JumpStep extends GeneratorStep {
 		}
 
 		return jumpGrid;
-	}
-
-	@Override
-	public void step(Tile[][] chunk, Integer[] currentTile) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void step(Tile[][] chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
-		// TODO Auto-generated method stub
-
 	}
 }

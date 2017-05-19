@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.grupptva.runnergame.game.services.worldgenerator.WorldGeneratorOLD.Tile;
 
-class Chunk {
+class GeneratorChunk {
 	public Tile[][] tiles;
 	public int width;
 	public int height;
@@ -26,7 +26,7 @@ class Chunk {
 		HOOKTARGET;
 	}
 
-	public Chunk(int width, int height) {
+	public GeneratorChunk(int width, int height) {
 		//TODO: Failsafe if width/height < 1?
 		tiles = new Tile[height][width];
 		initTiles();
