@@ -123,7 +123,7 @@ class JumpStep extends GeneratorStep {
 	 * @param tiles
 	 * @return List of indexes.
 	 */
-	List<Integer[]> getTrueIndexes(boolean[][] tiles) {
+	static List<Integer[]> getTrueIndexes(boolean[][] tiles) {
 		List<Integer[]> indexes = new ArrayList<Integer[]>();
 		//Loop through every index.
 		for (int y = 0; y < tiles.length; y++) {
@@ -150,7 +150,7 @@ class JumpStep extends GeneratorStep {
 	 * @return A list containing the offsets, in relation to the tile the
 	 *         character is at, that the character can reach by jumping.
 	 */
-	List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize, float vx) {
+	static List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize, float vx) {
 		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx); //Grid of tiles that the character might be able to reach by jumping.
 		int halfGridHeight = jumpGrid.length / 2; //Save half of grid height, since grid height [-apexY, apexY] of jump, and character starts at 0.
 		List<Integer[]> trueIndexes = getTrueIndexes(jumpGrid);
@@ -177,7 +177,7 @@ class JumpStep extends GeneratorStep {
 	 *            List to be sorted.
 	 * @return Sorted list.
 	 */
-	List<Integer[]> sortJumpIndexes(List<Integer[]> jumpIndexes) {
+	static List<Integer[]> sortJumpIndexes(List<Integer[]> jumpIndexes) {
 		//Sort everything by ascending X, with equal X values to the left of the apex sorted by ascending Y
 		//and equals to the right of the apex by descending Y.
 		jumpIndexes = mergeSort(jumpIndexes, 0);
@@ -226,7 +226,7 @@ class JumpStep extends GeneratorStep {
 	 *            sorting.
 	 * @return A new sorted list.
 	 */
-	List<Integer[]> mergeSort(List<Integer[]> list, int index) {
+	static List<Integer[]> mergeSort(List<Integer[]> list, int index) {
 		if (list.size() <= 1) {
 			return list; //A list with only one element is already sorted.
 		}
@@ -262,7 +262,7 @@ class JumpStep extends GeneratorStep {
 	 *            sorting.
 	 * @return
 	 */
-	private List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right, int index) {
+	private static List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right, int index) {
 		List<Integer[]> result = new ArrayList<Integer[]>();
 
 		//Loops until either list is empty.
@@ -298,7 +298,7 @@ class JumpStep extends GeneratorStep {
 	 * @return A new list containing all tileIndexes who are below the previous
 	 *         tile.
 	 */
-	List<Integer[]> getLandingIndexes(List<Integer[]> jumpIndexes) {
+	static List<Integer[]> getLandingIndexes(List<Integer[]> jumpIndexes) {
 		jumpIndexes = sortJumpIndexes(jumpIndexes);
 
 		List<Integer[]> landingIndexes = new ArrayList<Integer[]>();
@@ -321,7 +321,7 @@ class JumpStep extends GeneratorStep {
 	 *            Constant acceleration of the character, should be negative.
 	 * @return Frames to the apex.
 	 */
-	float getFramesToApexOfJump(float v0y, float a) {
+	static float getFramesToApexOfJump(float v0y, float a) {
 		//v=v_0+a*t, v = 0 => t=v_0/a
 		return Math.abs(v0y / (a));
 	}
@@ -335,7 +335,7 @@ class JumpStep extends GeneratorStep {
 	 *            Constant acceleration of the character, should be negative.
 	 * @return Height of the apex.
 	 */
-	float getRelativeHeightOfApex(float v0y, float a) {
+	static float getRelativeHeightOfApex(float v0y, float a) {
 		//integrate v=v_0+a*t dt <=> y = v_0*t-(a*t^2)/2
 		float t = getFramesToApexOfJump(v0y, a);
 		return getJumpY(v0y, a, t);
@@ -356,7 +356,7 @@ class JumpStep extends GeneratorStep {
 	 * @return The amount of frames, from the initial value {@param y0}, to the
 	 *         sought value {@param y}.
 	 */
-	float getFramesToYValue(float v0y, float a, float y, float y0) {
+	static float getFramesToYValue(float v0y, float a, float y, float y0) {
 		float sqrt = (float) Math.sqrt(2 * a * y - 2 * a * y0 + v0y * v0y);
 		//Get the furthest future time, ie rightmost point with that y value.
 		if (sqrt - v0y > -sqrt - v0y)
@@ -380,7 +380,7 @@ class JumpStep extends GeneratorStep {
 	 *            Constant X velocity of the character.
 	 * @return The size of the jump grid.
 	 */
-	private int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize, float vx) {
+	private static int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize, float vx) {
 		int[] size = new int[] { 0, 0 };
 		float maxY = getRelativeHeightOfApex(v0y, a);
 		size[1] = (int) Math.ceil(maxY / tileSize) * 2; //*2 due to going up to the apex of the jump and then down to -apex
@@ -399,7 +399,7 @@ class JumpStep extends GeneratorStep {
 	 *            Y.
 	 * @return An empty 2d array of booleans.
 	 */
-	private boolean[][] createEmptyJumpGrid(int[] size) {
+	private static boolean[][] createEmptyJumpGrid(int[] size) {
 		return new boolean[size[1]][size[0]];
 	}
 
@@ -416,7 +416,7 @@ class JumpStep extends GeneratorStep {
 	 *            The time/X value
 	 * @return The corresponding Y value.
 	 */
-	private float getJumpY(float v0y, float a, float t) {
+	private static float getJumpY(float v0y, float a, float t) {
 		return (v0y * t) + ((a * t * t) / 2);
 	}
 
@@ -454,7 +454,7 @@ class JumpStep extends GeneratorStep {
 	 * @param vx
 	 * @return
 	 */
-	boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
+	static boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
 		//Create a grid of false booleans. Size depends on how far the character can reach by jumping.
 		boolean[][] jumpGrid = createEmptyJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
 

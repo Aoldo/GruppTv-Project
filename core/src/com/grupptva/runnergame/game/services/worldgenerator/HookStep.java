@@ -11,16 +11,15 @@ class HookStep extends GeneratorStep {
 	List<Integer[]> hookAttachOffsets;
 	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
 
-	public HookStep(float vx, int tileSize, int chunkWidth, int chunkHeight, int initY, GameCharacter character,
-			Random rng) {
+	public HookStep(float vx, int tileSize, GameCharacter character,
+			Random rng, int chance) {
 		float v0y = character.getJumpInitialVelocity();
 		float a = character.getGravity();
 		float angle = 1f; //TODO: Replace with character get methods when implemented.
 		float radius = 75f;
 
 		this.rng = rng;
-		
-		
+		this.chance = chance;
 
 		initHookOffsets(v0y, a, vx, tileSize, angle, radius, character);
 	}
@@ -50,7 +49,7 @@ class HookStep extends GeneratorStep {
 			float yVel = character.getReleaseVelocity(swingOffset[0], swingOffset[1], 0, 0);
 
 			if (yVel > 0) {
-				List<Integer[]> swingLandingOffsets = calculateJumpLandingOffsets(yVel, a, tileSize, vx);
+				List<Integer[]> swingLandingOffsets = JumpStep.calculateJumpLandingOffsets(yVel, a, tileSize, vx);
 
 				for (Integer[] landingOffset : swingLandingOffsets) {
 					//Offset them by the swing position so that they are in relation to the attachment point
@@ -219,16 +218,112 @@ class HookStep extends GeneratorStep {
 		return offsets;
 	}
 
+	/**
+	 * Called if the next step of generation is a step where the character has
+	 * to hook a tile and then jump to another. Detects all possible locations
+	 * the character can attach its hook to, from {@param currentTile}. This is
+	 * followed by selecting one of them and detecting every location the
+	 * character can jump to, while swinging form the select tile, and finally
+	 * selecting one of those. Updates {@param chunk} to include all possible
+	 * hook locations and landing locations. Sets {@param currentTile} to the
+	 * final select tile, the one the character lands on after the hook.
+	 * 
+	 * @param chunk
+	 *            The chunk currently being generated.
+	 * @param currentTile
+	 */
 	@Override
 	public void step(GeneratorChunk chunk, Integer[] currentTile) {
-		// TODO Auto-generated method stub
+		List<Integer> validHookAttachIndexes = chunk.getValidOffsetIndexes(hookAttachOffsets, currentTile);
 
+		//In order to prevent changes to currentTile in case there is no valid path after the hook attachment point has been set.
+		Integer[] currentTileCopy = new Integer[] { currentTile[0], currentTile[1] };
+
+		if (!hookStepPart1(chunk, currentTile, validHookAttachIndexes, currentTileCopy))
+			return;
+
+		hookStepPart2(chunk, currentTile, validHookAttachIndexes, currentTileCopy);
+		createPlatform(chunk, currentTile);
 	}
 
+	/**
+	 * A copy of hookStep that is used for visualization, only difference is
+	 * that it logs important changes to the chunk in {@param chunkLog}.
+	 * 
+	 * @see hookStep
+	 * @param chunkLog
+	 */
 	@Override
 	public void step(GeneratorChunk chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
-		// TODO Auto-generated method stub
+		List<Integer> validHookAttachIndexes = chunk.getValidOffsetIndexes(hookAttachOffsets, currentTile);
 
+		//In order to prevent changes to currentTile in case there is no valid path after the hook attachment point has been set.
+		Integer[] currentTileCopy = new Integer[] { currentTile[0], currentTile[1] };
+
+		if (!hookStepPart1(chunk, currentTile, validHookAttachIndexes, currentTileCopy))
+			return;
+
+		chunkLog.add(chunk.deepCopyTiles());
+
+		hookStepPart2(chunk, currentTile, validHookAttachIndexes, currentTileCopy);
+		createPlatform(chunk, currentTile);
 	}
 
+	/**
+	 * The first half of the hookStep method. Split into two for easy
+	 * implementation of logging the generation
+	 * {@See hookStep(..),hookStep(..,chunkLog)}.
+	 * 
+	 * @param chunk
+	 * @param currentTile
+	 * @param validHookAttachIndexes
+	 * @param currentTileCopy
+	 * @return
+	 */
+	private boolean hookStepPart1(GeneratorChunk chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
+			Integer[] currentTileCopy) {
+		if (validHookAttachIndexes.size() == 0) {
+			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
+			//TODO: Better solution.
+			currentTile[0] = chunk.width - 1;
+			return false;
+		}
+		chunk.setValidOffsetsToValue(hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
+		return true;
+	}
+
+	/**
+	 * The second half of the hookStep method. Split into two for easy
+	 * implementation of logging the generation
+	 * {@See hookStep(..),hookStep(..,chunkLog)}.
+	 * 
+	 * @param chunk
+	 * @param currentTile
+	 * @param validHookAttachIndexes
+	 * @param currentTileCopy
+	 */
+	private void hookStepPart2(GeneratorChunk chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
+			Integer[] currentTileCopy) {
+		int randomIndex = rng.nextInt(validHookAttachIndexes.size());
+		Integer[] offset = hookAttachOffsets.get(validHookAttachIndexes.get(randomIndex));
+		List<Integer[]> landOffsets = hookLandingOffsetList.get(randomIndex);
+
+		currentTileCopy[0] += offset[0];
+		currentTileCopy[1] += offset[1];
+
+		List<Integer> validLandIndexes = chunk.getValidOffsetIndexes(landOffsets, currentTileCopy);
+		if (validLandIndexes.size() == 0) {
+			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
+			//TODO: Better solution.
+			currentTile[0] = chunk.width - 1;
+			return;
+		}
+		chunk.tiles[currentTileCopy[1]][currentTileCopy[0]] = Tile.HOOKTARGET;
+		chunk.setValidOffsetsToValue(landOffsets, validLandIndexes, currentTileCopy, Tile.POSSIBLESTAND);
+
+		offset = landOffsets.get(validLandIndexes.get(rng.nextInt(validLandIndexes.size())));
+
+		currentTile[0] = currentTileCopy[0] + offset[0];
+		currentTile[1] = currentTileCopy[1] + offset[1];
+	}
 }
