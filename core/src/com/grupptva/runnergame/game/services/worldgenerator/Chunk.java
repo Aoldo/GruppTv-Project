@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.grupptva.runnergame.game.services.worldgenerator.WorldGeneratorOLD.Tile;
+
 class Chunk {
-	Tile[][] tiles;
+	public Tile[][] tiles;
+	public int width;
+	public int height;
 
 	/**
 	 * Different kinds of tiles used in generation of chunks. Some are used for
@@ -15,15 +19,48 @@ class Chunk {
 	 * @author Mattias
 	 */
 	enum Tile {
-		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND, HOOKTARGET;
+		EMPTY,
+		FULL,
+		POSSIBLEHOOK,
+		POSSIBLESTAND,
+		HOOKTARGET;
 	}
 
-	
-	
 	public Chunk(int width, int height) {
 		//TODO: Failsafe if width/height < 1?
 		tiles = new Tile[height][width];
 		initTiles();
+		this.width = width;
+		this.height = height;
+	}
+
+	/**
+	 * Takes every valid index from {@param offsets}, listed in
+	 * {@param validIndexes}, individually adds them to {@param currentTile} and
+	 * then changes the new index, represented by said sum, inside of
+	 * {@param chunk} to {@param value}, if they aren't FULL.
+	 * 
+	 * @param chunk
+	 *            The chunk whose values should be changed.
+	 * @param offsets
+	 *            A list containing offsets in relation to {@param currentTile}.
+	 * @param validIndexes
+	 *            A list containing every index inside {@param offsets} that is
+	 *            valid, and should be used.
+	 * @param currentTile
+	 *            The position that every offset should be in relation to.
+	 * @param value
+	 *            The type of tile to set every valid chunk index to.
+	 */
+	void setValidOffsetsToValue(List<Integer[]> offsets,
+			List<Integer> validIndexes, Integer[] currentTile, Tile value) {
+		for (Integer index : validIndexes) {
+			int x = offsets.get(index)[0] + currentTile[0];
+			int y = offsets.get(index)[1] + currentTile[1];
+
+			if (tiles[y][x] != Tile.FULL)
+				tiles[y][x] = value;
+		}
 	}
 
 	/**
@@ -79,8 +116,7 @@ class Chunk {
 	 *            The position that the offsets are in relation to.
 	 * @return An integer list with the index of every valid offset.
 	 */
-	List<Integer> getValidOffsetIndexes(List<Integer[]> offsets,
-			Integer[] currentTile) {
+	List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile) {
 		List<Integer> validIndexes = new ArrayList<Integer>();
 
 		for (int i = 0; i < offsets.size(); i++) {
