@@ -47,7 +47,7 @@ class JumpStep extends GeneratorStep {
 		//If to close to the bottom of the chunk: used weighted random selection instead
 		//where tiles above the character are weighted higher and thus have an increased chance 
 		//being selected, to prevent the generation from becoming stuck at the bottom.
-		if (currentTile[1] < (chunk.height * .40)) { //.4 arbitrary height
+		if (currentTile[1] < (chunk.height * .5)) { //.5 arbitrary height
 			int[] indexWeights = new int[validJumpIndexes.size()];
 			int totalWeights = 0;
 			for (int i = 0; i < validJumpIndexes.size(); i++) {
