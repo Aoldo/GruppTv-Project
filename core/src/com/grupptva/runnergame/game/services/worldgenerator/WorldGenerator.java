@@ -46,7 +46,7 @@ public class WorldGenerator {
 	 *            The Y value of the leftmost tile, the starting point.
 	 * @return A list containing every iteration of the generated chunk.
 	 */
-	public List<Tile[][]> generateChunkLog(int initY) {
+	public List<Tile[][]> generateChunkLog() {
 		List<Tile[][]> chunkLog = new ArrayList<Tile[][]>();
 		GeneratorChunk chunk = new GeneratorChunk(chunkWidth, chunkHeight); //The generated chunk. Currently empty.
 

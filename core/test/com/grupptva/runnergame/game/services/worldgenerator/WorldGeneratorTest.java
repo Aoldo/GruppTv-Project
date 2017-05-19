@@ -27,7 +27,7 @@ public class WorldGeneratorTest {
 	}
 	
 	@Test
-	public void testFinalTileOnMultipleSeeds() {
+	public void testFinalTileOnChunks() {
 		boolean noFail = true;
 		for (int i = 0; i < 50; i++) {
 			if (!generateChunk_ShouldHaveTileAtRightmostColumn()) {
@@ -37,14 +37,37 @@ public class WorldGeneratorTest {
 		}
 		assertTrue(noFail);
 	}
+	@Test
+	public void testFirstTileOnChunks() {
+		boolean noFail = true;
+		for (int i = 0; i < 50; i++) {
+			if (!generateChunk_ShouldHaveTileAtLeftmostColumn()) {
+				noFail = false;
+				break;
+			}
+		}
+		assertTrue(noFail);
+	}
+
+	private boolean generateChunk_ShouldHaveTileAtLeftmostColumn() {
+		Tile[][] chunk = generator.generateChunk().getTiles();
+	
+		int x = 0;
+
+		for (int y = 0; y < chunk[0].length; y++) {
+			if (chunk[x][y] == Tile.OBSTACLE) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private boolean generateChunk_ShouldHaveTileAtRightmostColumn() {
 		Tile[][] chunk = generator.generateChunk().getTiles();
 	
-		int x = chunk[0].length - 1;
+		int x = chunk.length - 1;
 
 		for (int y = 0; y < chunk[0].length; y++) {
-			System.out.println(Arrays.toString(chunk[y]));
 			if (chunk[x][y] == Tile.OBSTACLE) {
 				return true;
 			}

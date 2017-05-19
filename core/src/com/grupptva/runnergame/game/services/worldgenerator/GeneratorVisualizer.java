@@ -26,7 +26,7 @@ public class GeneratorVisualizer implements ScenePlugin {
 	public GeneratorVisualizer() {
 		generator = new WorldGenerator(3f, 20, 4l, 40, 20, 0, new GameCharacter(30f, 150f, 3f));
 
-		chunkLog = generator.generateChunkLog(10);
+		chunkLog = generator.generateChunkLog();
 	}
 
 	public void update() {
@@ -34,6 +34,7 @@ public class GeneratorVisualizer implements ScenePlugin {
 			logIndex++;
 		}
 		if (logIndex >= chunkLog.size()) {
+			chunkLog = generator.generateChunkLog();
 			logIndex = 0;
 		}
 	}

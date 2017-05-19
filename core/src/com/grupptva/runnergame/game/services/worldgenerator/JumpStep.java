@@ -435,7 +435,7 @@ class JumpStep extends GeneratorStep {
 	 *            The translation across X-axis
 	 * @return
 	 */
-	float getJumpY(float v0y, float a, float t, float xTranslation) {
+	static float getJumpY(float v0y, float a, float t, float xTranslation) {
 		return (v0y * (t - xTranslation)) + ((a * (t - xTranslation) * (t - xTranslation)) / 2);
 	}
 
