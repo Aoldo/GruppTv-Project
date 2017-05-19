@@ -10,8 +10,7 @@ import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk;
 import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
 
 class JumpStep extends GeneratorStep {
-	public JumpStep(float vx, int tileSize, GameCharacter character,
-			Random rng, int chance) {
+	public JumpStep(float vx, int tileSize, GameCharacter character, Random rng, int chance) {
 		float v0y = character.getJumpInitialVelocity();
 		float a = character.getGravity();
 		this.chance = chance;
@@ -34,9 +33,10 @@ class JumpStep extends GeneratorStep {
 	private boolean jumpStepPart1(GeneratorChunk chunk, Integer[] currentTile) {
 		List<Integer> validJumpIndexes = chunk.getValidOffsetIndexes(landingOffsets, currentTile);
 		if (validJumpIndexes.size() == 0) {
-			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
-			//TODO: Better solution.
-			currentTile[0] = chunk.width - 1;
+			//Failsafe to prevent infinite loop. This code is pretty much identical to failsafes in other places
+			//but turning it into a boolean method doesn't remove the if statement since it would return true
+			//if it passes the check, and that would require a new if statement in order to prevent it from ending this method early.
+			createPlatform(chunk, currentTile);
 
 			return false;
 		}

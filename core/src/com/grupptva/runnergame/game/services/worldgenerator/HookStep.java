@@ -283,9 +283,10 @@ class HookStep extends GeneratorStep {
 	private boolean hookStepPart1(GeneratorChunk chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
 			Integer[] currentTileCopy) {
 		if (validHookAttachIndexes.size() == 0) {
-			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
-			//TODO: Better solution.
-			currentTile[0] = chunk.width - 1;
+			//Failsafe to prevent infinite loop. This code is pretty much identical to failsafes in other places
+			//but turning it into a boolean method doesn't remove the if statement since it would return true
+			//if it passes the check, and that would require a new if statement in order to prevent it from ending this method early.
+			createPlatform(chunk, currentTile);	
 			return false;
 		}
 		chunk.setValidOffsetsToValue(hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
@@ -313,9 +314,10 @@ class HookStep extends GeneratorStep {
 
 		List<Integer> validLandIndexes = chunk.getValidOffsetIndexes(landOffsets, currentTileCopy);
 		if (validLandIndexes.size() == 0) {
-			//Failsafe to prevent infinite loop, by setting currentTile[0] to the final point in the chunk the loop that calls this method will break.
-			//TODO: Better solution.
-			currentTile[0] = chunk.width - 1;
+			//Failsafe to prevent infinite loop. This code is pretty much identical to failsafes in other places
+			//but turning it into a boolean method doesn't remove the if statement since it would return true
+			//if it passes the check, and that would require a new if statement in order to prevent it from ending this method early.
+			createPlatform(chunk, currentTile);			
 			return;
 		}
 		chunk.tiles[currentTileCopy[1]][currentTileCopy[0]] = Tile.HOOKTARGET;

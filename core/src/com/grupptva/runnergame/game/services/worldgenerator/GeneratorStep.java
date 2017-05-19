@@ -8,13 +8,12 @@ import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
 abstract class GeneratorStep {
 	int currentTileExtraBuffer = 3;
 	int chance;
-	
+
 	Random rng;
-	
+
 	public abstract void step(GeneratorChunk chunk, Integer[] currentTile);
 
-	public abstract void step(GeneratorChunk chunk, Integer[] currentTile,
-			List<Tile[][]> chunkLog);
+	public abstract void step(GeneratorChunk chunk, Integer[] currentTile, List<Tile[][]> chunkLog);
 
 	/**
 	 * Removes duplicates from {@param offsets}.
@@ -33,7 +32,7 @@ abstract class GeneratorStep {
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds a platform to the chunk, using currentTile as the leftmost tile.
 	 * Size depends on currentTileExtraBuffer.
@@ -64,5 +63,19 @@ abstract class GeneratorStep {
 				}
 			}
 		}
+	}
+	/**
+	 *  * Creates a platform (or line) of tiles all the way to the right edge of
+	 * the chunk. Called to make sure there are no impossible to navigate gaps
+	 * when a step fails due to there not being enough space left in the chunk.
+	 * @param chunk
+	 * @param currentTile
+	 */
+	protected void createPlatformToEdge(GeneratorChunk chunk, Integer[] currentTile) {
+		int dx = chunk.width - currentTile[0];
+		for (int x = 0; x < dx; x++) {
+			chunk.tiles[currentTile[1]][x] = Tile.FULL;
+		}
+		currentTile[0] = chunk.width-1;
 	}
 }
