@@ -14,7 +14,7 @@ class Chunk {
 	 * 
 	 * @author Mattias
 	 */
-	public enum Tile {
+	enum Tile {
 		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND, HOOKTARGET;
 	}
 
@@ -42,7 +42,7 @@ class Chunk {
 	 * Sets all tiles that aren't FULL or HOOKTARGET to EMPTY, used to clear
 	 * previous possibilities for the visualization.
 	 */
-	private void clearPossibilities() {
+	public void clearPossibilities() {
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[0].length; x++) {
 				if (tiles[y][x] != Tile.FULL && tiles[y][x] != Tile.HOOKTARGET) {
@@ -63,7 +63,7 @@ class Chunk {
 	 * @return True if the given index is inside of the chunks bounds, otherwise
 	 *         false.
 	 */
-	private boolean isValidIndex(int x, int y) {
+	boolean isValidIndex(int x, int y) {
 		return (y < tiles.length && x < tiles[0].length && x >= 0 && y >= 0);
 	}
 
@@ -79,7 +79,7 @@ class Chunk {
 	 *            The position that the offsets are in relation to.
 	 * @return An integer list with the index of every valid offset.
 	 */
-	public List<Integer> getValidOffsetIndexes(List<Integer[]> offsets,
+	List<Integer> getValidOffsetIndexes(List<Integer[]> offsets,
 			Integer[] currentTile) {
 		List<Integer> validIndexes = new ArrayList<Integer>();
 
@@ -102,7 +102,7 @@ class Chunk {
 	 *            The Tile[][] to copy.
 	 * @return The copy.
 	 */
-	private Tile[][] deepCopyTiles() {
+	Tile[][] deepCopyTiles() {
 		Tile[][] tilesCopy = new Tile[tiles.length][tiles[0].length];
 		for (int y = 0; y < tiles.length; y++) {
 			tilesCopy[y] = Arrays.copyOf(tiles[y], tiles[y].length);
