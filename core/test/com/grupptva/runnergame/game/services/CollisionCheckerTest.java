@@ -5,6 +5,7 @@ import com.grupptva.runnergame.game.model.gamecharacter.Point;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
+import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +16,8 @@ import java.util.List;
 /**
  * Created by agnesmardh on 2017-05-16.
  */
-public class CollisionHandlerTest {
-	private CollisionHandler collisionHandler;
+public class CollisionCheckerTest {
+	private CollisionChecker collisionChecker;
 	private GameCharacter gameCharacter;
 	private WorldModel world;
 	private int tileSize = 20;
@@ -26,17 +27,17 @@ public class CollisionHandlerTest {
 	public void setUp() {
 		gameCharacter = new GameCharacter(30, 150, 3f);
 		world = new WorldModel();
-		collisionHandler = new CollisionHandler(gameCharacter, world, tileSize);
+		collisionChecker = new CollisionChecker(gameCharacter, world, tileSize);
 	}
 
 	@Test
 	public void testCalculateColumnCharacterIsIn() {
 		world.setPosition(-11);
-		Assert.assertEquals(2, collisionHandler.calculateWhichColumnCharacterIsIn());
+		Assert.assertEquals(2, collisionChecker.calculateWhichColumnCharacterIsIn());
 		world.setPosition(-71);
-		Assert.assertEquals(5, collisionHandler.calculateWhichColumnCharacterIsIn());
+		Assert.assertEquals(5, collisionChecker.calculateWhichColumnCharacterIsIn());
 		world.setPosition(-10);
-		Assert.assertEquals(2, collisionHandler.calculateWhichColumnCharacterIsIn());
+		Assert.assertEquals(2, collisionChecker.calculateWhichColumnCharacterIsIn());
 	}
 
 	@Test
@@ -45,13 +46,13 @@ public class CollisionHandlerTest {
 		float tileXPos = 45;
 		float tileYPos = 30;
 		gameCharacter.getPosition().setY(30);
-		collisionHandler.handleCollisionWithTile(tile, tileXPos, tileYPos);
+		collisionChecker.handleCollisionWithTile(tile, tileXPos, tileYPos);
 		Assert.assertTrue(gameCharacter.isDead());
 		gameCharacter.setDead(false);
 		tileXPos = 45;
 		tileYPos = 25;
 		gameCharacter.getPosition().setY(30);
-		collisionHandler.handleCollisionWithTile(tile, tileXPos, tileYPos);
+		collisionChecker.handleCollisionWithTile(tile, tileXPos, tileYPos);
 		Assert.assertTrue(gameCharacter.isDead());
 
 	}
@@ -77,10 +78,10 @@ public class CollisionHandlerTest {
 		chunks[0].setTiles(tmp);
 		world = new WorldModel();
 		world.setChunks(chunks);
-		collisionHandler.setWorld(world);
+		collisionChecker.setWorld(world);
 
 		int characterColumnNumber = 1;
-		List<Tile[]> columnsToCheck = collisionHandler.getColumnsToCheck
+		List<Tile[]> columnsToCheck = collisionChecker.getColumnsToCheck
 				(characterColumnNumber);
 
 		Assert.assertEquals(Tile.EMPTY, columnsToCheck.get(0)[0]);
@@ -107,12 +108,12 @@ public class CollisionHandlerTest {
 		float firstColumnXValue = 0;
 		gameCharacter.setDead(false);
 		gameCharacter.setPosition(new Point(tileSize / 2f, 3.5f * tileSize));
-		collisionHandler.handleCollisionWithColumns(columns, firstColumnXValue);
+		collisionChecker.handleCollisionWithColumns(columns, firstColumnXValue);
 		Assert.assertEquals(true, gameCharacter.isDead());
 		gameCharacter.setDead(false);
 		
 		gameCharacter.setPosition(new Point(tileSize / 2f, 1.75f * tileSize));
-		collisionHandler.handleCollisionWithColumns(columns, firstColumnXValue);
+		collisionChecker.handleCollisionWithColumns(columns, firstColumnXValue);
 		Assert.assertEquals(false, gameCharacter.isDead());
 	}
 
@@ -165,21 +166,21 @@ public class CollisionHandlerTest {
 		//    |---|---|---|---|---|---|---|---|---|---|
 		
 		gameCharacter.setPosition(new Point(1.5f * tileSize, 1.5f * tileSize));
-		collisionHandler.handlePossibleCollision();
+		collisionChecker.handlePossibleCollision();
 		Assert.assertEquals(true, gameCharacter.isDead());
 		
 	}
 
 	@Test
 	public void testHandleTopCollision() {
-		collisionHandler.handleTopCollision();
+		collisionChecker.handleTopCollision();
 		Assert.assertTrue(gameCharacter.isDead());
 	}
 
 	@Test
 	public void testHandleLeftCollision() {
 		float tileYPos = 20;
-		collisionHandler.handleLeftCollision(tileYPos);
+		collisionChecker.handleLeftCollision(tileYPos);
 		Assert.assertTrue(!gameCharacter.isDead());
 		Assert.assertTrue(gameCharacter.isCollidingWithGround());
 		Assert.assertEquals(40, (int)gameCharacter.getPosition().getY(), 1);
@@ -187,14 +188,14 @@ public class CollisionHandlerTest {
 
 	@Test
 	public void testHandleRightCollision() {
-		collisionHandler.handleTopCollision();
+		collisionChecker.handleTopCollision();
 		Assert.assertTrue(gameCharacter.isDead());
 	}
 
 	@Test
 	public void testHandleBottomCollision() {
 		float tileYPos = 20;
-		collisionHandler.handleBottomCollision(tileYPos);
+		collisionChecker.handleBottomCollision(tileYPos);
 		Assert.assertTrue(!gameCharacter.isDead());
 		Assert.assertTrue(gameCharacter.isCollidingWithGround());
 		Assert.assertEquals(40, (int)gameCharacter.getPosition().getY(), 1);
