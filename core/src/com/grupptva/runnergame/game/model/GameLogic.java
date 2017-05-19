@@ -16,7 +16,7 @@ import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.services.CollisionHandler;
-import com.grupptva.runnergame.game.services.worldgenerator.WorldGenerator;
+import com.grupptva.runnergame.game.services.worldgenerator.WorldGeneratorOLD;
 import com.grupptva.runnergame.game.view.GameRenderer;
 
 /**
@@ -28,7 +28,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	// private character
 	private GameCharacter character;
 	private WorldModel world;
-	private WorldGenerator generator;
+	private WorldGeneratorOLD generator;
 	private CollisionHandler collisionHandler;
 
 	private int chunkWidth = 40;
@@ -55,7 +55,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		collisionHandler = new CollisionHandler(character, world, tileSize);
 
 
-		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
+		generator = new WorldGeneratorOLD(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
 		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
 		//		character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
 
@@ -166,7 +166,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 
-		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth, chunkHeight, 0, character);
+		generator = new WorldGeneratorOLD(pixelsPerFrame, tileSize, 5l, chunkWidth, chunkHeight, 0, character);
 
 		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
 		//		character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);

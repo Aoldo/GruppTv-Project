@@ -13,7 +13,7 @@ import com.grupptva.runnergame.game.model.world.Chunk;
  * 
  * @author Mattias
  */
-public class WorldGenerator {
+public class WorldGeneratorOLD {
 	/**
 	 * The width of generated chunks.
 	 */
@@ -94,7 +94,7 @@ public class WorldGenerator {
 	 * @param hookJumpOffsets
 	 * @param seed
 	 */
-	public WorldGenerator(float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight, int initY,
+	public WorldGeneratorOLD(float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight, int initY,
 			GameCharacter character) {
 
 		float v0y = character.getJumpInitialVelocity();
