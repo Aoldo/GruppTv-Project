@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 
 /**
@@ -93,8 +94,14 @@ public class WorldGenerator {
 	 * @param hookJumpOffsets
 	 * @param seed
 	 */
-	public WorldGenerator(float v0y, float a, float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight,
-			int initY, float angle, float radius) {
+	public WorldGenerator(float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight, int initY,
+			GameCharacter character) {
+
+		float v0y = character.getJumpInitialVelocity();
+		float a = character.getGravity();
+		float angle = 1;
+		float radius = 75f;
+
 		rng = new Random(seed);
 		this.initY = initY;
 
@@ -103,8 +110,7 @@ public class WorldGenerator {
 
 		jumpOffsets = calculateJumpLandingOffsets(v0y, a, tileSize, vx);
 
-		initHookOffsets(v0y, a, vx, tileSize, angle, radius);
-
+		initHookOffsets(v0y, a, vx, tileSize, angle, radius, character);
 	}
 
 	/**
@@ -123,10 +129,11 @@ public class WorldGenerator {
 	 * @param maxRadius
 	 *            The maximum radius of the hook.
 	 */
-	private void initHookOffsets(float v0y, float a, float vx, int tileSize, float angle, float maxRadius) {
+	private void initHookOffsets(float v0y, float a, float vx, int tileSize, float angle, float maxRadius,
+			GameCharacter character) {
 		hookAttachOffsets = calculateHookAttachOffsets(angle, maxRadius, tileSize);
 		for (Integer[] attachOffset : hookAttachOffsets) {
-			hookLandingOffsetList.add(calculateHookLandingOffsets(attachOffset, tileSize, a, v0y, vx));
+			hookLandingOffsetList.add(calculateHookLandingOffsets(attachOffset, tileSize, a, v0y, vx, character));
 		}
 	}
 
@@ -367,7 +374,8 @@ public class WorldGenerator {
 	 * @return A list containing every single offset, in relation to the
 	 *         attachOffset, that the character can land on.
 	 */
-	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize, float a, float v0y, float vx) {
+	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize, float a, float v0y, float vx,
+			GameCharacter character) {
 		List<Integer[]> landingOffsets = new ArrayList<Integer[]>();
 
 		float r = (float) Math
@@ -376,17 +384,20 @@ public class WorldGenerator {
 		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize); //Tiles character collide with while swinging.
 
 		for (Integer[] swingOffset : swingOffsets) {
-			float yVel = v0y; //TODO: Replace with dynamic vel when that is finished in character.
+			float yVel = character.getReleaseVelocity(swingOffset[0], swingOffset[1], 0, 0);
 
-			List<Integer[]> swingLandingOffsets = calculateJumpLandingOffsets(yVel, a, tileSize, vx);
+			if (yVel > 0) {
+				List<Integer[]> swingLandingOffsets = calculateJumpLandingOffsets(yVel, a, tileSize, vx);
 
-			for (Integer[] landingOffset : swingLandingOffsets) {
-				//Offset them by the swing position so that they are in relation to the attachment point
-				//instead of being in relation to the swing tile.
-				landingOffset[0] += swingOffset[0];
-				landingOffset[1] += swingOffset[1];
+				for (Integer[] landingOffset : swingLandingOffsets) {
+					//Offset them by the swing position so that they are in relation to the attachment point
+					//instead of being in relation to the swing tile.
+					landingOffset[0] += swingOffset[0];
+					landingOffset[1] += swingOffset[1];
+				}
+
+				landingOffsets.addAll(swingLandingOffsets);
 			}
-			landingOffsets.addAll(swingLandingOffsets);
 		}
 		removeDuplicates(landingOffsets);
 
@@ -867,6 +878,7 @@ public class WorldGenerator {
 			return;
 
 		hookStepPart2(chunk, currentTile, validHookAttachIndexes, currentTileCopy);
+		createPlatform(chunk, currentTile);
 	}
 
 	/**
@@ -888,6 +900,7 @@ public class WorldGenerator {
 		chunkLog.add(deepCopyChunk(chunk));
 
 		hookStepPart2(chunk, currentTile, validHookAttachIndexes, currentTileCopy);
+		createPlatform(chunk, currentTile);
 	}
 
 	/**
@@ -1008,7 +1021,7 @@ public class WorldGenerator {
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 		chunkLog.add(deepCopyChunk(chunk));
 
-		jumpStepPart2(chunk, currentTile);
+		createPlatform(chunk, currentTile);
 	}
 
 	/**
@@ -1028,7 +1041,7 @@ public class WorldGenerator {
 
 		chunk[currentTile[1]][currentTile[0]] = Tile.FULL;
 
-		jumpStepPart2(chunk, currentTile);
+		createPlatform(chunk, currentTile);
 	}
 
 	/**
@@ -1082,14 +1095,16 @@ public class WorldGenerator {
 	}
 
 	/**
-	 * The second half of the jumpStep method. Split into two for easy
-	 * implementation of logging the generation {@See jumpStep(..) &
-	 * jumpStep(..,chunkLog)}.
+	 * Adds a platform to the chunk, using currentTile as the leftmost tile.
+	 * Size depends on currentTileExtraBuffer.
 	 * 
 	 * @param chunk
+	 *            Chunk being generated.
 	 * @param currentTile
+	 *            Leftmost position of platform. Updates to a tile inside the
+	 *            platform.
 	 */
-	private void jumpStepPart2(Tile[][] chunk, Integer[] currentTile) {
+	private void createPlatform(Tile[][] chunk, Integer[] currentTile) {
 		if (currentTileExtraBuffer > 0) {
 			int extraOffset = rng.nextInt(currentTileExtraBuffer) + 1;
 			for (int i = 0; i <= extraOffset; i++) {
