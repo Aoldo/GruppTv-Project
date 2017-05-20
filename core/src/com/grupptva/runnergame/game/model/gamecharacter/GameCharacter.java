@@ -147,4 +147,8 @@ public class GameCharacter {
 	public void setHook(AbstractHook hook) {
 		this.hook = hook;
 	}
+
+	public float getHookAngle() {
+		return hookAngle;
+	}
 }

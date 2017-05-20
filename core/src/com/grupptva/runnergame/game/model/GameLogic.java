@@ -133,7 +133,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				character.jump();
 				return true;
 			case hookKeyCode:
-				character.initHook(character.getPosition().getOffsetPoint(75, 1));
+				character.initHook(character.getPosition().getOffsetPoint(75, character.getHookAngle()));
 				return true;
 			case resetKeyCode:
 				reset();
