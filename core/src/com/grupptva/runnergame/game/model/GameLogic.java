@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.ScenePlugin;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.game.model.gamecharacter.Point;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
@@ -15,6 +16,11 @@ import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import com.grupptva.runnergame.game.services.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
 import com.grupptva.runnergame.game.view.GameRenderer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.System.out;
 
 /**
  * @author Mattias revised by Karl and Agnes
@@ -27,6 +33,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private WorldGenerator generator;
 	private ICollisionChecker collisionChecker;
 	private CollisionLogic collisionLogic;
+	private HookLogic hookLogic;
 
 	private int chunkWidth = 40;
 	private int chunkHeight = 20;
@@ -52,6 +59,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 		collisionChecker = new CollisionChecker();
 		collisionLogic = new CollisionLogic(character, world, tileSize, collisionChecker);
+
+		hookLogic = new HookLogic(character, world, tileSize, chunkWidth, chunkHeight);
 
 		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
 		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
@@ -126,6 +135,91 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		collisionLogic.setGameCharacter(character);
 	}
 
+	public void castHook() {
+		Point hookEndPos = getPositionWhereHookExitsWorld();
+		List<Tile[]> columnsToCheck = getColumnsToCheckWhenCastingHook(hookEndPos);
+		handleCastHook(columnsToCheck, hookEndPos);
+	}
+
+	private void handleCastHook(List<Tile[]> columnsToCheck, Point hookEndPos) {
+		for (int col = 0; col < columnsToCheck.size(); col++) {
+			for(int row = 0; row < columnsToCheck.get(col).length; row++) {
+				Tile tile = columnsToCheck.get(col)[row];
+				if(tile != Tile.EMPTY) {
+					out.println("Not empty!!");
+					float columnCharacterIsIn = Math.abs(getWorld().getPosition() - character.getPosition().getX()) / tileSize + 1;
+					float tileXPos = columnCharacterIsIn + col * tileSize;
+					out.printf("dx: %.3f%n", character.getPosition().getX() - tileXPos);
+					float tileYPos = row * tileSize;
+					boolean intersectsTile = checkIfLineIntersectsTile(hookEndPos, tileXPos, tileYPos);
+					if(intersectsTile) {
+						out.println("Intersected!!");
+						Point hookPosition = new Point(tileXPos + tileSize, tileYPos + tileSize);
+						character.initHook(hookPosition);
+					}
+				}
+			}
+		}
+	}
+
+	boolean checkIfLineIntersectsTile(Point hookEndPos, float tileXPos, float tileYPos) {
+		float x = character.getPosition().getX() + tileSize/2;
+		float y = character.getPosition().getY() + tileSize/2;
+		float dx = hookEndPos.getX() - x;
+		float dy = hookEndPos.getY() - y;
+		float left = x - tileXPos;
+		float right = tileXPos + tileSize - x;
+		float top = y - tileYPos + tileSize;
+		float bottom = tileYPos - y;
+		float[] p = {-dx, dx, -dy, dy};
+		float[] q  = {x-left, right-x, y-top, bottom-y};
+		float u1 = Float.NEGATIVE_INFINITY;
+		float u2 = Float.POSITIVE_INFINITY;
+
+		for(int i = 0; i < 4; i++) {
+			if(p[i] == 0) {
+				if(q[i] < 0) {
+					return false;
+				}
+			} else {
+				float t = q[i] / p[i];
+				if(p[i] < 0 && u1 < t) {
+					u1 = t;
+				}
+				else if(p[i] > 0 && u2 > t) {
+					u2 = t;
+				}
+			}
+		}
+		if(u1 > u2 || u1 > 1 || u1 < 0) {
+			return false;
+		}
+		return true;
+	}
+
+	private List<Tile[]> getColumnsToCheckWhenCastingHook(Point hookEndPos) {
+		List<Tile[]> columns = new ArrayList<Tile[]>();
+		int columnHookIsIn = (int) (hookEndPos.getX() - world.getPosition()) / tileSize + 1;
+		int columnCharacterIsIn = (int) (character.getPosition().getX() - world.getPosition()) / tileSize + 1;
+		for(int i = columnCharacterIsIn; i <= columnHookIsIn; i++){
+			columns.add(world.getColumn(i));
+		}
+		return columns;
+	}
+
+	private Point getPositionWhereHookExitsWorld() {
+		Point hookStart = new Point(character.getPosition().getX() + tileSize / 2,
+				character.getPosition().getX() + tileSize / 2);
+		float endX = hookStart.getX() + (chunkHeight * tileSize - hookStart.getY()) / (float) Math.tan(character.getHookAngle());
+		if (endX < chunkWidth) {
+			return new Point(endX, chunkHeight);
+		} else {
+			float endY = hookStart.getY() + (chunkWidth - hookStart.getX()) * (float) Math.tan(character.getHookAngle());
+			return new Point(chunkWidth, endY);
+		}
+
+	}
+
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
@@ -133,7 +227,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				character.jump();
 				return true;
 			case hookKeyCode:
-				character.initHook(character.getPosition().getOffsetPoint(75, character.getHookAngle()));
+				//character.initHook(character.getPosition().getOffsetPoint(75, character.getHookAngle()));
+				hookLogic.castHook();
 				return true;
 			case resetKeyCode:
 				reset();
