@@ -1,9 +1,8 @@
-package com.grupptva.runnergame.game;
+package com.grupptva.runnergame.pluginsystem;
 
 import com.grupptva.runnergame.game.view.GameRenderer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.grupptva.runnergame.ScenePlugin;
 import com.grupptva.runnergame.game.model.GameLogic;
 
 /**
