@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.Random;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
 
 /**
  * Controls the generation of chunks for the world. 

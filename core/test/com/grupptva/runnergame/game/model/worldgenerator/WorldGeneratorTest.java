@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import static org.junit.Assert.assertTrue;
 
@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Tile;
+import com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator;
 
 public class WorldGeneratorTest {
 	private WorldGenerator generator;

@@ -1,9 +1,9 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import java.util.List;
 import java.util.Random;
 
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;;
 
 /**
  * GeneratorStep is an abstract class that represents a single step in
@@ -66,7 +66,7 @@ abstract class GeneratorStep {
 	 *            chunk, upon reaching the start of the newly generated part.
 	 * @param chunkLog
 	 *            A list of previous iterations of the chunk.
-	 * @see GeneratorVisualizer
+	 * @see GeneratorVisualizer_DEBUG
 	 */
 	public abstract void step(GeneratorChunk chunk, Integer[] currentTile, List<Tile[][]> chunkLog);
 

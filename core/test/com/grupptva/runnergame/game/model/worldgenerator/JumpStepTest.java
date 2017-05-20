@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.game.model.worldgenerator.JumpStep;
 
 public class JumpStepTest {
 

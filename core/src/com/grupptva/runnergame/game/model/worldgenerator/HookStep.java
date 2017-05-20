@@ -1,11 +1,11 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
 
 /**
  * Implementation of GeneratorStep that adds a step where the character has to
