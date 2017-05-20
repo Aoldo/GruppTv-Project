@@ -9,15 +9,11 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.grupptva.runnergame.controller.InputHandler;
-import com.grupptva.runnergame.game.model.GameLogic;
 import com.grupptva.runnergame.game.services.worldgenerator.GeneratorVisualizer;
 import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuListener;
 import com.grupptva.runnergame.pluginsystem.GamePlugin;
 import com.grupptva.runnergame.pluginsystem.ScenePlugin;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -85,11 +81,6 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 			activePlugin.update();
 		}
 
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
 		if (Gdx.input.isKeyJustPressed(Keys.G)) {
 			if (activePlugin != gv)
 				activePlugin = gv;
