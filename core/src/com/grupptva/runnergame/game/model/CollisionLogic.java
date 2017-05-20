@@ -1,28 +1,29 @@
-package com.grupptva.runnergame.game.services;
+package com.grupptva.runnergame.game.model;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
+import com.grupptva.runnergame.game.services.collision.CollisionData;
+import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.System.out;
-
 /**
- * Created by agnesmardh on 2017-05-16.
+ * Created by agnesmardh on 2017-05-19.
  */
-public class CollisionHandler {
-
+public class CollisionLogic {
 	private GameCharacter gameCharacter;
 	private WorldModel world;
 	private final int tileSize;
+	private ICollisionChecker collisionChecker;
 
-	public CollisionHandler(GameCharacter gc, WorldModel world, int tileSize) {
-		setGameCharacter(gc);
-		setWorld(world);
+	public CollisionLogic(GameCharacter gameCharacter, WorldModel world, int tileSize,
+	                      ICollisionChecker collisionChecker) {
+		this.gameCharacter = gameCharacter;
+		this.world = world;
 		this.tileSize = tileSize;
-
+		this.collisionChecker = collisionChecker;
 	}
 
 	public void handlePossibleCollision() {
@@ -52,62 +53,37 @@ public class CollisionHandler {
 			firstColumnXValue) {
 		for (int col = 0; col < columns.size(); col++) {
 			for (int row = 0; row < columns.get(col).length; row++) {
-				float tileXPos = firstColumnXValue + col * getTileSize();
-				float tileYPos = row * getTileSize();
-				handleCollisionWithTile(columns.get(col)[row], tileXPos, tileYPos);
-			}
-		}
+				Tile tile = columns.get(col)[row];
+				if(tile != Tile.EMPTY) {
+					float tileXPos = firstColumnXValue + col * getTileSize();
+					float tileYPos = row * getTileSize();
+					float characterXPos = getGameCharacter().getPosition().getX();
+					float characterYPos = getGameCharacter().getPosition().getY();
+					CollisionData collisionData = collisionChecker.checkCollisionWithTile(getTileSize(), tileXPos, tileYPos,
+							characterXPos, characterYPos);
 
-	}
-
-	void handleCollisionWithTile(Tile tile, float tileXPos, float tileYPos) {
-		float dx = getGameCharacter().getPosition().getX() - tileXPos;
-		float dy = getGameCharacter().getPosition().getY() - tileYPos;
-		//out.printf("dx: %f%ndy: %f%n", dx, dy);
-		//out.printf("X: %f%nY: %f%n%n", getGameCharacter().getPosition().getX(), getGameCharacter().getPosition().getY());
-		if (tile != Tile.EMPTY) {
-			if (Math.abs(dx) <= getTileSize() && Math.abs(dy) <= getTileSize()) { // is there a collision?
-				//out.printf("Y: %f%n", getGameCharacter().getPosition().getY());
-				//out.printf("tileXPos: %f%ntileYPos: %f%n", tileXPos, tileYPos);
-				if (dy > dx) { // Is it
-					//out.println("dy > dx");
-					//out.printf("%f > %f%n", dy, dx);
-					if (dy >= -dx) {
-						//out.printf("%f > -%f%n", dy, dx);
-						//bottom
-						//out.println("bottom");
-						handleBottomCollision(tileYPos);
-					} else {
-						//right
-						//kill character
-						//out.println("right");
-						handleRightCollision();
-					}
-				} else {
-					//out.println("dy <= dx");
-					if (dy != dx) {
-						if (dy > -dx) {
-							//left
-							//out.println("left");
-							handleLeftCollision(tileYPos);
-						} else {
-							//top
-							//kill character
-							//out.println("top");
-							handleTopCollision();
+					if (collisionData.hasCollided()) {
+						switch (collisionData.getDirection()) {
+							case TOP:
+								handleTopCollision();
+								break;
+							case BOTTOM:
+								handleBottomCollision(tileYPos);
+								break;
+							case RIGHT:
+								handleRightCollision();
+								break;
+							case LEFT:
+								handleLeftCollision(tileYPos);
+								break;
+							default:
+								break;
 						}
-					} else if (dy > 0 && dx > 0){
-						//bottom
-						//out.println("bottom");
-						handleBottomCollision(tileYPos);
-					} else {
-						//out.println("top");
-						handleTopCollision();
 					}
 				}
 			}
-
 		}
+
 	}
 
 	void handleTopCollision() {

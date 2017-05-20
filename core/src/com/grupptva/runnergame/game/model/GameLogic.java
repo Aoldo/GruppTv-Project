@@ -1,8 +1,5 @@
 package com.grupptva.runnergame.game.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -10,17 +7,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.ScenePlugin;
-import com.grupptva.runnergame.controller.InputListener;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
-import com.grupptva.runnergame.game.services.CollisionHandler;
+import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import com.grupptva.runnergame.game.services.worldgenerator.WorldGenerator;
+import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
 import com.grupptva.runnergame.game.view.GameRenderer;
 
 /**
- *
  * @author Mattias revised by Karl and Agnes
  */
 public class GameLogic implements ScenePlugin, InputProcessor {
@@ -29,7 +25,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private GameCharacter character;
 	private WorldModel world;
 	private WorldGenerator generator;
-	private CollisionHandler collisionHandler;
+	private ICollisionChecker collisionChecker;
+	private CollisionLogic collisionLogic;
 
 	private int chunkWidth = 40;
 	private int chunkHeight = 20;
@@ -52,8 +49,9 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		gameRenderer = new GameRenderer();
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
-		collisionHandler = new CollisionHandler(character, world, tileSize);
 
+		collisionChecker = new CollisionChecker();
+		collisionLogic = new CollisionLogic(character, world, tileSize, collisionChecker);
 
 		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
 		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
@@ -77,20 +75,20 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				}
 			}
 		}
-		world.setChunks(new Chunk[] { c, d, c });
+		world.setChunks(new Chunk[]{c, d, c});
 
 		//TODO: First 3 chunks should be a tutorial.
 		world.setChunks(
-				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
+				new Chunk[]{c, generator.generateChunk(), generator.generateChunk()});
 	}
 
 	public void update() {
-		if(character.isDead()) {
+		if (character.isDead()) {
 			character.setDead(false);
 			reset();
 		} else {
 			world.moveLeft(pixelsPerFrame);
-			collisionHandler.handlePossibleCollision();
+			collisionLogic.handlePossibleCollision();
 			character.update();
 			if (world.getPosition() < -tileSize * chunkWidth) {
 				world.incrementStartIndex();
@@ -109,52 +107,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		sr.end();
 	}
 
-	private void handlePossibleCharacterCollision() {
-		int indexOfFirstVisibleCol = ((int) Math.abs(world.getPosition()) / tileSize)
-				% chunkWidth;
-		//out.println(indexOfFirstVisibleCol);
-		character.setCollidingWithGround(false);
-
-		for (int col = indexOfFirstVisibleCol; col < world.getChunksInRightOrder()[0]
-				.getTiles().length; col++) {
-
-			for (int row = 0; row < world.getChunksInRightOrder()[0]
-					.getTiles()[col].length; row++) {
-
-				float tileXPos = world.getPosition() + col * tileSize;
-				float tileYPos = row * tileSize;
-				if (world.getChunksInRightOrder()[0].getTiles()[col][row] != Tile.EMPTY
-						&& 2 * Math.abs(character.getPosition().getX() - tileXPos) <= 2
-								* tileSize
-						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <= 2
-								* tileSize) {
-					// handle collision
-					character.handleCollisionFromBelow(tileYPos + tileSize);
-					character.setCollidingWithGround(true);
-				}
-			}
-		}
-		for (int col = 0; col < 5; col++) {
-
-			for (int row = 0; row < world.getChunksInRightOrder()[1]
-					.getTiles()[col].length; row++) {
-
-				float tileXPos = world.getPosition() + col * tileSize
-						+ chunkWidth * tileSize;
-				float tileYPos = row * tileSize;
-				if (world.getChunksInRightOrder()[1].getTiles()[col][row] != Tile.EMPTY
-						&& 2 * Math.abs(character.getPosition().getX() - tileXPos) <= 2
-								* tileSize
-						&& 2 * Math.abs(character.getPosition().getY() - tileYPos) <= 2
-								* tileSize) {
-					// handle collision
-					character.handleCollisionFromBelow(tileYPos + tileSize);
-					character.setCollidingWithGround(true);
-				}
-			}
-		}
-	}
-
 	public WorldModel getWorld() {
 		return world;
 	}
@@ -168,14 +120,10 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth, chunkHeight, 0, character);
 
-		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
-		//		character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
-		
-		world.setChunks(new Chunk[] { c, generator.generateChunk(),
-				generator.generateChunk() });
+		world.setChunks(new Chunk[]{c, generator.generateChunk(), generator.generateChunk()});
 		world.setPosition(0);
 		world.setStartIndex(0);
-		collisionHandler.setGameCharacter(character);
+		collisionLogic.setGameCharacter(character);
 	}
 
 	@Override
@@ -199,7 +147,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	public boolean keyUp(int keycode) {
 		switch (keycode) {
 			case hookKeyCode:
-				if(character.isAttachedWithHook())
+				if (character.isAttachedWithHook())
 					character.removeHook();
 				return true;
 			default:
