@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 /**
+ * Class used to visaulize the generation of a chunk. Used for debugging
+ * purposes. 
  * 
  * @author Mattias
  *

@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * A chunk used during world generation. Contains a grid of tiles aswell as
+ * methods to manipulate them.
+ * 
+ * @author Mattias
+ *
+ */
 class GeneratorChunk {
 	public Tile[][] tiles;
 	public int width;
@@ -13,16 +19,17 @@ class GeneratorChunk {
 	/**
 	 * Different kinds of tiles used in generation of chunks. Some are used for
 	 * visualizing the generation, and the rest represent values used in the
-	 * actual gameworld.
+	 * actual gameworld:
+	 * 
+	 * Visual: POSSIBLEHOOK POSSIBLESTAND
+	 * 
+	 * Actual: EMPTY FULL HOOKTARGET TODO: When character's hook actually checks
+	 * for collision.
 	 * 
 	 * @author Mattias
 	 */
 	enum Tile {
-		EMPTY,
-		FULL,
-		POSSIBLEHOOK,
-		POSSIBLESTAND,
-		HOOKTARGET;
+		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND, HOOKTARGET;
 	}
 
 	public GeneratorChunk(int width, int height) {
@@ -51,8 +58,8 @@ class GeneratorChunk {
 	 * @param value
 	 *            The type of tile to set every valid chunk index to.
 	 */
-	void setValidOffsetsToValue(List<Integer[]> offsets,
-			List<Integer> validIndexes, Integer[] currentTile, Tile value) {
+	void setValidOffsetsToValue(List<Integer[]> offsets, List<Integer> validIndexes, Integer[] currentTile,
+			Tile value) {
 		for (Integer index : validIndexes) {
 			int x = offsets.get(index)[0] + currentTile[0];
 			int y = offsets.get(index)[1] + currentTile[1];
@@ -130,12 +137,13 @@ class GeneratorChunk {
 	}
 
 	/**
-	 * Creates a copy of {@param chunk} that doesn't reference the initial
-	 * chunk's values.
+	 * Creates a copy of tiles that doesn't reference the initial chunk's
+	 * values, so that either version can be modified without affecting the
+	 * other.
 	 * 
 	 * @param chunk
 	 *            The Tile[][] to copy.
-	 * @return The copy.
+	 * @return The new copy.
 	 */
 	Tile[][] deepCopyTiles() {
 		Tile[][] tilesCopy = new Tile[tiles.length][tiles[0].length];
