@@ -1,5 +1,8 @@
 package com.grupptva.runnergame.game.model.gamecharacter;
 
+import com.grupptva.runnergame.game.model.gamecharacter.hook.AbstractHook;
+import com.grupptva.runnergame.game.model.gamecharacter.hook.Hook;
+
 /**
  * Created by agnesmardh on 2017-04-21.
  */
@@ -10,29 +13,34 @@ public class GameCharacter {
 	private float jumpInitialVelocity = 7f;
 	private boolean collidingWithGround = false;
 	private boolean attachedWithHook = false;
-	private boolean hookExtended = false;
-	private Point hookPosition;
-	private float hookLength;
 	private final float hookAngle = 1;
 	private final float pixelsPerFrame;
 	private boolean isDead = false;
+	private AbstractHook hook;
 
 	public GameCharacter(float x, float y, float pixelsPerFrame) {
 		position = new Point(x, y);
 		this.pixelsPerFrame = pixelsPerFrame;
+		setHook(new Hook());
 	}
 
 	public void update() {
-		if(!collidingWithGround && !hookExtended){
-			fall();
+		if(attachedWithHook) {
+			if (!collidingWithGround && !hook.isHookExtended()) {
+				fall();
+			}
+		}else{
+			if(!collidingWithGround){
+				fall();
+			}
 		}
 		if(attachedWithHook){
-			hookExtended = hookLength <= position.getDistance(hookPosition);
-			if(hookExtended){
+			hook.setLength(position.getDistance(hook.getPosition()));
+			if(hook.isHookExtended()){
 				setyVelocity(0);
 				swing();
 			}
-			moveHook();
+			hook.moveHook(pixelsPerFrame);
 		}
 		
 	}
@@ -56,16 +64,11 @@ public class GameCharacter {
 	}
 
 	private void swing() {
-		float newY = hookPosition.getY() - (float) Math.sqrt(hookLength * hookLength - ((position.getX() + 1 - hookPosition.getX()) *
-				(position.getX() + 1 - hookPosition.getX())));
+		float newY = hook.getYPosAfterSwing(position.getX());
 		position.setY(newY);
-		if(Math.abs(newY - hookPosition.getY()) < 10) {
+		if(Math.abs(newY - hook.getPosition().getY()) < 10) {
 			removeHook();
 		}
-	}
-
-	public Point getHookPosition() {
-		return hookPosition;
 	}
 
 	public void handleCollisionFromBelow(float yCoordinate) {
@@ -73,31 +76,24 @@ public class GameCharacter {
 		position.setLocation(position.getX(), yCoordinate);
 	}
 
-	public void initHook(float length) {
+	public void initHook(Point hookPosition) {
 		attachedWithHook = true;
-		hookPosition = position.getOffsetPoint(length, hookAngle);
-		hookLength = length;
+		float hookLength = position.getDistance(hookPosition);
+		hook.initHook(hookPosition, hookLength);
 	}
 
 	public void removeHook() {
-		float hookYPos = hookPosition.getY();
 		float characterYPos = position.getY();
-		float hookPositionXPos = hookPosition.getX();
 		float characterXPos = position.getX();
-		yVelocity = getReleaseVelocity(hookPositionXPos, hookYPos, characterXPos, characterYPos);
+		yVelocity = hook.getReleaseVelocity(characterXPos, characterYPos, jumpInitialVelocity);
 		attachedWithHook = false;
 		position.setY(position.getY() + 1);
 		collidingWithGround = false;
-		hookExtended = false;
 	}
 
 	public float getReleaseVelocity(float hookXPos, float hookYPos, float characterXPos, float characterYPos) {
-		double angle = Math.atan((characterYPos - hookYPos)/(characterXPos - hookXPos))+3.1415f/2;
+		double angle = Math.atan((characterYPos - hookYPos)/(characterXPos - hookXPos))+Math.PI/2;
 		return (float) Math.sin(angle) * jumpInitialVelocity;
-	}
-
-	private void moveHook() {
-		hookPosition.setX(hookPosition.getX() - pixelsPerFrame);
 	}
 
 	public Point getPosition() {
@@ -142,5 +138,13 @@ public class GameCharacter {
 
 	public void setDead(boolean dead) {
 		isDead = dead;
+	}
+
+	public AbstractHook getHook() {
+		return hook;
+	}
+
+	public void setHook(AbstractHook hook) {
+		this.hook = hook;
 	}
 }

@@ -19,7 +19,7 @@ public class GameRenderer {
 				tileSize);
 		if (gameCharacter.isAttachedWithHook()) {
 			sr.line(gameCharacter.getPosition().getX() + tileSize/2, gameCharacter.getPosition().getY() + tileSize/2,
-					gameCharacter.getHookPosition().getX(), gameCharacter.getHookPosition().getY());
+					gameCharacter.getHook().getPosition().getX(), gameCharacter.getHook().getPosition().getY());
 		}
 	}
 
