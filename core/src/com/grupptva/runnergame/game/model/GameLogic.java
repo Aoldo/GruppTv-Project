@@ -19,10 +19,9 @@ import com.grupptva.runnergame.game.view.GameRenderer;
 /**
  * @author Mattias revised by Karl and Agnes
  */
-public class GameLogic implements ScenePlugin, InputProcessor {
-	GameRenderer gameRenderer;
+public class GameLogic implements InputProcessor {
 	// private character
-	private GameCharacter character;
+	public GameCharacter character;
 	private WorldModel world;
 	private WorldGenerator generator;
 	private ICollisionChecker collisionChecker;
@@ -34,7 +33,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	Chunk c = new Chunk(chunkWidth, chunkHeight);
 	Chunk d = new Chunk(chunkWidth, chunkHeight);
 
-	private int tileSize = 20;
+	public int tileSize = 20;
 
 	private float pixelsPerFrame = 3f;
 
@@ -46,7 +45,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	public GameLogic() {
 		Gdx.input.setInputProcessor(this);
 
-		gameRenderer = new GameRenderer();
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
 
@@ -100,12 +98,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		//world.moveLeft(pixelsPerFrame);
 	}
 
-	public void render(SpriteBatch batch, ShapeRenderer sr) {
-		sr.begin(ShapeType.Filled);
-		gameRenderer.renderCharacter(tileSize, character, sr);
-		gameRenderer.renderWorld(tileSize, getWorld(), sr);
-		sr.end();
-	}
 
 	public WorldModel getWorld() {
 		return world;
