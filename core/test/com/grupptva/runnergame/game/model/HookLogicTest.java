@@ -43,12 +43,17 @@ public class HookLogicTest {
 		final int tileSize = 20;
 		final int chunkWidth = 10;
 		final int chunkHeight = 10;
-		hookLogic = new HookLogic(gameCharacter, world, tileSize, chunkWidth, chunkHeight);
+		hookLogic = new HookLogic(gameCharacter, world, tileSize, chunkWidth,
+				chunkHeight);
 	}
 
 	@Test
 	public void testCheckIfLineIntersectsTile() {
 		Point hookEndPos = new Point(2.5f * tileSize, 4.5f * tileSize);
-		Assert.assertEquals(true, hookLogic.checkIfLineIntersectsTile(hookEndPos, tileSize, 2 * tileSize));
+		Assert.assertEquals(true, hookLogic.checkIfLineIntersectsTile(hookEndPos,
+				tileSize, 2 * tileSize));
+		hookEndPos = new Point(-2.5f * tileSize, 4.5f * tileSize);
+		Assert.assertEquals(false, hookLogic.checkIfLineIntersectsTile(hookEndPos,
+				tileSize, 2 * tileSize));
 	}
 }

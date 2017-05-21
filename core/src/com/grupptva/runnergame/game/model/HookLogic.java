@@ -70,16 +70,17 @@ public class HookLogic {
 		float right = tileXPos + tileSize - x;
 		float top = y - tileYPos + tileSize;
 		float bottom = tileYPos - y;
-		float[] p = {-dx, dx, -dy, dy};
-		float[] q  = {x-left, right-x, y-top, bottom-y};
-		float u1 = Float.NEGATIVE_INFINITY;
-		float u2 = Float.POSITIVE_INFINITY;
 
 		//Line2D line2D;
 		//Rectangle2D rectangle2D;
 		//line2D.intersects(rectangle2D);
+		
+		Line2D line = new Line2D.Float(x, y, hookEndPos.getX(), hookEndPos.getY());
+		Rectangle2D tileRect = new Rectangle2D.Float(tileXPos, tileYPos + tileSize,
+				tileSize, tileSize);
+		return line.intersects(tileRect);
 
-		for(int i = 0; i < 4; i++) {
+		/*for(int i = 0; i < 4; i++) {
 			if(p[i] == 0) {
 				if(q[i] < 0) {
 					return false;
@@ -97,7 +98,7 @@ public class HookLogic {
 		if(u1 > u2 || u1 > 1 || u1 < 0) {
 			return false;
 		}
-		return true;
+		return true;*/
 	}
 
 	private List<Tile[]> getColumnsToCheckWhenCastingHook(Point hookEndPos) {
