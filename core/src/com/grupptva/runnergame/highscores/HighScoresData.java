@@ -71,8 +71,12 @@ import com.grupptva.runnergame.menu.HighScoreMenu;
 			saveHighscores();
 		}
 		
-		public void removeScore() {
-			
+		public void removeScore(HighScore h) {
+			highscores.remove(h);
+			//sortHighscore();
+			if (highscores.size() < 10) {
+				loadHighscores();
+			}
 		}
 		
 		public int getLength() {

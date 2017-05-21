@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -18,6 +19,8 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.services.CollisionHandler;
 import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
+import com.grupptva.runnergame.menu.GameOverMenu;
+import com.grupptva.runnergame.menu.MenuButton;
 
 /**
  *
@@ -46,6 +49,10 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private final int resetKeyCode = Input.Keys.R;
 	
 	int score = 0;
+	
+	GameOverMenu gameOverMenu;
+	
+	MenuButton currentScore;
 
 	public GameLogic() {
 		Gdx.input.setInputProcessor(this);
@@ -56,6 +63,11 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		collisionHandler = new CollisionHandler(character, world, tileSize);
 
 		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
+		
+		gameOverMenu = new GameOverMenu(null, null, null);
+		
+		currentScore = new MenuButton(Gdx.graphics.getWidth() / 2 - 80, Gdx.graphics.getHeight() / 2 + 40, 160, 40,
+				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.3f, 0.6f, 1f, 1));
 
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
@@ -81,7 +93,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		world.setChunks(
 				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 	}
-
+	
+	//if (deathscreen !(is active))
 	public void update() {
 		
 		score++;
@@ -89,6 +102,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		if(character.isDead()) {
 			character.setDead(false);
 			//gamoverMenu.update(); den får ha update (render sköts i gameRenderer)
+			//highscores
 			reset();
 		} else {
 			world.moveLeft(pixelsPerFrame);

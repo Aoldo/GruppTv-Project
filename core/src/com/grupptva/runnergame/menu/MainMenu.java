@@ -54,7 +54,6 @@ public class MainMenu implements ScenePlugin {
 			
 		img = new Texture(Gdx.files.internal("bg.png"));
 		
-
 		img = new Texture(Gdx.files.internal("mainmenubg2.png"));
 
 		buttonTitles = new HashMap();
