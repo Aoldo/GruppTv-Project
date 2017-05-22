@@ -25,24 +25,24 @@ public class GameCharacter {
 	}
 
 	public void update() {
-		if(attachedWithHook) {
+		if (attachedWithHook) {
 			if (!collidingWithGround && !hook.isHookExtended()) {
 				fall();
 			}
-		}else{
-			if(!collidingWithGround){
+		} else {
+			if (!collidingWithGround) {
 				fall();
 			}
 		}
-		if(attachedWithHook){
+		if (attachedWithHook) {
 			hook.setLength(position.getDistance(hook.getPosition()));
-			if(hook.isHookExtended()){
+			if (hook.isHookExtended()) {
 				setyVelocity(0);
 				swing();
 			}
 			hook.moveHook(pixelsPerFrame);
 		}
-		
+
 	}
 
 	void moveY(float distance) {
@@ -64,10 +64,15 @@ public class GameCharacter {
 	}
 
 	private void swing() {
-		float newY = hook.getYPosAfterSwing(position.getX());
-		position.setY(newY);
-		if(Math.abs(newY - hook.getPosition().getY()) < 10) {
+		if (!hook.canSwing(position.getX())) {
 			removeHook();
+		} else {
+			float newY = hook.getYPosAfterSwing(position.getX());
+			if (Math.abs(newY - hook.getPosition().getY()) < 10) {
+				removeHook();
+			} else {
+				position.setY(newY);
+			}
 		}
 	}
 
@@ -92,7 +97,7 @@ public class GameCharacter {
 	}
 
 	public float getReleaseVelocity(float hookXPos, float hookYPos, float characterXPos, float characterYPos) {
-		double angle = Math.atan((characterYPos - hookYPos)/(characterXPos - hookXPos))+Math.PI/2;
+		double angle = Math.atan((characterYPos - hookYPos) / (characterXPos - hookXPos)) + Math.PI / 2;
 		return (float) Math.sin(angle) * jumpInitialVelocity;
 	}
 
