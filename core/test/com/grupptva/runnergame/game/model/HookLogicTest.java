@@ -14,12 +14,15 @@ import org.junit.Test;
  */
 public class HookLogicTest {
 	HookLogic hookLogic;
-	int tileSize = 20;
+	GameCharacter gameCharacter;
+	WorldModel world;
 
+	final int tileSize = 20;
+	final int chunkWidth = 10;
+	final int chunkHeight = 10;
 	@Before
 	public void setUp() throws Exception {
-		GameCharacter gameCharacter = new GameCharacter(0, 0, 3f);
-		WorldModel world;
+		gameCharacter = new GameCharacter(0, 0, 3f);
 		Chunk[] chunks = new Chunk[3];
 		chunks[0] = new Chunk(10,10);
 		chunks[1] = new Chunk(10,10);
@@ -40,9 +43,6 @@ public class HookLogicTest {
 		world = new WorldModel();
 		world.setChunks(chunks);
 
-		final int tileSize = 20;
-		final int chunkWidth = 10;
-		final int chunkHeight = 10;
 		hookLogic = new HookLogic(gameCharacter, world, tileSize, chunkWidth,
 				chunkHeight);
 	}
@@ -52,8 +52,22 @@ public class HookLogicTest {
 		Point hookEndPos = new Point(2.5f * tileSize, 4.5f * tileSize);
 		Assert.assertEquals(true, hookLogic.checkIfLineIntersectsTile(hookEndPos,
 				tileSize, 2 * tileSize));
+		Assert.assertEquals(false, hookLogic.checkIfLineIntersectsTile(hookEndPos,
+				-tileSize, -2 * tileSize));
 		hookEndPos = new Point(-2.5f * tileSize, 4.5f * tileSize);
 		Assert.assertEquals(false, hookLogic.checkIfLineIntersectsTile(hookEndPos,
 				tileSize, 2 * tileSize));
+	}
+
+	@Test
+	public void testGetPositionWhereHookExistsWorld() {
+		Assert.assertEquals(9.5f * tileSize / Math.tan(gameCharacter.getHookAngle()) + tileSize / 2f,
+				hookLogic.getPositionWhereHookExitsWorld().getX(),
+				0.0001);
+		Assert.assertEquals(chunkHeight * tileSize,
+				hookLogic.getPositionWhereHookExitsWorld().getY(),
+				0);
+
+
 	}
 }

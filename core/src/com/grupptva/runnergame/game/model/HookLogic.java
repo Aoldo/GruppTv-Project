@@ -48,7 +48,7 @@ public class HookLogic {
 					float columnCharacterIsIn = Math.abs(world.getPosition() - gameCharacter.getPosition().getX())
 							/ tileSize + 1;
 					float tileXPos = columnCharacterIsIn + col * tileSize;
-					out.printf("dx: %.3f%n", gameCharacter.getPosition().getX() - tileXPos);
+					out.printf("dx: %.3f%n", tileXPos - gameCharacter.getPosition().getX());
 					float tileYPos = row * tileSize;
 					boolean intersectsTile = checkIfLineIntersectsTile(hookEndPos, tileXPos, tileYPos);
 					if(intersectsTile) {
@@ -64,12 +64,12 @@ public class HookLogic {
 	boolean checkIfLineIntersectsTile(Point hookEndPos, float tileXPos, float tileYPos) {
 		float x = gameCharacter.getPosition().getX() + tileSize/2f;
 		float y = gameCharacter.getPosition().getY() + tileSize/2f;
-		float dx = hookEndPos.getX() - x;
-		float dy = hookEndPos.getY() - y;
-		float left = x - tileXPos;
-		float right = tileXPos + tileSize - x;
-		float top = y - tileYPos + tileSize;
-		float bottom = tileYPos - y;
+		//float dx = hookEndPos.getX() - x;
+		//float dy = hookEndPos.getY() - y;
+		//float left = x - tileXPos;
+		//float right = tileXPos + tileSize - x;
+		//float top = y - tileYPos + tileSize;
+		//float bottom = tileYPos - y;
 
 		//Line2D line2D;
 		//Rectangle2D rectangle2D;
@@ -102,26 +102,27 @@ public class HookLogic {
 	}
 
 	private List<Tile[]> getColumnsToCheckWhenCastingHook(Point hookEndPos) {
-		List<Tile[]> columns = new ArrayList<Tile[]>();
-		int columnHookIsIn = (int) (hookEndPos.getX() - world.getPosition()) / tileSize + 1;
-		int columnCharacterIsIn = (int) (gameCharacter.getPosition().getX() - world.getPosition()) / tileSize + 1;
+		List<Tile[]> columns = new ArrayList();
+		int columnHookIsIn = (int) Math.abs(world.getPosition() - hookEndPos.getX()) / tileSize + 1;
+		int columnCharacterIsIn = (int) Math.abs(world.getPosition() - gameCharacter.getPosition().getX()) / tileSize + 1;
 		for(int i = columnCharacterIsIn; i <= columnHookIsIn; i++){
 			columns.add(world.getColumn(i));
 		}
 		return columns;
 	}
 
-	private Point getPositionWhereHookExitsWorld() {
-		Point hookStart = new Point(gameCharacter.getPosition().getX() + tileSize / 2,
-				gameCharacter.getPosition().getX() + tileSize / 2);
+	Point getPositionWhereHookExitsWorld() {
+		Point hookStart = new Point(gameCharacter.getPosition().getX() + tileSize / 2f,
+									gameCharacter.getPosition().getY() + tileSize / 2f);
+
 		float endX = hookStart.getX() + (chunkHeight * tileSize - hookStart.getY())
-				/ (float) Math.tan(gameCharacter.getHookAngle());
-		if (endX < chunkWidth) {
-			return new Point(endX, chunkHeight);
+					/ (float) Math.tan(gameCharacter.getHookAngle());
+		if (endX < chunkWidth * tileSize) {
+			return new Point(endX, chunkHeight * tileSize);
 		} else {
-			float endY = hookStart.getY() + (chunkWidth - hookStart.getX()) *
+			float endY = hookStart.getY() + (chunkWidth * tileSize - hookStart.getX()) *
 					(float) Math.tan(gameCharacter.getHookAngle());
-			return new Point(chunkWidth, endY);
+			return new Point(chunkWidth * tileSize, endY);
 		}
 
 	}
