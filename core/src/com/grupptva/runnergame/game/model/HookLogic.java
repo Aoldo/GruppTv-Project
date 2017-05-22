@@ -77,10 +77,6 @@ public class HookLogic {
 
 		offsets = mergeSort(offsets);
 
-		for (Integer[] i : offsets) {
-			System.out.println(Arrays.toString(i));
-		}
-
 		return offsets;
 	}
 
@@ -156,19 +152,15 @@ public class HookLogic {
 				minXOffset = i[0];
 			}
 		}
-		System.out.println("minX: " + minXOffset + "   maxX: " + maxXOffset);
 		for (int i = charColumnIndex + minXOffset; i <= charColumnIndex
 				+ maxXOffset; i++) {
 			relevantColumns.add(world.getColumn(i));
-			System.out.println(
-					Arrays.toString(relevantColumns.get(relevantColumns.size() - 1)));
+					Arrays.toString(relevantColumns.get(relevantColumns.size() - 1));
 		}
-		System.out.println("ColCount: " + relevantColumns.size());
 		for (Integer[] offset : attachOffsets) {
 			int x = offset[0] - minXOffset;
 			Tile[] column = relevantColumns.get(x);
 			int y = charRowIndex + offset[1] - 1;
-			System.out.println("X: " + x + " Y: " + y);
 			if (y < column.length && y >= 0) { //Prevent OoB
 				Tile tile = column[y];
 
@@ -183,7 +175,6 @@ public class HookLogic {
 							.initHook(new Point(charX - charXextra + offset[0] * tileSize,
 									charY - charYextra + (offset[1] - 1) * tileSize));
 
-					System.out.println("HIT");
 				}
 			}
 		}
