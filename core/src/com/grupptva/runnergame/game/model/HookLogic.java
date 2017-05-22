@@ -5,14 +5,10 @@ import com.grupptva.runnergame.game.model.gamecharacter.Point;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
 
-import java.awt.*;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.System.out;
 
 /**
  * Created by agnesmardh on 2017-05-20.
