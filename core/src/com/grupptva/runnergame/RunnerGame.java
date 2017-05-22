@@ -1,6 +1,5 @@
 package com.grupptva.runnergame;
 
-import java.awt.Color;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

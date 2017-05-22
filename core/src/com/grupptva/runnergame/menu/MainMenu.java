@@ -5,7 +5,6 @@ package com.grupptva.runnergame.menu;
  * @author Luka
  * revised by Mattias
  */
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
