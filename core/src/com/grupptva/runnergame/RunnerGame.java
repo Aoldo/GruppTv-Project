@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.controller.InputHandler;
 import com.grupptva.runnergame.game.model.GameLogic;
+import com.grupptva.runnergame.game.model.GameOverMenu;
 import com.grupptva.runnergame.game.services.GeneratorVisualizer;
 import com.grupptva.runnergame.highscores.HighScoresData;
 import com.grupptva.runnergame.menu.HighScoreMenu;
@@ -42,6 +43,8 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	double timeAccumulator = 0;
 
 	MainMenu mainMenu;
+	GameOverMenu gameOverMenu;
+
 	GeneratorVisualizer gv;
 	
 	//InputHandler inputHandler;
@@ -75,11 +78,15 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 		activePlugin = highscores;
 	}
 
-	public void exitHighscores() {
+	public void enterMainMenu() {
 		mainMenu = new MainMenu(this, screenWidth, screenHeight);
 		activePlugin = mainMenu;
 	}
 
+//	public void enterGameOverMenu() {
+//		activePlugin = null;
+//	}
+	
 	public void startGameEvent() {
 		initGameLogic();
 	}

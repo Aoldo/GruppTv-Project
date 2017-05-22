@@ -1,7 +1,9 @@
 package com.grupptva.runnergame.game.view;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.grupptva.runnergame.game.model.GameOverMenu;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
@@ -11,6 +13,8 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
  * Created by Karl 'NaN' Wikström on 2017-05-03.
  */
 public class GameRenderer {
+	
+	GameOverMenu gameOverMenu = new GameOverMenu();
 
 	public void renderCharacter(int tileSize, GameCharacter gameCharacter, ShapeRenderer
 			sr) {
@@ -54,5 +58,12 @@ public class GameRenderer {
 			default:
 				return;
 		}
+	}
+
+	public void renderGameOverMenu(SpriteBatch batch, ShapeRenderer sr) {
+		// kalla på gameOverMenu render metod här 
+		//enterGameOverMenu();
+		gameOverMenu.render(batch, sr);
+		gameOverMenu.update();
 	}
 }

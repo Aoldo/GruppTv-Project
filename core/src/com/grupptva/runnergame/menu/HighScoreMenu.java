@@ -55,11 +55,6 @@ public class HighScoreMenu implements ScenePlugin  {
 		
 	public HighScoreMenu(MenuListener listener, Integer screenWidth, Integer screenHeight) {
 		
-		// TODO: If highscore save file empty = initiate it with placeholders
-//		if (true) {
-//			HighScoresData.initHighScore();
-//		}
-		
 		this.listener = listener;
 		
 		hs = new HighScoresData();
@@ -115,8 +110,8 @@ public class HighScoreMenu implements ScenePlugin  {
 		}		
 	}
 	
-	private void exitHighscores() {
-		listener.exitHighscores();
+	private void enterMainMenu() {
+		listener.enterMainMenu();
 	}
 
 	@Override
@@ -124,7 +119,7 @@ public class HighScoreMenu implements ScenePlugin  {
 		if (returnButton.collides(-80, -200, screenWidth, screenHeight)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				System.out.println("Return button pressed!");
-				exitHighscores();
+				enterMainMenu();
 			}
 		}
 	}

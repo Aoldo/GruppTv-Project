@@ -29,7 +29,6 @@ public class MainMenuRenderer {
 		sr.rect(button.x, button.y, button.width, button.height);
 	}
 
-
 	public void renderBackground(Batch batch) {
 		batch.draw(mainMenu.img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}

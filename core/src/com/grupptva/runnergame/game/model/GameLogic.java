@@ -19,8 +19,8 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.services.CollisionHandler;
 import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
-import com.grupptva.runnergame.menu.GameOverMenu;
 import com.grupptva.runnergame.menu.MenuButton;
+import com.grupptva.runnergame.menu.MenuListener;
 
 /**
  *
@@ -52,8 +52,10 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	
 	GameOverMenu gameOverMenu;
 	
-	MenuButton currentScore;
+	MenuButton currentScore; 
 
+	MenuListener listener;
+	
 	public GameLogic() {
 		Gdx.input.setInputProcessor(this);
 
@@ -64,7 +66,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
 		
-		gameOverMenu = new GameOverMenu(null, null, null);
+		gameOverMenu = new GameOverMenu();
 		
 		currentScore = new MenuButton(Gdx.graphics.getWidth() / 2 - 80, Gdx.graphics.getHeight() / 2 + 40, 160, 40,
 				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.3f, 0.6f, 1f, 1));
@@ -100,10 +102,10 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		score++;
 
 		if(character.isDead()) {
-			character.setDead(false);
-			//gamoverMenu.update(); den får ha update (render sköts i gameRenderer)
+			//character.setDead(false);
+			//gameOverMenu.update(); //den fï¿½r ha update (render skï¿½ts i gameRenderer)
 			//highscores
-			reset();
+			//reset();
 		} else {
 			world.moveLeft(pixelsPerFrame);
 			collisionHandler.handlePossibleCollision();
@@ -122,6 +124,9 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		sr.begin(ShapeType.Filled);
 		gameRenderer.renderCharacter(tileSize, character, sr);
 		gameRenderer.renderWorld(tileSize, getWorld(), sr);
+		if(character.isDead()){
+			gameRenderer.renderGameOverMenu(batch, sr);
+		}
 		sr.end();
 	}
 
