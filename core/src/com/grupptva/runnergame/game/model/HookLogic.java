@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
- * Created by agnesmardh on 2017-05-20.
- * Revised by Mattias & Karl
+ * Created by agnesmardh on 2017-05-20. Revised by Mattias & Karl
  */
 public class HookLogic {
 	private GameCharacter gameCharacter;
@@ -31,6 +29,8 @@ public class HookLogic {
 		attachOffsets = calculateHookAttachOffsets(angle, radius, tileSize);
 	}
 
+	//TODO: Totally not a copy of the method in HookStep as an emergency fix:
+	//TODO: refactor so there isn't duplicate code.
 	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius,
 			int tileSize) {
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
@@ -98,7 +98,8 @@ public class HookLogic {
 		return mergeByDistance(left, right);
 	}
 
-	private static List<Integer[]> mergeByDistance(List<Integer[]> left, List<Integer[]> right) {
+	private static List<Integer[]> mergeByDistance(List<Integer[]> left,
+			List<Integer[]> right) {
 		List<Integer[]> result = new ArrayList<Integer[]>();
 
 		//Loops until either list is empty.
@@ -150,7 +151,7 @@ public class HookLogic {
 		for (int i = charColumnIndex + minXOffset; i <= charColumnIndex
 				+ maxXOffset; i++) {
 			relevantColumns.add(world.getColumn(i));
-					Arrays.toString(relevantColumns.get(relevantColumns.size() - 1));
+			Arrays.toString(relevantColumns.get(relevantColumns.size() - 1));
 		}
 		for (Integer[] offset : attachOffsets) {
 			int x = offset[0] - minXOffset;
