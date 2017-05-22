@@ -62,7 +62,8 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 		hookLogic = new HookLogic(character, world, tileSize, chunkWidth, chunkHeight);
 
-		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth,
+				chunkHeight, 0, character);
 		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
 		//		character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
 
@@ -84,11 +85,11 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				}
 			}
 		}
-		world.setChunks(new Chunk[]{c, d, c});
+		world.setChunks(new Chunk[] { c, d, c });
 
 		//TODO: First 3 chunks should be a tutorial.
 		world.setChunks(
-				new Chunk[]{c, generator.generateChunk(), generator.generateChunk()});
+				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 	}
 
 	public void update() {
@@ -99,6 +100,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 			world.moveLeft(pixelsPerFrame);
 			collisionLogic.handlePossibleCollision();
 			character.update();
+			searchHook();
 			if (world.getPosition() < -tileSize * chunkWidth) {
 				world.incrementStartIndex();
 				world.setPosition(0);
@@ -111,8 +113,9 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
 		sr.begin(ShapeType.Filled);
-		gameRenderer.renderCharacter(tileSize, character, sr);
 		gameRenderer.renderWorld(tileSize, getWorld(), sr);
+
+		gameRenderer.renderCharacter(tileSize, character, sr);
 		sr.end();
 	}
 
@@ -127,41 +130,61 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 
-		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth, chunkHeight, 0, character);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth,
+				chunkHeight, 0, character);
 
-		world.setChunks(new Chunk[]{c, generator.generateChunk(), generator.generateChunk()});
+		world.setChunks(
+				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 		world.setPosition(0);
 		world.setStartIndex(0);
 		collisionLogic.setGameCharacter(character);
+		hookLogic = new HookLogic(character, world, tileSize, chunkWidth, chunkHeight);
+
+	}
+
+	private int hookCounter = 0;
+	private int maxHookCounter = 10;
+
+	private void startHook() {
+		hookCounter = 0;
+	}
+
+	private void searchHook() {
+		if (character.isAttachedWithHook())
+			hookCounter = maxHookCounter;
+		if (hookCounter < maxHookCounter) {
+			hookLogic.castHook();
+			hookCounter++;
+		}
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
-			case jumpKeyCode:
-				character.jump();
-				return true;
-			case hookKeyCode:
-				//character.initHook(character.getPosition().getOffsetPoint(75, character.getHookAngle()));
-				hookLogic.castHook();
-				return true;
-			case resetKeyCode:
-				reset();
-				return true;
-			default:
-				return false;
+		case jumpKeyCode:
+			character.jump();
+			return true;
+		case hookKeyCode:
+			//character.initHook(character.getPosition().getOffsetPoint(75, character.getHookAngle()));
+			startHook();
+			return true;
+		case resetKeyCode:
+			reset();
+			return true;
+		default:
+			return false;
 		}
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
 		switch (keycode) {
-			case hookKeyCode:
-				if (character.isAttachedWithHook())
-					character.removeHook();
-				return true;
-			default:
-				return false;
+		case hookKeyCode:
+			if (character.isAttachedWithHook())
+				character.removeHook();
+			return true;
+		default:
+			return false;
 		}
 	}
 

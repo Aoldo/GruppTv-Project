@@ -109,10 +109,10 @@ class HookStep extends GeneratorStep {
 			int normX = (int) (x / tileSize);
 			int normY = (int) Math.round(y / tileSize);
 
-			if (normY < 0 && normX >= 0 && normY >= -normR && normX < normR) {
+			if (normY < 0 && normX >= 1 && normY >= -normR && normX < normR) {
 				offsets.add(new Integer[] { normX, normY });
 			}
-			if (normY < 0 && normX >= 0 && normY >= -normR && normX + 1 < normR) {
+			if (normY < 0 && normX >= 1 && normY >= -normR && normX + 1 < normR) {
 				offsets.add(new Integer[] { normX + 1, normY });
 			}
 		}
