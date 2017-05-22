@@ -12,23 +12,19 @@ import java.util.List;
 
 /**
  * Created by agnesmardh on 2017-05-20.
+ * Revised by Mattias & Karl
  */
 public class HookLogic {
 	private GameCharacter gameCharacter;
 	private WorldModel world;
 	private final int tileSize;
-	private final int chunkWidth;
-	private final int chunkHeight;
 
 	List<Integer[]> attachOffsets;
 
-	public HookLogic(GameCharacter gameCharacter, WorldModel world, int tileSize,
-			int chunkWidth, int chunkHeight) {
+	public HookLogic(GameCharacter gameCharacter, WorldModel world, int tileSize) {
 		this.gameCharacter = gameCharacter;
 		this.world = world;
 		this.tileSize = tileSize;
-		this.chunkWidth = chunkWidth;
-		this.chunkHeight = chunkHeight;
 
 		float angle = gameCharacter.getHookAngle();
 		float radius = 100f;

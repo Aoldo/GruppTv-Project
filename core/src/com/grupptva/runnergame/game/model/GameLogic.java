@@ -49,7 +49,7 @@ public class GameLogic implements InputProcessor {
 		collisionChecker = new CollisionChecker();
 		collisionLogic = new CollisionLogic(character, world, tileSize, collisionChecker);
 
-		hookLogic = new HookLogic(character, world, tileSize, chunkWidth, chunkHeight);
+		hookLogic = new HookLogic(character, world, tileSize);
 
 		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth,
 				chunkHeight, 0, character);
@@ -119,7 +119,7 @@ public class GameLogic implements InputProcessor {
 		world.setPosition(0);
 		world.setStartIndex(0);
 		collisionLogic.setGameCharacter(character);
-		hookLogic = new HookLogic(character, world, tileSize, chunkWidth, chunkHeight);
+		hookLogic = new HookLogic(character, world, tileSize);
 
 	}
 
