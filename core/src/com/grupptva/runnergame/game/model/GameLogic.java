@@ -3,24 +3,15 @@ package com.grupptva.runnergame.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.model.gamecharacter.Point;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
-import com.grupptva.runnergame.game.view.GameRenderer;
-import com.grupptva.runnergame.pluginsystem.ScenePlugin;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import static java.lang.System.out;
 
 /**
  * @author Mattias revised by Karl and Agnes
