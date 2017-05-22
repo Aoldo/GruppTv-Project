@@ -18,4 +18,6 @@ public interface IHook {
 
 	void moveHook(float pixelsPerFrame);
 
+	boolean canSwing(float characterXPos);
+
 }

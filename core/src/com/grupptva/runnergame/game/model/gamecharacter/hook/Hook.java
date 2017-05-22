@@ -16,8 +16,16 @@ public class Hook extends AbstractHook {
 
 	@Override
 	public float getYPosAfterSwing(float characterXPos) {
-		return getPosition().getY() - (float) Math.sqrt(getLength() * getLength() -
-				((characterXPos + 1 - getPosition().getX()) * (characterXPos + 1 - getPosition().getX())));
+		return getPosition().getY() - (float) Math.sqrt(calculateSumForCircleRoot(characterXPos));
+	}
+
+	public float calculateSumForCircleRoot(float characterXPos) {
+		return getLength() * getLength() - ((characterXPos + 1 - getPosition().getX()) * (characterXPos + 1 - getPosition().getX()));
+	}
+
+	@Override
+	public boolean canSwing(float characterXPos) {
+		return calculateSumForCircleRoot(characterXPos) >= 0;
 	}
 
 	@Override
@@ -29,7 +37,7 @@ public class Hook extends AbstractHook {
 	@Override
 	public float getReleaseVelocity(float hookXPos, float hookYPos, float characterXPos, float characterYPos,
 	                                float jumpInitialVelocity) {
-		double angle = Math.atan((characterYPos - hookYPos)/(characterXPos - hookXPos))+3.1415f/2;
+		double angle = Math.atan((characterYPos - hookYPos) / (characterXPos - hookXPos)) + 3.1415f / 2;
 		return (float) Math.sin(angle) * jumpInitialVelocity;
 	}
 
