@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import static org.junit.Assert.assertTrue;
 
@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
+import com.grupptva.runnergame.game.model.worldgenerator.HookStep;
+import com.grupptva.runnergame.game.model.worldgenerator.JumpStep;
 
 public class HookStepTest {
 	//A lot of the tests here depend on the JumpStep class, so make sure those pass before trubleshooting these.

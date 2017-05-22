@@ -9,13 +9,11 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.grupptva.runnergame.controller.InputHandler;
-import com.grupptva.runnergame.game.model.GameLogic;
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorVisualizer;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorVisualizer_DEBUG;
 import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuListener;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.grupptva.runnergame.pluginsystem.GamePlugin;
+import com.grupptva.runnergame.pluginsystem.ScenePlugin;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -27,7 +25,6 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	ShapeRenderer sr;
 	SpriteBatch batch;
 	Texture img;
-	GameLogic gameLogic;
 
 	final double fastestTimeStep = 0.0041666; //240 fps
 	final double slowestTimeStep = 0.0166666; //60 fps
@@ -35,7 +32,9 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	double timeAccumulator = 0;
 
 	MainMenu mainMenu;
-	GeneratorVisualizer gv;
+	GeneratorVisualizer_DEBUG gv;
+	
+	GamePlugin game;
 	
 	//InputHandler inputHandler;
 
@@ -47,16 +46,16 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
 		mainMenu = new MainMenu(this);
-		gv = new GeneratorVisualizer();
+		gv = new GeneratorVisualizer_DEBUG();
 		activePlugin = mainMenu;
 	}
 	
 	private void initGameLogic()
 	{
 		//inputHandler.removeListener(gameLogic);
-		gameLogic = new GameLogic();
+		game = new GamePlugin();
 		//inputHandler.addListener(gameLogic);
-		activePlugin = gameLogic;
+		activePlugin = game;
 	}
 
 	public void startGameEvent() {
@@ -82,11 +81,6 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 			activePlugin.update();
 		}
 
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
-		//TODO: If handling of activePlugin changes, make sure to handle listeners in inputHandler!!
 		if (Gdx.input.isKeyJustPressed(Keys.G)) {
 			if (activePlugin != gv)
 				activePlugin = gv;

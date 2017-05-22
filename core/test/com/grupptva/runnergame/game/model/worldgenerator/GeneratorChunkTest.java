@@ -1,10 +1,11 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
 
 
 

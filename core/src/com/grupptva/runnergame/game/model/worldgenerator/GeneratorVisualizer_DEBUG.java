@@ -1,10 +1,10 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import java.util.List;
 
-import com.grupptva.runnergame.ScenePlugin;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
+import com.grupptva.runnergame.pluginsystem.ScenePlugin;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,18 +12,20 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 /**
+ * Class used to visaulize the generation of a chunk. Used for debugging
+ * purposes. 
  * 
  * @author Mattias
  *
  */
-public class GeneratorVisualizer implements ScenePlugin {
+public class GeneratorVisualizer_DEBUG implements ScenePlugin {
 	WorldGenerator generator;
 	ShapeRenderer sr;
 
 	int logIndex = 0;
 	List<Tile[][]> chunkLog;
 
-	public GeneratorVisualizer() {
+	public GeneratorVisualizer_DEBUG() {
 		generator = new WorldGenerator(3f, 20, 4l, 40, 20, 0, new GameCharacter(30f, 150f, 3f));
 
 		chunkLog = generator.generateChunkLog();

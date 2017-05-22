@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,26 +7,52 @@ import java.util.Random;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
 
+/**
+ * Controls the generation of chunks for the world. 
+ * 
+ * @author Mattias
+ *
+ */
 public class WorldGenerator {
 	private List<GeneratorStep> steps = new ArrayList<GeneratorStep>();
 
+	/**
+	 * Width of generated chunks.
+	 */
 	int chunkWidth;
+	/**
+	 * Height of generated chunks.
+	 */
 	int chunkHeight;
+	/**
+	 * The Y position that the character enters the chunk at/the last chunk ended at.
+	 */
 	int initY;
+	/**
+	 * Seeded random number generator.
+	 */
 	Random rng;
 
 	/**
 	 * Creates a new instance of WorldGenerator.
 	 * 
-	 * @param vx Constant horizontal speed of the character, relative to the world.
-	 * @param tileSize Size of a tile in the world.
-	 * @param seed Seed for the random number generator.
-	 * @param chunkWidth Width of the world, in tiles.
-	 * @param chunkHeight Height of the world, in tiles. 
-	 * @param initY Characters starting Y position, in tiles.
-	 * @param character The character.
+	 * @param vx
+	 *            Constant horizontal speed of the character, relative to the
+	 *            world.
+	 * @param tileSize
+	 *            Size of a tile in the world.
+	 * @param seed
+	 *            Seed for the random number generator.
+	 * @param chunkWidth
+	 *            Width of the world, in tiles.
+	 * @param chunkHeight
+	 *            Height of the world, in tiles.
+	 * @param initY
+	 *            Characters starting Y position, in tiles.
+	 * @param character
+	 *            The character.
 	 */
 	public WorldGenerator(float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight, int initY,
 			GameCharacter character) {
@@ -42,6 +68,7 @@ public class WorldGenerator {
 
 	/**
 	 * Returns the total sum of every steps chance of occuring.
+	 * 
 	 * @return Sum of all step chances.
 	 */
 	private int getChanceSum() {
@@ -124,14 +151,13 @@ public class WorldGenerator {
 		}
 		chunk.tiles[currentTile[1]][currentTile[0]] = Tile.FULL; //Create solid ground at the end of the chunk.
 		initY = currentTile[1]; //Save final Y value of the chunk so that it can seamlessly connect to the next one.
-		
-		
+
 		return new Chunk(convertChunkToWorldModel(chunk.tiles)); //Convert the chunk into one that is usable by the world, and return it.
 	}
 
 	/**
-	 * Converts a chunk made out of WorldGenerator.Tile s to a chunk used in the
-	 * actual world. This is needed because the generator has special tiles used
+	 * Converts a chunk made out of GeneratorChunk.Tiles to a chunk used in the
+	 * actual world. This is needed because the GeneratorChunk has special tiles used
 	 * for the visualization of the generation, that don't exist in the actual
 	 * world.
 	 * 
@@ -140,7 +166,6 @@ public class WorldGenerator {
 	 */
 	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(Tile[][] tiles) {
 
-		
 		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[tiles[0].length][tiles.length];
 
 		for (int y = 0; y < tiles.length; y++) {
@@ -152,7 +177,7 @@ public class WorldGenerator {
 				}
 			}
 		}
-		
+
 		return newChunk;
 	}
 

@@ -6,16 +6,16 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.grupptva.runnergame.ScenePlugin;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.gamecharacter.Point;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
+import com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.services.collision.CollisionChecker;
-import com.grupptva.runnergame.game.services.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
 import com.grupptva.runnergame.game.view.GameRenderer;
+import com.grupptva.runnergame.pluginsystem.ScenePlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +25,9 @@ import static java.lang.System.out;
 /**
  * @author Mattias revised by Karl and Agnes
  */
-public class GameLogic implements ScenePlugin, InputProcessor {
-	GameRenderer gameRenderer;
+public class GameLogic implements InputProcessor {
 	// private character
-	private GameCharacter character;
+	public GameCharacter character;
 	private WorldModel world;
 	private WorldGenerator generator;
 	private ICollisionChecker collisionChecker;
@@ -41,7 +40,7 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	Chunk c = new Chunk(chunkWidth, chunkHeight);
 	Chunk d = new Chunk(chunkWidth, chunkHeight);
 
-	private int tileSize = 20;
+	public int tileSize = 20;
 
 	private float pixelsPerFrame = 3f;
 
@@ -53,7 +52,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	public GameLogic() {
 		Gdx.input.setInputProcessor(this);
 
-		gameRenderer = new GameRenderer();
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
 
@@ -109,14 +107,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		}
 		//move world here or world.update()?
 		//world.moveLeft(pixelsPerFrame);
-	}
-
-	public void render(SpriteBatch batch, ShapeRenderer sr) {
-		sr.begin(ShapeType.Filled);
-		gameRenderer.renderWorld(tileSize, getWorld(), sr);
-
-		gameRenderer.renderCharacter(tileSize, character, sr);
-		sr.end();
 	}
 
 	public WorldModel getWorld() {

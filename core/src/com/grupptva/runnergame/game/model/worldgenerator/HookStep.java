@@ -1,20 +1,33 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
 
+/**
+ * Implementation of GeneratorStep that adds a step where the character has to
+ * use the hook on a generated tile in order to swing over to the next platform
+ * in the chunk.
+ * 
+ * This class depends on JumpStep's methods that calculate where the character
+ * can land after jumping.
+ * 
+ * @see JumpStep
+ * 
+ * @author Mattias
+ * 
+ */
 class HookStep extends GeneratorStep {
 	List<Integer[]> hookAttachOffsets;
 	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
 
-	public HookStep(float vx, int tileSize, GameCharacter character,
-			Random rng, int chance) {
+	public HookStep(float vx, int tileSize, GameCharacter character, Random rng, int chance) {
 		float v0y = character.getJumpInitialVelocity();
 		float a = character.getGravity();
+
 		float angle = 1f; //TODO: Replace with character get methods when implemented.
 		float radius = 75f;
 
@@ -29,10 +42,17 @@ class HookStep extends GeneratorStep {
 	 * {@param attachOffset}.
 	 * 
 	 * @param attachOffset
+	 *            The offset of the tile the character is attached to with the
+	 *            hook, in relation to the tile the character is on.
 	 * @param tileSize
+	 *            The width and height of a tile.
 	 * @param a
+	 *            The constant acceleration of the character.
 	 * @param v0y
+	 *            The initial Y velocity of the characters jump.
+	 * 
 	 * @param vx
+	 *            The constant X velocity of the character.
 	 * @return A list containing every single offset, in relation to the
 	 *         attachOffset, that the character can land on.
 	 */
@@ -45,10 +65,12 @@ class HookStep extends GeneratorStep {
 
 		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize); //Tiles character collide with while swinging.
 
+		//For every tile the character touches while swinging, check which tiles the character 
+		//can land on by releasing the hook while colliding with that tile.
 		for (Integer[] swingOffset : swingOffsets) {
 			float yVel = character.getReleaseVelocity(swingOffset[0], swingOffset[1], 0, 0);
 
-			if (yVel > 0) {
+			if (yVel > 0) { //Prevent terrible things from happening.
 				List<Integer[]> swingLandingOffsets = JumpStep.calculateJumpLandingOffsets(yVel, a, tileSize, vx);
 
 				for (Integer[] landingOffset : swingLandingOffsets) {
@@ -67,7 +89,7 @@ class HookStep extends GeneratorStep {
 	}
 
 	/**
-	 * Initializes the offsets used in hookStep.
+	 * Initializes the offsets used in step.
 	 * 
 	 * @param v0y
 	 *            The initial Y velocity of the characters jump.
@@ -91,7 +113,7 @@ class HookStep extends GeneratorStep {
 	}
 
 	/**
-	 * Draws a circle with radius {@param r} around origin and checks which
+	 * Creates a circle with radius {@param r} around origin and checks which
 	 * tiles in the 4th quadran(bottom right) the circle intersects with.
 	 * 
 	 * @param r
@@ -178,7 +200,7 @@ class HookStep extends GeneratorStep {
 	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius, int tileSize) {
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
 
-		//TODO: similar to calculateJumpGrid, refactor?
+		//TODO: similar to calculateJumpGrid in JumpGrid, refactor?
 
 		//Doubles used to prevent having to cast all the time. 
 		//Faster than float? 
@@ -246,13 +268,7 @@ class HookStep extends GeneratorStep {
 		createPlatform(chunk, currentTile);
 	}
 
-	/**
-	 * A copy of hookStep that is used for visualization, only difference is
-	 * that it logs important changes to the chunk in {@param chunkLog}.
-	 * 
-	 * @see hookStep
-	 * @param chunkLog
-	 */
+
 	@Override
 	public void step(GeneratorChunk chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
 		List<Integer> validHookAttachIndexes = chunk.getValidOffsetIndexes(hookAttachOffsets, currentTile);
@@ -271,8 +287,7 @@ class HookStep extends GeneratorStep {
 
 	/**
 	 * The first half of the hookStep method. Split into two for easy
-	 * implementation of logging the generation
-	 * {@See hookStep(..),hookStep(..,chunkLog)}.
+	 * implementation of logging the generation.
 	 * 
 	 * @param chunk
 	 * @param currentTile
@@ -286,7 +301,7 @@ class HookStep extends GeneratorStep {
 			//Failsafe to prevent infinite loop. This code is pretty much identical to failsafes in other places
 			//but turning it into a boolean method doesn't remove the if statement since it would return true
 			//if it passes the check, and that would require a new if statement in order to prevent it from ending this method early.
-			createPlatform(chunk, currentTile);	
+			createPlatform(chunk, currentTile);
 			return false;
 		}
 		chunk.setValidOffsetsToValue(hookAttachOffsets, validHookAttachIndexes, currentTileCopy, Tile.POSSIBLEHOOK);
@@ -317,7 +332,7 @@ class HookStep extends GeneratorStep {
 			//Failsafe to prevent infinite loop. This code is pretty much identical to failsafes in other places
 			//but turning it into a boolean method doesn't remove the if statement since it would return true
 			//if it passes the check, and that would require a new if statement in order to prevent it from ending this method early.
-			createPlatform(chunk, currentTile);			
+			createPlatform(chunk, currentTile);
 			return;
 		}
 		chunk.tiles[currentTileCopy[1]][currentTileCopy[0]] = Tile.HOOKTARGET;

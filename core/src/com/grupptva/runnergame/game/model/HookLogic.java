@@ -188,40 +188,4 @@ public class HookLogic {
 			}
 		}
 	}
-
-	private void handleCastHook() {
-	}
-
-	List<Integer> colIndexes = new ArrayList();
-
-	private List<Tile[]> getColumnsToCheckWhenCastingHook(Point hookEndPos) {
-		List<Tile[]> columns = new ArrayList();
-		colIndexes = new ArrayList();
-		int columnHookIsIn = (int) Math.abs(world.getPosition() - hookEndPos.getX())
-				/ tileSize;
-		int columnCharacterIsIn = (int) Math
-				.abs(world.getPosition() - gameCharacter.getPosition().getX()) / tileSize;
-		for (int i = columnCharacterIsIn; i <= columnHookIsIn; i++) {
-			columns.add(world.getColumn(i));
-			colIndexes.add(i);
-		}
-		return columns;
-	}
-
-	Point getPositionWhereHookExitsWorld() {
-		Point hookStart = new Point(gameCharacter.getPosition().getX() + tileSize / 2f,
-				gameCharacter.getPosition().getY() + tileSize / 2f);
-
-		float endX = hookStart.getX() + (chunkHeight * tileSize - hookStart.getY())
-				/ (float) Math.tan(gameCharacter.getHookAngle());
-		if (endX < chunkWidth * tileSize) {
-			return new Point(endX, chunkHeight * tileSize);
-		} else {
-			float endY = hookStart.getY() + (chunkWidth * tileSize - hookStart.getX())
-					* (float) Math.tan(gameCharacter.getHookAngle());
-			return new Point(chunkWidth * tileSize, endY);
-		}
-
-	}
-
 }

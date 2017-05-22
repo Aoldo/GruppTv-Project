@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.game.services.worldgenerator;
+package com.grupptva.runnergame.game.model.worldgenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,9 +6,16 @@ import java.util.List;
 import java.util.Random;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk;
-import com.grupptva.runnergame.game.services.worldgenerator.GeneratorChunk.Tile;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk;
+import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
 
+/**
+ * Implementation of GeneratorStep that adds a step where the character has to
+ * jump from one platform to another.
+ * 
+ * @author Mattias
+ *
+ */
 class JumpStep extends GeneratorStep {
 	public JumpStep(float vx, int tileSize, GameCharacter character, Random rng, int chance) {
 		float v0y = character.getJumpInitialVelocity();
@@ -445,7 +452,9 @@ class JumpStep extends GeneratorStep {
 	 * 
 	 * //TODO: Rewrite jump calculations to not need this, should be possible to
 	 * just get indexes immediately, instead of converting them to booleans and
-	 * then back to indexes.
+	 * then back to indexes. Upon rewriting this the method that removes
+	 * duplicates will be needed, since currently the boolean grid takes care of
+	 * that.
 	 * 
 	 * @param v0y
 	 * @param a

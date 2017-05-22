@@ -1,7 +1,10 @@
 package com.grupptva.runnergame.game.view;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.grupptva.runnergame.game.model.GameLogic;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
@@ -12,9 +15,15 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
  */
 public class GameRenderer {
 
+	public void render(SpriteBatch batch, ShapeRenderer sr, GameLogic model) {
+		sr.begin(ShapeType.Filled);
+		renderCharacter(model.tileSize, model.character, sr);
+		renderWorld(model.tileSize, model.getWorld(), sr);
+		sr.end();
+	}
+
 	public void renderCharacter(int tileSize, GameCharacter gameCharacter,
 			ShapeRenderer sr) {
-
 		sr.setColor(Color.FOREST);
 		sr.rect(gameCharacter.getPosition().getX(), gameCharacter.getPosition().getY(),
 				tileSize, tileSize);
