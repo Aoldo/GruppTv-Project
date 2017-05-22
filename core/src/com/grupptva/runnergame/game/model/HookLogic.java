@@ -67,12 +67,15 @@ public class HookLogic {
 		}
 		//TODO: removeDuplicates(offsets);
 
-		offsets = mergeSort(offsets);
+		//By sorting the offsets by the distance to the offset
+		//they can be looped through in order in order to 
+		//quickly find the first one that is Tile.OBSTACLE.
+		offsets = mergeSortByDistance(offsets);
 
 		return offsets;
 	}
 
-	static List<Integer[]> mergeSort(List<Integer[]> list) {
+	static List<Integer[]> mergeSortByDistance(List<Integer[]> list) {
 		if (list.size() <= 1) {
 			return list; //A list with only one element is already sorted.
 		}
@@ -89,18 +92,18 @@ public class HookLogic {
 		}
 		//Recursively sort the list, in order to reach a point where it is made out of lists containing a single element
 		//ie, made out of sorted lists.
-		left = mergeSort(left);
-		right = mergeSort(right);
+		left = mergeSortByDistance(left);
+		right = mergeSortByDistance(right);
 
-		return merge(left, right);
+		return mergeByDistance(left, right);
 	}
 
-	private static List<Integer[]> merge(List<Integer[]> left, List<Integer[]> right) {
+	private static List<Integer[]> mergeByDistance(List<Integer[]> left, List<Integer[]> right) {
 		List<Integer[]> result = new ArrayList<Integer[]>();
 
 		//Loops until either list is empty.
 		while (left.size() > 0 && right.size() > 0) {
-			//Appends the lowest value, from either list, to the result list.
+			//Appends the lowest distance, from either list, to the result list.
 			double lSum = Math.sqrt(
 					left.get(0)[0] * left.get(0)[0] + left.get(0)[1] * left.get(0)[1]);
 			double rSum = Math.sqrt(right.get(0)[0] * right.get(0)[0]
