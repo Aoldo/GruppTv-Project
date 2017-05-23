@@ -6,8 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.grupptva.runnergame.game.controller.GameController;
 
 /**
- * A facade for the actual game. This is the class that should be run in order
- * to run the game.
+ * Adapter for the game package/module.
  * 
  * @author Mattias
  *
