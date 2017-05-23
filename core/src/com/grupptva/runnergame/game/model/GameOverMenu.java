@@ -29,7 +29,7 @@ public class GameOverMenu {
 		
 		mainMenuString = "Main Menu";
 		playAgainString = "Play Again";
-		scoreString = "Your final score: " + 5;// + getScore();
+		scoreString = "Your Final Score: " + GameLogic.getCurrentScore();
 		
 		buttons = new BitmapFont();
 		
@@ -74,7 +74,9 @@ public class GameOverMenu {
 	
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
 		//render.renderButtons(sr);
+		//sr.begin();
 		renderButtons(sr);
+		sr.end();
 		batch.begin();
 		//render.renderText(batch);
 		renderText(batch);
@@ -83,9 +85,9 @@ public class GameOverMenu {
 
 	private void renderText(SpriteBatch batch) {
 		buttons.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-		buttons.draw(batch, mainMenuString, 284, 305);
-		buttons.draw(batch, playAgainString, 284, 246);
-		buttons.draw(batch, scoreString, 300, 226);
+		buttons.draw(batch, mainMenuString, 353, 187);
+		buttons.draw(batch, playAgainString, 216, 187);
+		buttons.draw(batch, scoreString, 255, 274);
 	}
 
 	private void renderButtons(ShapeRenderer sr) {

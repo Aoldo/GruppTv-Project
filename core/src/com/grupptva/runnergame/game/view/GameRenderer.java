@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.grupptva.runnergame.game.model.GameOverMenu;
+import com.grupptva.runnergame.game.model.ScoreRenderer;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
@@ -15,6 +16,7 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 public class GameRenderer {
 	
 	GameOverMenu gameOverMenu = new GameOverMenu();
+	ScoreRenderer scoreRenderer = new ScoreRenderer();
 
 	public void renderCharacter(int tileSize, GameCharacter gameCharacter, ShapeRenderer
 			sr) {
@@ -58,6 +60,10 @@ public class GameRenderer {
 			default:
 				return;
 		}
+	}
+	
+	public void renderScore(SpriteBatch batch, ShapeRenderer sr) {
+		scoreRenderer.render(batch, sr);
 	}
 
 	public void renderGameOverMenu(SpriteBatch batch, ShapeRenderer sr) {
