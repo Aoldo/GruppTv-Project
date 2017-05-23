@@ -11,7 +11,7 @@ import java.util.List;
  * @author Mattias
  *
  */
-class GeneratorChunk {
+public class GeneratorChunk {
 	public Tile[][] tiles;
 	public int width;
 	public int height;
@@ -28,7 +28,7 @@ class GeneratorChunk {
 	 * 
 	 * @author Mattias
 	 */
-	enum Tile {
+	public enum Tile {
 		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND, HOOKTARGET;
 	}
 

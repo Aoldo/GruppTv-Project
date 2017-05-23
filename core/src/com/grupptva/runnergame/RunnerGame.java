@@ -8,7 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.grupptva.runnergame.game.model.worldgenerator.GeneratorVisualizer_DEBUG;
+import com.grupptva.runnergame.debug.GeneratorVisualizer_DEBUG;
 import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuListener;
 import com.grupptva.runnergame.modulesystem.GameModuleAdapter;
