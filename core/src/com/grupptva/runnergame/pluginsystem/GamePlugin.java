@@ -1,9 +1,9 @@
 package com.grupptva.runnergame.pluginsystem;
 
-import com.grupptva.runnergame.game.view.GameRenderer;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.grupptva.runnergame.game.model.GameLogic;
+import com.grupptva.runnergame.game.controller.GameController;
 
 /**
  * A facade for the actual game. This is the class that should be run in order
@@ -13,24 +13,21 @@ import com.grupptva.runnergame.game.model.GameLogic;
  *
  */
 public class GamePlugin implements ScenePlugin {
-	GameLogic gameLogic;
-	GameRenderer gameRenderer;
+	GameController controller;
 
 	public GamePlugin() {
-		gameLogic = new GameLogic();
-		gameRenderer = new GameRenderer();
+		controller = new GameController(Input.Keys.H, Input.Keys.SPACE, Input.Keys.R);
 	}
 
 	@Override
 	public void update() {
-		gameLogic.update();
+		controller.update();
 
 	}
 
 	@Override
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
-		//Lets the view read the model without the model knowing about the view.
-		gameRenderer.render(batch, sr, gameLogic);
+		controller.render(batch, sr);
 	}
 
 }

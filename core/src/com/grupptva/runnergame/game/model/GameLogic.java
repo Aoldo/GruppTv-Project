@@ -1,8 +1,5 @@
 package com.grupptva.runnergame.game.model;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
@@ -11,12 +8,10 @@ import com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
 
-
-
 /**
  * @author Mattias revised by Karl and Agnes
  */
-public class GameLogic implements InputProcessor {
+public class GameLogic {
 	// private character
 	public GameCharacter character;
 	private WorldModel world;
@@ -35,13 +30,8 @@ public class GameLogic implements InputProcessor {
 
 	private float pixelsPerFrame = 3f;
 
-	private final int jumpKeyCode = Input.Keys.SPACE;
-	private final int hookKeyCode = Input.Keys.H;
-	private final int resetKeyCode = Input.Keys.R;
-
 	//
 	public GameLogic() {
-		Gdx.input.setInputProcessor(this);
 
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
@@ -51,11 +41,9 @@ public class GameLogic implements InputProcessor {
 
 		hookLogic = new HookLogic(character, world, tileSize);
 
-		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth,
-				chunkHeight, 0, character);
-		//generator = new WorldGenerator(character.getJumpInitialVelocity(),
-		//		character.getGravity(), pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, 1, 75);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
 
+		
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
 				if (y == 0) {
@@ -77,8 +65,7 @@ public class GameLogic implements InputProcessor {
 		world.setChunks(new Chunk[] { c, d, c });
 
 		//TODO: First 3 chunks should be a tutorial.
-		world.setChunks(
-				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
+		world.setChunks(new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 	}
 
 	public void update() {
@@ -111,11 +98,9 @@ public class GameLogic implements InputProcessor {
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 
-		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth,
-				chunkHeight, 0, character);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth, chunkHeight, 0, character);
 
-		world.setChunks(
-				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
+		world.setChunks(new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 		world.setPosition(0);
 		world.setStartIndex(0);
 		collisionLogic.setGameCharacter(character);
@@ -139,63 +124,20 @@ public class GameLogic implements InputProcessor {
 		}
 	}
 
-	@Override
-	public boolean keyDown(int keycode) {
-		switch (keycode) {
-		case jumpKeyCode:
-			character.jump();
-			return true;
-		case hookKeyCode:
-			//character.initHook(character.getPosition().getOffsetPoint(75, character.getHookAngle()));
-			startHook();
-			return true;
-		case resetKeyCode:
-			reset();
-			return true;
-		default:
-			return false;
-		}
+	public void recieveJumpPressed() {
+		character.jump();
 	}
 
-	@Override
-	public boolean keyUp(int keycode) {
-		switch (keycode) {
-		case hookKeyCode:
-			if (character.isAttachedWithHook())
-				character.removeHook();
-			return true;
-		default:
-			return false;
-		}
+	public void recieveHookPressed() {
+		startHook();
 	}
 
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
+	public void recieveResetPressed() {
+		reset();
 	}
 
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
+	public void recieveHookReleased() {
+		if (character.isAttachedWithHook())
+			character.removeHook();
 	}
 }
