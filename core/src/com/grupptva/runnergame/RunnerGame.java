@@ -11,8 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.game.model.worldgenerator.GeneratorVisualizer_DEBUG;
 import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuListener;
-import com.grupptva.runnergame.pluginsystem.GamePlugin;
-import com.grupptva.runnergame.pluginsystem.ScenePlugin;
+import com.grupptva.runnergame.modulesystem.GameModuleAdapter;
+import com.grupptva.runnergame.modulesystem.ModuleAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -33,28 +33,24 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	MainMenu mainMenu;
 	GeneratorVisualizer_DEBUG gv;
 	
-	GamePlugin game;
+	GameModuleAdapter game;
 	
-	//InputHandler inputHandler;
 
-	ScenePlugin activePlugin;
+	ModuleAdapter activeModule;
 
 	@Override
 	public void create() {
-		//inputHandler = new InputHandler();
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
 		mainMenu = new MainMenu(this);
 		gv = new GeneratorVisualizer_DEBUG();
-		activePlugin = mainMenu;
+		activeModule = mainMenu;
 	}
 	
 	private void initGameLogic()
 	{
-		//inputHandler.removeListener(gameLogic);
-		game = new GamePlugin();
-		//inputHandler.addListener(gameLogic);
-		activePlugin = game;
+		game = new GameModuleAdapter();
+		activeModule = game;
 	}
 
 	public void startGameEvent() {
@@ -76,21 +72,21 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 			timeAccumulator -= currentTimeStep;
 
 			//--------------------Do logic here-------------------
-			//inputHandler.update();
-			activePlugin.update();
+			activeModule.update();
 		}
 
+		//Debug code for visualizing the world generation.
 		if (Gdx.input.isKeyJustPressed(Keys.G)) {
-			if (activePlugin != gv)
-				activePlugin = gv;
+			if (activeModule != gv)
+				activeModule = gv;
 			else
-				activePlugin = mainMenu;
+				activeModule = mainMenu;
 		}
 
 		Gdx.gl.glClearColor(0.3f, 0.6f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//--------------------Do rendering here----------------------
-		activePlugin.render(batch, sr);
+		activeModule.render(batch, sr);
 	}
 
 	private void debugTimeStep() {

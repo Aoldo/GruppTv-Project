@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
-import com.grupptva.runnergame.pluginsystem.ScenePlugin;
+import com.grupptva.runnergame.modulesystem.ModuleAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @author Mattias
  *
  */
-public class GeneratorVisualizer_DEBUG implements ScenePlugin {
+public class GeneratorVisualizer_DEBUG implements ModuleAdapter {
 	WorldGenerator generator;
 	ShapeRenderer sr;
 

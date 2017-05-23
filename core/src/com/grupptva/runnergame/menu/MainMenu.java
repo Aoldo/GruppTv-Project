@@ -17,9 +17,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.grupptva.runnergame.pluginsystem.ScenePlugin;
+import com.grupptva.runnergame.modulesystem.ModuleAdapter;
 
-public class MainMenu implements ScenePlugin {
+public class MainMenu implements ModuleAdapter {
 
 	//TODO: Turn the BitmapFonts and the Strings into arrays
 	Map<String, String> buttonTitles;

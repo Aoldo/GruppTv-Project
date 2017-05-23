@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.pluginsystem;
+package com.grupptva.runnergame.modulesystem;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,10 +12,10 @@ import com.grupptva.runnergame.game.controller.GameController;
  * @author Mattias
  *
  */
-public class GamePlugin implements ScenePlugin {
+public class GameModuleAdapter implements ModuleAdapter {
 	GameController controller;
 
-	public GamePlugin() {
+	public GameModuleAdapter() {
 		controller = new GameController(Input.Keys.H, Input.Keys.SPACE, Input.Keys.R);
 	}
 
