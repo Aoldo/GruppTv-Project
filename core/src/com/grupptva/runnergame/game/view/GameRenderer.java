@@ -30,8 +30,8 @@ public class GameRenderer {
 		if (gameCharacter.isAttachedWithHook()) {
 			sr.setColor(Color.CHARTREUSE);
 
-			sr.line(gameCharacter.getPosition().getX(),
-					gameCharacter.getPosition().getY(),
+			sr.line(gameCharacter.getPosition().getX() + tileSize / 2,
+					gameCharacter.getPosition().getY() + tileSize / 2,
 					gameCharacter.getHook().getPosition().getX() + tileSize / 2,
 					gameCharacter.getHook().getPosition().getY() + tileSize / 2);
 		}
