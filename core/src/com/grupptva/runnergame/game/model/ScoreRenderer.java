@@ -12,7 +12,8 @@ import com.grupptva.runnergame.menu.MenuListener;
 
 public class ScoreRenderer {
 
-	String score;
+	String scoreText;
+	Integer score;
 	
 	BitmapFont bf;
 	
@@ -21,10 +22,10 @@ public class ScoreRenderer {
 	Integer screenWidth = Gdx.graphics.getWidth();
 	Integer screenHeight = Gdx.graphics.getHeight();
 			
-	public ScoreRenderer() {
+	public ScoreRenderer(Integer score) {
 		
-		score = "Score: " + GameLogic.getCurrentScore();// + getScore();
-		
+		this.score = score;// + getScore();
+		this.scoreText = "Score: ";
 		bf = new BitmapFont();
 		
 		scoreBox = new MenuButton(screenWidth / 2 + 185, screenHeight / 2 + 175, 100, 40,
@@ -43,7 +44,7 @@ public class ScoreRenderer {
 
 	private void renderScoreString(SpriteBatch batch) {
 		bf.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-		bf.draw(batch, score, 520, 440);
+		bf.draw(batch, scoreText + score, 520, 440);
 	}
 
 	private void renderScoreBox(ShapeRenderer sr) {

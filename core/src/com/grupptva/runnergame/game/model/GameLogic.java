@@ -21,6 +21,7 @@ import com.grupptva.runnergame.game.services.WorldGenerator;
 import com.grupptva.runnergame.game.view.GameRenderer;
 import com.grupptva.runnergame.highscores.HighScore;
 import com.grupptva.runnergame.highscores.HighScoresData;
+import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuButton;
 import com.grupptva.runnergame.menu.MenuListener;
 
@@ -28,7 +29,7 @@ import com.grupptva.runnergame.menu.MenuListener;
  *
  * @author Mattias revised by Karl and Agnes
  */
-public class GameLogic implements ScenePlugin, InputProcessor {
+public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListener {
 	GameRenderer gameRenderer;
 	// private character
 	private GameCharacter character;
@@ -50,31 +51,32 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	private final int hookKeyCode = Input.Keys.H;
 	private final int resetKeyCode = Input.Keys.R;
 	
-	static int score = 0;
+	Integer score = 0;
 	
 	GameOverMenu gameOverMenu;
 	ScoreRenderer scoreRenderer;
 	
 	MenuButton currentScore; 
 
-	MenuListener listener;
+	//MenuListener listener;
+	GameListener gameListener;
 	
 	HighScore h;
 	HighScoresData hd;
 	
-	public GameLogic() {
+	public GameLogic(GameListener gameListener) {
 		Gdx.input.setInputProcessor(this);
+		this.gameListener = gameListener;
 
-		gameRenderer = new GameRenderer();
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 		world = new WorldModel();
 		collisionHandler = new CollisionHandler(character, world, tileSize);
 
 		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
 		
-		gameOverMenu = new GameOverMenu();
-		scoreRenderer = new ScoreRenderer();
-		
+		gameOverMenu = new GameOverMenu(this, score);
+		scoreRenderer = new ScoreRenderer(score);
+		gameRenderer = new GameRenderer(gameOverMenu, scoreRenderer);
 		h = new HighScore(score, "---");
 		hd = new HighScoresData();
 		
@@ -109,15 +111,17 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	//if (deathscreen !(is active))
 	public void update() {
 		
-		score++;
+		//score++;
 
 		if(character.isDead()) {
 			//character.setDead(false);
 			//gameOverMenu.update(); //den f�r ha update (render sk�ts i gameRenderer)
 			//highscores
 			//reset();
+			gameOverMenu.score = score;
 			hd.addScore(h);
 		} else {
+			scoreRenderer.score = ++score;
 			world.moveLeft(pixelsPerFrame);
 			collisionHandler.handlePossibleCollision();
 			character.update();
@@ -125,6 +129,9 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 				world.incrementStartIndex();
 				world.setPosition(0);
 				world.updateChunk(generator.generateChunk());
+			}
+			if(hasFallenDown()){
+				character.setDead(true);
 			}
 		}
 		//move world here or world.update()?
@@ -136,7 +143,6 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		gameRenderer.renderCharacter(tileSize, character, sr);
 		gameRenderer.renderWorld(tileSize, getWorld(), sr);
 		gameRenderer.renderScore(batch, sr);
-		sr.end();
 		sr.begin(ShapeType.Filled);
 		if(character.isDead()){
 			gameRenderer.renderGameOverMenu(batch, sr);
@@ -208,6 +214,10 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 		world.setStartIndex(0);
 		collisionHandler.setGameCharacter(character);
 	}
+	
+	private boolean hasFallenDown(){
+		return character.getPosition().getY() < -tileSize;
+	}
 
 	@Override
 	public boolean keyDown(int keycode) {
@@ -267,9 +277,15 @@ public class GameLogic implements ScenePlugin, InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
-	
-	public static int getCurrentScore() {
-		return score;
+
+	@Override
+	public void restartGame() {
+		reset();
+	}
+
+	@Override
+	public void enterMainMenu() {
+		gameListener.leaveGame();
 	}
 	
 }

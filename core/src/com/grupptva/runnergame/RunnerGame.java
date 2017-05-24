@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.controller.InputHandler;
+import com.grupptva.runnergame.game.model.GameListener;
 import com.grupptva.runnergame.game.model.GameLogic;
 import com.grupptva.runnergame.game.model.GameOverMenu;
 import com.grupptva.runnergame.game.services.GeneratorVisualizer;
@@ -27,7 +28,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  *
  */
 
-public class RunnerGame extends ApplicationAdapter implements MenuListener {
+public class RunnerGame extends ApplicationAdapter implements MenuListener, GameListener {
 	ShapeRenderer sr;
 	SpriteBatch batch;
 	Texture img;
@@ -68,18 +69,21 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	private void initGameLogic()
 	{
 		//inputHandler.removeListener(gameLogic);
-		gameLogic = new GameLogic();
+		gameLogic = new GameLogic(this);
+		Gdx.input.setInputProcessor(gameLogic);
 		//inputHandler.addListener(gameLogic);
 		activePlugin = gameLogic;
 	}
 	
 	public void enterHighscores() {
 		highscores = new HighScoreMenu(this, screenWidth, screenHeight);
+		//Gdx.input.setInputProcessor(highscores);
 		activePlugin = highscores;
 	}
 
 	public void enterMainMenu() {
 		mainMenu = new MainMenu(this, screenWidth, screenHeight);
+		Gdx.input.setInputProcessor(mainMenu);
 		activePlugin = mainMenu;
 	}
 
@@ -153,6 +157,11 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	@Override
 	public void dispose() {
 		batch.dispose();
+	}
+
+	@Override
+	public void leaveGame() {
+		enterMainMenu();
 	}
 
 }

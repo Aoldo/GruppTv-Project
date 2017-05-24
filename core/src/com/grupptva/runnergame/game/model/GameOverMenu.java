@@ -21,22 +21,25 @@ public class GameOverMenu {
 	Integer screenWidth = Gdx.graphics.getWidth();
 	Integer screenHeight = Gdx.graphics.getHeight();
 	
-	MenuListener listener;
+	Integer score;
+	
+	//MenuListener listener;
+	GameOverMenuListener gameOverMenuListener;
 	
 	GameOverRenderer render;
 	
-	public GameOverMenu() {
-		
+	public GameOverMenu(GameOverMenuListener gameOverMenuListener, Integer score) {
+		this.gameOverMenuListener = gameOverMenuListener;
 		mainMenuString = "Main Menu";
 		playAgainString = "Play Again";
-		scoreString = "Your Final Score: " + GameLogic.getCurrentScore();
-		
+		scoreString = "Your Final Score: ";
+		this.score = score;
 		buttons = new BitmapFont();
 		
-		mainMenu = new MenuButton(screenWidth / 2 - 120, screenHeight / 2 - 80, 100, 40,
+		playAgain = new MenuButton(screenWidth / 2 - 120, screenHeight / 2 - 80, 100, 40,
 				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.15f, 0.3f, 0.5f, 1));
 		
-		playAgain = new MenuButton(screenWidth / 2 + 20, screenHeight / 2 - 80, 100, 40,
+		mainMenu = new MenuButton(screenWidth / 2 + 20, screenHeight / 2 - 80, 100, 40,
 				new Color(0.15f, 0.3f, 0.5f, 1), new Color(0.15f, 0.3f, 0.5f, 1));
 		
 		background = new MenuButton(screenWidth / 2 - 160, screenHeight / 2 - 120, 320, 240,
@@ -45,28 +48,24 @@ public class GameOverMenu {
 	}
 
 	private void startGame() {
-		listener.startGameEvent();
+		gameOverMenuListener.restartGame();
 	}
 	
 	private void enterMainMenu() {
-		listener.enterMainMenu();
+		gameOverMenuListener.enterMainMenu();
 	}
 	
+	
 	public void update() {
-		System.out.println("not active");
-		if (mainMenu.collides2(-120, -80, 100 ,screenWidth, screenHeight)) {
-			System.out.println("mainMenu active");
+		if (playAgain.collides2(-120, -80, 100 ,screenWidth, screenHeight)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Start game pressed!");
-				enterMainMenu();
+				startGame();
 				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
 			}
 
-		} else if (playAgain.collides2(20, -80, 100, screenWidth, screenHeight)) {
-			System.out.println("Play Again active");
+		} else if (mainMenu.collides2(20, -80, 100, screenWidth, screenHeight)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Highscores pressed!");
-				startGame();
+				enterMainMenu();
 				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
 			}
 		}
@@ -87,7 +86,7 @@ public class GameOverMenu {
 		buttons.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 		buttons.draw(batch, mainMenuString, 353, 187);
 		buttons.draw(batch, playAgainString, 216, 187);
-		buttons.draw(batch, scoreString, 255, 274);
+		buttons.draw(batch, scoreString + score, 255, 274);
 	}
 
 	private void renderButtons(ShapeRenderer sr) {

@@ -15,9 +15,14 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
  */
 public class GameRenderer {
 	
-	GameOverMenu gameOverMenu = new GameOverMenu();
-	ScoreRenderer scoreRenderer = new ScoreRenderer();
+	GameOverMenu gameOverMenu;
+	ScoreRenderer scoreRenderer;
 
+	public GameRenderer(GameOverMenu gameOverMenu, ScoreRenderer scoreRenderer){
+		this.gameOverMenu = gameOverMenu;
+		this.scoreRenderer = scoreRenderer;
+	}
+	
 	public void renderCharacter(int tileSize, GameCharacter gameCharacter, ShapeRenderer
 			sr) {
 		sr.setColor(Color.FOREST);

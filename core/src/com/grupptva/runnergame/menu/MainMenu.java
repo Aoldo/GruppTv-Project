@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -20,7 +21,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.ScenePlugin;
 
-public class MainMenu implements ScenePlugin {
+public class MainMenu implements ScenePlugin, InputProcessor {
 	
 	MenuListener listener;
 	
@@ -31,6 +32,8 @@ public class MainMenu implements ScenePlugin {
 	Map<String, BitmapFont> buttonBF;
 
 	BitmapFont buttons;
+	
+	boolean hasPressed = false;
 	
 	String startGameString, highScoresString, quitGameString;
 
@@ -46,6 +49,7 @@ public class MainMenu implements ScenePlugin {
 	public MainMenu(MenuListener listener, Integer screenWidth, Integer screenHeight) {
 		this.listener = listener;
 		render = new MainMenuRenderer(this);
+		Gdx.input.setInputProcessor(this);
 		
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
@@ -98,26 +102,82 @@ public class MainMenu implements ScenePlugin {
 		// Button collision detection
 		// TODO: Click detection on release rather than click & 
 		//       change rect colour on click/add feedback
-		if (startGame.collides(-80, 40, screenWidth, screenHeight)) {
-			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Start game pressed!");
-				startGame();
-				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
-			}
+		
+	}
 
-		} else if (highScores.collides(-80, -20, screenWidth, screenHeight)) {
-			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Highscores pressed!");
-				enterHighscores();
-				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
-			}
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-		} else if (quitGame.collides(-80, -80, screenWidth, screenHeight)) {
-			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Quit game pressed!");
-				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
-				Gdx.app.exit();
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		hasPressed = true;
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		if(hasPressed){
+			if (startGame.collides(-80, 40, screenWidth, screenHeight)) {
+				//if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+					System.out.println("Start game pressed!");
+					startGame();
+					return true;
+					//sr.setColor(0.15f, 0.3f, 0.5f, 1);
+				//}
+	
+			} else if (highScores.collides(-80, -20, screenWidth, screenHeight)) {
+				//if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+					System.out.println("Highscores pressed!");
+					enterHighscores();
+					return true;
+					//sr.setColor(0.15f, 0.3f, 0.5f, 1);
+				//}
+	
+			} else if (quitGame.collides(-80, -80, screenWidth, screenHeight)) {
+				//if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+					System.out.println("Quit game pressed!");
+					//sr.setColor(0.15f, 0.3f, 0.5f, 1);
+					Gdx.app.exit();
+					return true;
+				//}
 			}
 		}
+		System.out.println("Button released!");
+		hasPressed = false;
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
