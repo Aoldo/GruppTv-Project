@@ -1,6 +1,7 @@
 package com.grupptva.runnergame.highscores;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -23,21 +24,6 @@ public class HighScoresData {
 	// HighScore[] highscores = new HighScore[maxScoreCount];
 	List<HighScore> highscores = new ArrayList<HighScore>();
 
-	// public void initScores() {
-	// for (int i = 0; i < maxScoreCount; i++) {
-	// highscores.add(new HighScore());
-	// }
-	// }
-
-	// Initiates the highscore menu with placeholders
-	// public void initHighScore() {
-	// for (int i = 0; i < maxScoreCount; i++) {
-	// //this.highscores[i].score = (int) (Math.random() * (50 - 0));
-	// this.highscores.get(i).score = 0;
-	// this.highscores.get(i).name = "---";
-	// }
-	// }
-
 	public HighScoresData() {
 		// initScores();
 		// initHighScore();
@@ -52,11 +38,9 @@ public class HighScoresData {
 		return highscores.get(index).getName();
 	}
 
-	// public void sortHighScores() {
-	// for (int i = 0; i < highScores.length; i++) {
-	//
-	// }
-	// }
+	public void sortHighScores() {
+
+	}
 
 	public Object getHighScores() {
 		return highscores;
@@ -65,16 +49,22 @@ public class HighScoresData {
 	public void addScore(HighScore h) {
 		highscores.add(h);
 		// sortHighScores();
-		if (highscores.size() > 10) {
+		if (highscores.size() > maxScoreCount) {
 			highscores.remove(highscores.size() - 1);
 		}
-		saveHighscores();
+		saveHighscores();	
+	}
+	
+	public void printScores() {
+      for(HighScore d : highscores) {
+          System.out.println(d.score + "  "+ d.name);
+      }		
 	}
 
 	public void removeScore(HighScore h) {
 		highscores.remove(h);
 		// sortHighscore();
-		if (highscores.size() < 10) {
+		if (highscores.size() < maxScoreCount) {
 			loadHighscores();
 		}
 	}

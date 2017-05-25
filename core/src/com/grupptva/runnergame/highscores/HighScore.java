@@ -18,4 +18,8 @@ public class HighScore {
 		return this.name;
 	}
 	
+	public void setScore(int s) {
+		this.score = s;
+	}
+	
 }

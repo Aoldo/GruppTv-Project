@@ -114,14 +114,12 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 		//score++;
 
 		if(character.isDead()) {
-			//character.setDead(false);
-			//gameOverMenu.update(); //den f�r ha update (render sk�ts i gameRenderer)
-			//highscores
-			//reset();
-			gameOverMenu.score = score;
+			reset();
+			gameOverMenu.score = score/10;
+			h.setScore(score/10);
 			hd.addScore(h);
 		} else {
-			scoreRenderer.score = ++score;
+			scoreRenderer.score = ++score/10;
 			world.moveLeft(pixelsPerFrame);
 			collisionHandler.handlePossibleCollision();
 			character.update();
