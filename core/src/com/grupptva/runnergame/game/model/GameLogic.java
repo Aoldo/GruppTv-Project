@@ -51,7 +51,7 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 	private final int hookKeyCode = Input.Keys.H;
 	private final int resetKeyCode = Input.Keys.R;
 	
-	Integer score = 0;
+	int score = 0;
 	
 	GameOverMenu gameOverMenu;
 	ScoreRenderer scoreRenderer;
@@ -63,9 +63,7 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 	
 	HighScore h;
 	HighScoresData hd;
-	
-	int hej = 0;
-	
+		
 	boolean isDeadLastFrame = false;
 	
 	public GameLogic(GameListener gameListener) {
@@ -118,11 +116,14 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 		//score++;
 
 		if(character.isDead() && !isDeadLastFrame) {
-			System.out.println(hej++);
 			gameOverMenu.score = score/10;
 			h.setScore(score/10);
 			hd.addScore(h);
-		} else if (!character.isDead()) {
+		}
+		
+		isDeadLastFrame = character.isDead();
+		
+		if (!character.isDead()) {
 			scoreRenderer.score = ++score/10;
 			world.moveLeft(pixelsPerFrame);
 			collisionHandler.handlePossibleCollision();
@@ -131,16 +132,14 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 				world.incrementStartIndex();
 				world.setPosition(0);
 				world.updateChunk(generator.generateChunk());
-			}
-			if(hasFallenDown()){
-				character.setDead(true);
+		}
+			if(hasFallenDown()) {
+					character.setDead(true);
 			}
 		}
 		//move world here or world.update()?
 		//world.moveLeft(pixelsPerFrame);
-		
-		isDeadLastFrame = character.isDead();
-		
+				
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
@@ -218,6 +217,8 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 		world.setPosition(0);
 		world.setStartIndex(0);
 		collisionHandler.setGameCharacter(character);
+		
+		score = 0; 
 	}
 	
 	private boolean hasFallenDown(){

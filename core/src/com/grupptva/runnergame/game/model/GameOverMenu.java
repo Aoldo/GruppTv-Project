@@ -54,8 +54,7 @@ public class GameOverMenu {
 	private void enterMainMenu() {
 		gameOverMenuListener.enterMainMenu();
 	}
-	
-	
+
 	public void update() {
 		if (playAgain.collides2(-120, -80, 100 ,screenWidth, screenHeight)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
