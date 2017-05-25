@@ -67,7 +67,7 @@ public class HighScoresData {
         //Loops until either list is empty.
         while (left.size() > 0 && right.size() > 0) {
             //Appends the lowest value, from either list, to the result list.
-            if (left.get(0).getScore() <= right.get(0).getScore()) {
+            if (left.get(0).getScore() >= right.get(0).getScore()) {
                 result.add(left.get(0));
                 left.remove(0);
             } else {
