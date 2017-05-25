@@ -64,6 +64,10 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 	HighScore h;
 	HighScoresData hd;
 	
+	int hej = 0;
+	
+	boolean isDeadLastFrame = false;
+	
 	public GameLogic(GameListener gameListener) {
 		Gdx.input.setInputProcessor(this);
 		this.gameListener = gameListener;
@@ -113,12 +117,12 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 		
 		//score++;
 
-		if(character.isDead()) {
-			reset();
+		if(character.isDead() && !isDeadLastFrame) {
+			System.out.println(hej++);
 			gameOverMenu.score = score/10;
 			h.setScore(score/10);
 			hd.addScore(h);
-		} else {
+		} else if (!character.isDead()) {
 			scoreRenderer.score = ++score/10;
 			world.moveLeft(pixelsPerFrame);
 			collisionHandler.handlePossibleCollision();
@@ -134,6 +138,9 @@ public class GameLogic implements ScenePlugin, InputProcessor, GameOverMenuListe
 		}
 		//move world here or world.update()?
 		//world.moveLeft(pixelsPerFrame);
+		
+		isDeadLastFrame = character.isDead();
+		
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
