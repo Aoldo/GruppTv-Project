@@ -26,7 +26,7 @@ public class GameModuleAdapter implements ModuleAdapter {
 	@Override
 	public boolean inactive()
 	{
-		return false;
+		return controller.enterMenu;
 	}
 
 	@Override

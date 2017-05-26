@@ -92,10 +92,15 @@ public class RunnerGame extends ApplicationAdapter {
 		if(activeModule.inactive())
 		{
 			if(activeModule == game)
-				activeModule=mainMenu;
+				initMenu();
 			else
 				initGameLogic();
 		}
+	}
+	private void initMenu()
+	{
+		mainMenu = new MenuModuleAdapter();
+		activeModule=mainMenu;
 	}
 
 	private void debugTimeStep() {

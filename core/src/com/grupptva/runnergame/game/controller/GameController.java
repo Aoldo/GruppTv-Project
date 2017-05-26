@@ -61,7 +61,7 @@ public class GameController implements InputProcessor {
 		isGameOver = false;
 	}
 
-	boolean enterMenu = false;
+	public boolean enterMenu = false;
 
 	private void gameOverButtonCheck(int mouseX, int mouseY) {
 		int widthHalf = Gdx.graphics.getWidth() / 2;
