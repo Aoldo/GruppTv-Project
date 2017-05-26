@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.menu;
+package com.grupptva.runnergame.menu.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.grupptva.runnergame.utils.Button;
 import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
@@ -23,7 +24,7 @@ public class HighScoreMenu {
 	//metod i konstruktorn
 	//logik
 
-	MenuButton returnButton;
+	public Button returnButton;
 
 	Texture img;
 
@@ -57,7 +58,7 @@ public class HighScoreMenu {
 
 		hs = new HighScoresData();
 
-		returnButton = new MenuButton(-80, -200, 160, 40, new Color(0.15f, 0.3f, 0.5f, 1),
+		returnButton = new Button(-80, -200, 160, 40, new Color(0.15f, 0.3f, 0.5f, 1),
 				new Color(0.3f, 0.6f, 1f, 1));
 
 		this.screenWidth = screenWidth;
@@ -92,7 +93,7 @@ public class HighScoreMenu {
 		batch.end();
 	}
 
-	public void renderButton(ShapeRenderer sr, MenuButton button, int mouseX,
+	public void renderButton(ShapeRenderer sr, Button button, int mouseX,
 			int mouseY) {
 		if (button.collides(mouseX, mouseY, screenWidth / 2, screenHeight / 2)) {
 			sr.setColor(button.pressed);

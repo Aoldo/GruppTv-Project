@@ -1,4 +1,4 @@
-package com.grupptva.runnergame.menu;
+package com.grupptva.runnergame.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.Color;
  * @author Luka
  *
  */
-public class MenuButton {
+public class Button {
 
 	public int x, y, width, height;
 	public Color pressed, notPressed;
 
-	public MenuButton(int x, int y, int width, int height, Color pressed,
+	public Button(int x, int y, int width, int height, Color pressed,
 			Color notPressed) {
 		//menuButtons.add(this);
 		this.x = x;

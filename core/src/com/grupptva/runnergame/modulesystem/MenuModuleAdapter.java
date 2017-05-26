@@ -2,7 +2,7 @@ package com.grupptva.runnergame.modulesystem;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.grupptva.runnergame.menu.MenuController;
+import com.grupptva.runnergame.menu.controller.MenuController;
 
 public class MenuModuleAdapter implements ModuleAdapter {
 	MenuController controller;

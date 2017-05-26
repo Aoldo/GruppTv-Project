@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.grupptva.runnergame.menu.MenuButton;
+import com.grupptva.runnergame.utils.Button;
 
 /**
  * 
@@ -20,11 +20,11 @@ public class GameOverMenu {
 
 	BitmapFont buttons;
 
-	public MenuButton mainMenu;
+	public Button mainMenu;
 
-	public MenuButton playAgain;
+	public Button playAgain;
 
-	MenuButton background;
+	Button background;
 
 	Integer screenWidth = Gdx.graphics.getWidth();
 	Integer screenHeight = Gdx.graphics.getHeight();
@@ -38,13 +38,13 @@ public class GameOverMenu {
 		this.score = score;
 		buttons = new BitmapFont();
 
-		playAgain = new MenuButton(-120, -80, 100, 40, new Color(0.10f, 0.2f, 0.4f, 1),
+		playAgain = new Button(-120, -80, 100, 40, new Color(0.10f, 0.2f, 0.4f, 1),
 				new Color(0.15f, 0.3f, 0.5f, 1));
 
-		mainMenu = new MenuButton(20, -80, 100, 40, new Color(0.10f, 0.2f, 0.4f, 1),
+		mainMenu = new Button(20, -80, 100, 40, new Color(0.10f, 0.2f, 0.4f, 1),
 				new Color(0.15f, 0.3f, 0.5f, 1));
 
-		background = new MenuButton(-160, -120, 320, 240, new Color(0.1f, 0.1f, 1f, 0.2f),
+		background = new Button(-160, -120, 320, 240, new Color(0.1f, 0.1f, 1f, 0.2f),
 				new Color(0.1f, 0.1f, 1f, 0.2f));
 	}
 
@@ -72,7 +72,7 @@ public class GameOverMenu {
 		render(sr, playAgain, mouseX, mouseY);
 	}
 
-	public void render(ShapeRenderer sr, MenuButton button, int mouseX, int mouseY) {
+	public void render(ShapeRenderer sr, Button button, int mouseX, int mouseY) {
 		int wHalf = screenWidth / 2;
 		int hHalf = screenHeight / 2;
 		if (button.collides(mouseX, mouseY, wHalf, hHalf)) {

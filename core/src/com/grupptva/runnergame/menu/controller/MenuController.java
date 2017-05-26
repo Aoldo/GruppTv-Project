@@ -1,9 +1,12 @@
-package com.grupptva.runnergame.menu;
+package com.grupptva.runnergame.menu.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.grupptva.runnergame.menu.model.HighScoreMenu;
+import com.grupptva.runnergame.menu.model.MainMenu;
+import com.grupptva.runnergame.menu.view.MenuRenderer;
 /**
  * 
  * @author Luka
@@ -11,7 +14,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class MenuController implements InputProcessor {
 	MainMenu model;
-	MenuRenderer view;
 
 	HighScoreMenu scoreModel;
 
@@ -24,7 +26,6 @@ public class MenuController implements InputProcessor {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		model = new MainMenu(width, height);
-		view = new MenuRenderer();
 		scoreModel = new HighScoreMenu(width, height);
 	}
 
@@ -36,7 +37,7 @@ public class MenuController implements InputProcessor {
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
 		if (!inHighScore)
-			view.render(batch, sr, model, mouseX, mouseY);
+			MenuRenderer.render(batch, sr, model, mouseX, mouseY);
 		else
 			scoreModel.render(batch, sr, mouseX, mouseY); //TODO: Split scoreModel into m&v
 	}
