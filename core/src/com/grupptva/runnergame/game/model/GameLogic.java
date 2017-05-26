@@ -7,8 +7,6 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
-import com.grupptva.runnergame.utils.HighScore;
-import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
  * @author Mattias revised by Karl, Luka and Agnes

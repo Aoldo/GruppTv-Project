@@ -1,17 +1,11 @@
 package com.grupptva.runnergame.game.services.collision;
 
-import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.model.gamecharacter.Point;
-import com.grupptva.runnergame.game.model.world.Chunk;
 import com.grupptva.runnergame.game.model.world.Tile;
-import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by agnesmardh on 2017-05-16.

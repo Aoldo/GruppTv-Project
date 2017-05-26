@@ -3,7 +3,6 @@ package com.grupptva.runnergame.debug;
 import java.util.List;
 
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
-import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk;
 import com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
 import com.grupptva.runnergame.modulesystem.ModuleAdapter;

@@ -1,15 +1,10 @@
 package com.grupptva.runnergame.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.grupptva.runnergame.RunnerGame;
-import com.grupptva.runnergame.menu.HighScoreMenu;
 
 //public class HighScoresData implements Comparable<HighScoresData> {
 public class HighScoresData {

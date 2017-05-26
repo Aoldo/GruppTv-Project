@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
+/**
+ * 
+ * @author Luka
+ * Revised by Mattias
+ */
 public class MenuController implements InputProcessor {
 	MainMenu model;
 	MenuRenderer view;

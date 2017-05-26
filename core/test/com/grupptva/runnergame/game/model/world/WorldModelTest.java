@@ -5,8 +5,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static com.grupptva.runnergame.game.model.world.Tile.EMPTY;
-import static com.grupptva.runnergame.game.model.world.Tile.OBSTACLE;
 import static java.lang.System.out;
 
 /**
