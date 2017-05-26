@@ -4,6 +4,7 @@ package com.grupptva.runnergame.game.model.world;
  * Created by karlwikstrom on 2017-04-03.
  *
  * @author Karl 'NaN' Wikström
+ * revised by Mattias
  */
 public class WorldModel {
 
@@ -11,11 +12,6 @@ public class WorldModel {
 	 * The container which contains the world separated into {@link Chunk}s.
 	 */
 	private Chunk[] chunks;
-
-	/**
-	 * The container which contains the world represented by a {@link Tile} matrix.
-	 */
-	private Tile[][] grid;
 
 	/**
 	 * The position of the grid.

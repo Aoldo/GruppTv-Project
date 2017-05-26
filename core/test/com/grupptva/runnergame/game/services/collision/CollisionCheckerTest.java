@@ -1,6 +1,5 @@
 package com.grupptva.runnergame.game.services.collision;
 
-import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,7 +21,6 @@ public class CollisionCheckerTest {
 
 	@Test
 	public void testCheckCollisionWithTile() {
-		Tile tile = Tile.OBSTACLE;
 		float tileXPos = 45;
 		float tileYPos = 30;
 		float characterXPos = 30;

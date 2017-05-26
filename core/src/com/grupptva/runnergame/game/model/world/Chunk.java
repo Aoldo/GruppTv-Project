@@ -20,19 +20,6 @@ public class Chunk {
 		setTiles(tiles);
 	}
 
-	private boolean subarraysHasSameLength(Tile[][] tiles) {
-		if(tiles.length == 0){
-			return true;
-		}
-		int length = tiles[0].length;
-		for (Tile[] arr : tiles) {
-			if(arr.length != length){
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public Chunk(int width, int height) {
 		setWidth(width);
 		setHeight(height);
