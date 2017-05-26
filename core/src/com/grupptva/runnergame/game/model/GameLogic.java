@@ -90,6 +90,10 @@ public class GameLogic {
 				world.setPosition(0);
 				world.updateChunk(generator.generateChunk());
 			}
+			if(character.getPosition().getY() <= tileSize*-2)
+			{
+				character.setDead(true);
+			}
 		}
 		//move world here or world.update()?
 		//world.moveLeft(pixelsPerFrame);
