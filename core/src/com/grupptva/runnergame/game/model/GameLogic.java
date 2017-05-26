@@ -29,6 +29,8 @@ public class GameLogic {
 	public int tileSize = 20;
 
 	private float pixelsPerFrame = 3f;
+	
+	public int score = 0;
 
 	//
 	public GameLogic() {
