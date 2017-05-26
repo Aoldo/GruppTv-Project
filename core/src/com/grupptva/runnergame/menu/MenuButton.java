@@ -1,7 +1,10 @@
 package com.grupptva.runnergame.menu;
 
+import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
  * 
@@ -32,16 +35,27 @@ public class MenuButton {
 		return height;
 	}
 
-	public boolean collides(float x, float y, MainMenu mainMenu) {
+	public boolean collides(float mouseX, float mouseY, Integer screenWidthHalf,
+			Integer screenHeightHalf) {
+		if (mouseX < screenWidthHalf + x + width && mouseX > screenWidthHalf + x) {
+			if (2 * screenHeightHalf - mouseY < screenHeightHalf + height + y
+					&& 2 * screenHeightHalf - mouseY > screenHeightHalf + y) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-		if (((Gdx.input.getX() < (mainMenu.getScreenWidth() / 2 + x + 160))
-				&& !(Gdx.input.getX() < mainMenu.getScreenWidth() / 2 + x))
-				&& (((Gdx.input.getY() < ((mainMenu.getScreenHeight() / 2 - y))))
-						&& !(Gdx.input.getY() < (((mainMenu.getScreenHeight() / 2 - y)))
-								- 40))) {
+	public boolean collides2(float x, float y, float xwidth, Integer screenWidth,
+			Integer screenHeight) {
+		if (((Gdx.input.getX() < (screenWidth / 2 + x + xwidth))
+				&& !(Gdx.input.getX() < screenWidth / 2 + x))
+				&& (((Gdx.input.getY() < ((screenHeight / 2 - y))))
+						&& !(Gdx.input.getY() < (((screenHeight / 2 - y))) - 40))) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+
 }

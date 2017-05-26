@@ -32,7 +32,9 @@ public class GeneratorVisualizer_DEBUG implements ModuleAdapter {
 
 		chunkLog = generator.generateChunkLog();
 	}
-
+	public boolean inactive(){
+		return false;
+	}
 	public void update() {
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			logIndex++;

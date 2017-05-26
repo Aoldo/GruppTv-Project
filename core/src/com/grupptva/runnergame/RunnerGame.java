@@ -12,6 +12,7 @@ import com.grupptva.runnergame.debug.GeneratorVisualizer_DEBUG;
 import com.grupptva.runnergame.menu.MainMenu;
 import com.grupptva.runnergame.menu.MenuListener;
 import com.grupptva.runnergame.modulesystem.GameModuleAdapter;
+import com.grupptva.runnergame.modulesystem.MenuModuleAdapter;
 import com.grupptva.runnergame.modulesystem.ModuleAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -30,7 +31,7 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	double currentTimeStep = slowestTimeStep;
 	double timeAccumulator = 0;
 
-	MainMenu mainMenu;
+	MenuModuleAdapter mainMenu;
 	GeneratorVisualizer_DEBUG gv;
 	
 	GameModuleAdapter game;
@@ -42,7 +43,7 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 	public void create() {
 		batch = new SpriteBatch();
 		sr = new ShapeRenderer();
-		mainMenu = new MainMenu(this);
+		mainMenu = new MenuModuleAdapter();
 		gv = new GeneratorVisualizer_DEBUG();
 		activeModule = mainMenu;
 	}
@@ -88,6 +89,15 @@ public class RunnerGame extends ApplicationAdapter implements MenuListener {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//--------------------Do rendering here----------------------
 		activeModule.render(batch, sr);
+	
+	
+		if(activeModule.inactive())
+		{
+			if(activeModule == game)
+				activeModule=mainMenu;
+			else
+				initGameLogic();
+		}
 	}
 
 	private void debugTimeStep() {

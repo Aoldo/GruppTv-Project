@@ -14,7 +14,7 @@ public interface ModuleAdapter {
 	 * Tells the controller to update the model.
 	 */
 	public void update();
-
+	public boolean inactive();
 	/**
 	 * Tells the controller to update the view.
 	 * 

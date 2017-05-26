@@ -21,7 +21,12 @@ public class GameModuleAdapter implements ModuleAdapter {
 	@Override
 	public void update() {
 		controller.update();
-
+	}
+	
+	@Override
+	public boolean inactive()
+	{
+		return false;
 	}
 
 	@Override
