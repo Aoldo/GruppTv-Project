@@ -9,6 +9,8 @@ import com.grupptva.runnergame.game.model.GameLogic;
 import com.grupptva.runnergame.game.model.GameOverMenu;
 import com.grupptva.runnergame.game.view.GameOverRenderer;
 import com.grupptva.runnergame.game.view.GameRenderer;
+import com.grupptva.runnergame.utils.HighScore;
+import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
  * The controller class for the entire game module. Handles input aswell as
@@ -40,11 +42,18 @@ public class GameController implements InputProcessor {
 		gameOverView = new GameOverRenderer();
 	}
 
+	boolean gameOverLastFrame = false;
+
 	public void update() {
 		if (!isGameOver) {
 			model.update();
 			updateGameOver();
 		} else {
+			if (!gameOverLastFrame) {
+				gameOverModel.score = model.score;
+				new HighScoresData().addScore(new HighScore(model.score, "---")); //HighScoresData might aswell be static if this works.
+			}
+			gameOverLastFrame = true;
 			gameOverButtonCheck(Gdx.input.getX(), Gdx.input.getY());
 		}
 	}
@@ -59,6 +68,7 @@ public class GameController implements InputProcessor {
 	private void restartGame() {
 		model = new GameLogic();
 		isGameOver = false;
+		gameOverLastFrame = false;
 	}
 
 	public boolean enterMenu = false;

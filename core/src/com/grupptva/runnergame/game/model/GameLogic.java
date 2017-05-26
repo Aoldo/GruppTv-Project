@@ -7,6 +7,8 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
+import com.grupptva.runnergame.utils.HighScore;
+import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
  * @author Mattias revised by Karl and Agnes
@@ -29,9 +31,9 @@ public class GameLogic {
 	public int tileSize = 20;
 
 	private float pixelsPerFrame = 3f;
-	
-	public int score = 0;
 
+	public int score = 0;
+	
 	//
 	public GameLogic() {
 
@@ -43,9 +45,10 @@ public class GameLogic {
 
 		hookLogic = new HookLogic(character, world, tileSize);
 
-		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth, chunkHeight, 0, character);
-
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 4l, chunkWidth,
+				chunkHeight, 0, character);
 		
+
 		for (int x = 0; x < c.getTiles().length; x++) {
 			for (int y = 0; y < c.getTiles()[0].length; y++) {
 				if (y == 0) {
@@ -67,14 +70,17 @@ public class GameLogic {
 		world.setChunks(new Chunk[] { c, d, c });
 
 		//TODO: First 3 chunks should be a tutorial.
-		world.setChunks(new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
+		world.setChunks(
+				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 	}
 
+	
 	public void update() {
 		if (character.isDead()) {
 			character.setDead(false);
 			reset();
 		} else {
+			score++;
 			world.moveLeft(pixelsPerFrame);
 			collisionLogic.handlePossibleCollision();
 			character.update();
@@ -100,9 +106,11 @@ public class GameLogic {
 	private void reset() {
 		character = new GameCharacter(30, 150, pixelsPerFrame);
 
-		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth, chunkHeight, 0, character);
+		generator = new WorldGenerator(pixelsPerFrame, tileSize, 5l, chunkWidth,
+				chunkHeight, 0, character);
 
-		world.setChunks(new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
+		world.setChunks(
+				new Chunk[] { c, generator.generateChunk(), generator.generateChunk() });
 		world.setPosition(0);
 		world.setStartIndex(0);
 		collisionLogic.setGameCharacter(character);
