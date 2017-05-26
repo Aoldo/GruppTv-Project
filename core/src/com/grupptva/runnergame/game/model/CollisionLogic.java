@@ -17,6 +17,7 @@ public class CollisionLogic {
 	private WorldModel world;
 	private final int tileSize;
 	private ICollisionChecker collisionChecker;
+	
 
 	public CollisionLogic(GameCharacter gameCharacter, WorldModel world, int tileSize,
 	                      ICollisionChecker collisionChecker) {
