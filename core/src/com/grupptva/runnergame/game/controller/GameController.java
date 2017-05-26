@@ -73,7 +73,6 @@ public class GameController implements InputProcessor {
 		int widthHalf = Gdx.graphics.getWidth() / 2;
 		int heightHalf = Gdx.graphics.getHeight() / 2;
 
-
 		if (gameOverModel.playAgain.collides(mouseX, mouseY, widthHalf, heightHalf)) {
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				restartGame();
@@ -93,7 +92,8 @@ public class GameController implements InputProcessor {
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
 		GameRenderer.render(batch, sr, model);
 		if (isGameOver) {
-			GameOverRenderer.render(batch, sr, Gdx.input.getX(), Gdx.input.getY(), gameOverModel); //TODO: split into m&v
+			GameOverRenderer.render(batch, sr, Gdx.input.getX(), Gdx.input.getY(),
+					gameOverModel);
 		}
 	}
 
