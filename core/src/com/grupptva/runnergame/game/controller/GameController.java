@@ -77,14 +77,8 @@ public class GameController implements InputProcessor {
 		int widthHalf = Gdx.graphics.getWidth() / 2;
 		int heightHalf = Gdx.graphics.getHeight() / 2;
 
-		System.out.println("X:" + gameOverModel.playAgain.x + " > " + mouseX + " < "
-				+ (gameOverModel.playAgain.x + gameOverModel.playAgain.width));
-		System.out.println("Y:" + gameOverModel.playAgain.y + " > "
-				+ (heightHalf * 2 - mouseY) + " < "
-				+ (gameOverModel.playAgain.y + gameOverModel.playAgain.width));
 
 		if (gameOverModel.playAgain.collides(mouseX, mouseY, widthHalf, heightHalf)) {
-			System.out.println("RESTART");
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 				restartGame();
 				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
@@ -92,7 +86,6 @@ public class GameController implements InputProcessor {
 
 		} else if (gameOverModel.mainMenu.collides(mouseX, mouseY, widthHalf,
 				heightHalf)) {
-			System.out.println("LEAVE");
 			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 
 				enterMenu = true;
