@@ -103,7 +103,6 @@ public class MenuController implements InputProcessor {
 		if (hasPressed) {
 			handleClick(screenX, screenY, pointer, button);
 		}
-		System.out.println("Button released!");
 		hasPressed = false;
 		return false;
 	}
