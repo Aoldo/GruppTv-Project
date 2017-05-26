@@ -66,20 +66,4 @@ public class MainMenu {
 				new Color(0.3f, 0.6f, 1f, 1));
 
 	}
-
-	private void startGame() {
-	}
-
-	private void enterHighscores() {
-	}
-
-	public void recieveClick(int x, int y, int pointer, int button) {
-			}
-
-	public void update() {
-		// Button collision detection
-		// TODO: Click detection on release rather than click & 
-		//       change rect colour on click/add feedback
-
-	}
 }

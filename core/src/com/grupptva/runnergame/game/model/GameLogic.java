@@ -11,7 +11,7 @@ import com.grupptva.runnergame.utils.HighScore;
 import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
- * @author Mattias revised by Karl and Agnes
+ * @author Mattias revised by Karl, Luka and Agnes
  */
 public class GameLogic {
 	// private character

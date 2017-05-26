@@ -28,9 +28,7 @@ public class MenuController implements InputProcessor {
 		mouseX = Gdx.input.getX();
 		mouseY = Gdx.input.getY();
 
-		if (!inHighScore)
-			model.update();
-		else
+		if(inHighScore)
 			scoreModel.update();
 	}
 
@@ -73,39 +71,24 @@ public class MenuController implements InputProcessor {
 	public boolean startGame = false;
 	boolean inHighScore = false;
 
-	private void sendClickToModel(int x, int y, int pointer, int button) {
-		model.recieveClick(x, y, pointer, button);
-
+	private void handleClick(int x, int y, int pointer, int button) {
 		int widthHalf = width / 2;
 		int heightHalf = height / 2;
 		if (!inHighScore) {
 			if (model.startGame.collides(x, y, widthHalf, heightHalf)) {
-				//if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Start game pressed!");
 				startGame = true;
-				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
-				//}
 
 			} else if (model.highScores.collides(x, y, widthHalf, heightHalf)) {
-				//if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Highscores pressed!");
 				inHighScore = true;
-				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
-				//}
 
 			} else if (model.quitGame.collides(x, y, widthHalf, heightHalf)) {
-				//if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Quit game pressed!");
-				//sr.setColor(0.15f, 0.3f, 0.5f, 1);
 				Gdx.app.exit();
-				//}
 			}
 		}
 		else	//if in highscore
 		{
 			if(scoreModel.returnButton.collides(x, y,widthHalf, heightHalf))
 			{
-				System.out.println("Return pressed!");
 				inHighScore = false;
 			}
 		}
@@ -114,7 +97,7 @@ public class MenuController implements InputProcessor {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		if (hasPressed) {
-			sendClickToModel(screenX, screenY, pointer, button);
+			handleClick(screenX, screenY, pointer, button);
 		}
 		System.out.println("Button released!");
 		hasPressed = false;

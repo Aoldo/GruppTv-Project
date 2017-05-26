@@ -3,6 +3,11 @@ package com.grupptva.runnergame.game.view;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+/**
+ * 
+ * @author Luka
+ * 
+ */
 public class GameOverRenderer {
 
 	public void renderButtons(ShapeRenderer sr) {

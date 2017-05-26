@@ -9,6 +9,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.menu.MenuButton;
 
+/**
+ * 
+ * @author Luka
+ * Revised by Mattias
+ *
+ */
 public class GameOverMenu {
 
 	String mainMenuString, playAgainString, scoreString;

@@ -15,6 +15,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.modulesystem.ModuleAdapter;
 import com.grupptva.runnergame.utils.HighScoresData;
 
+/**
+ * 
+ * @author Luka
+ * Revised by Mattias
+ *
+ */
 public class HighScoreMenu {
 
 	//metod i konstruktorn
