@@ -21,9 +21,7 @@ import com.grupptva.runnergame.utils.HighScoresData;
  */
 public class GameController implements InputProcessor {
 	GameLogic model;
-	GameRenderer view;
 	GameOverMenu gameOverModel;
-	GameOverRenderer gameOverView;
 
 	private final int hookKeyCode;
 	private final int jumpKeyCode;
@@ -38,8 +36,6 @@ public class GameController implements InputProcessor {
 		this.resetKeyCode = resetKeyCode;
 
 		model = new GameLogic();
-		view = new GameRenderer();
-		gameOverView = new GameOverRenderer();
 	}
 
 	boolean gameOverLastFrame = false;
@@ -95,7 +91,7 @@ public class GameController implements InputProcessor {
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
-		view.render(batch, sr, model);
+		GameRenderer.render(batch, sr, model);
 		if (isGameOver) {
 			gameOverModel.render(batch, sr, Gdx.input.getX(), Gdx.input.getY()); //TODO: split into m&v
 		}

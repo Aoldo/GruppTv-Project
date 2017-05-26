@@ -12,17 +12,21 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 
 /**
  * Created by Karl 'NaN' Wikström on 2017-05-03.
+ * Revised by Mattias
  */
-public class GameRenderer {
-
-	public void render(SpriteBatch batch, ShapeRenderer sr, GameLogic model) {
+public final class GameRenderer {
+	private GameRenderer() //Class only has methods.
+	{
+		
+	}
+	public static void render(SpriteBatch batch, ShapeRenderer sr, GameLogic model) {
 		sr.begin(ShapeType.Filled);
 		renderCharacter(model.tileSize, model.character, sr);
 		renderWorld(model.tileSize, model.getWorld(), sr);
 		sr.end();
 	}
 
-	public void renderCharacter(int tileSize, GameCharacter gameCharacter,
+	public static void renderCharacter(int tileSize, GameCharacter gameCharacter,
 			ShapeRenderer sr) {
 		sr.setColor(Color.FOREST);
 		sr.rect(gameCharacter.getPosition().getX(), gameCharacter.getPosition().getY(),
@@ -38,14 +42,14 @@ public class GameRenderer {
 
 	}
 
-	public void renderWorld(int tileSize, WorldModel world, ShapeRenderer renderer) {
+	public static void renderWorld(int tileSize, WorldModel world, ShapeRenderer renderer) {
 		Chunk[] chunks = world.getChunksInRightOrder();
 		for (int i = 0; i < chunks.length; i++) {
 			renderChunk(tileSize, world.getPosition(), chunks[i], i, renderer);
 		}
 	}
 
-	private void renderChunk(int tileSize, float worldPos, Chunk chunk, int chunkNumber,
+	private static void renderChunk(int tileSize, float worldPos, Chunk chunk, int chunkNumber,
 			ShapeRenderer renderer) {
 		for (int col = 0; col < chunk.getWidth(); col++) {
 			for (int row = 0; row < chunk.getHeight(); row++) {
@@ -57,7 +61,7 @@ public class GameRenderer {
 		}
 	}
 
-	private void renderTile(int tileSize, float tilePos, Tile tile, int col, int row,
+	private static void renderTile(int tileSize, float tilePos, Tile tile, int col, int row,
 			int chunkNumber, ShapeRenderer renderer) {
 		switch (tile) {
 		case OBSTACLE:
