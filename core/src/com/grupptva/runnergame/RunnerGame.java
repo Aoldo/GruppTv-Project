@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.grupptva.runnergame.debug.GeneratorVisualizer_DEBUG;
 import com.grupptva.runnergame.menu.MainMenu;
-import com.grupptva.runnergame.menu.MenuListener;
 import com.grupptva.runnergame.modulesystem.GameModuleAdapter;
 import com.grupptva.runnergame.modulesystem.MenuModuleAdapter;
 import com.grupptva.runnergame.modulesystem.ModuleAdapter;
@@ -21,7 +20,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @author Mattias
  *
  */
-public class RunnerGame extends ApplicationAdapter implements MenuListener {
+public class RunnerGame extends ApplicationAdapter {
 	ShapeRenderer sr;
 	SpriteBatch batch;
 	Texture img;
