@@ -80,6 +80,18 @@ public class HighScoreMenu {
 
 	}
 
+	public void render(SpriteBatch batch, ShapeRenderer sr, int mouseX, int mouseY) {
+		batch.begin();
+		renderBackground(batch);
+		batch.end();
+		sr.begin(ShapeType.Filled);
+		renderButton(sr, returnButton, mouseX, mouseY);
+		sr.end();
+		batch.begin();
+		renderText(batch);
+		batch.end();
+	}
+
 	public void renderButton(ShapeRenderer sr, MenuButton button, int mouseX,
 			int mouseY) {
 		if (button.collides(mouseX, mouseY, screenWidth / 2, screenHeight / 2)) {
@@ -105,28 +117,5 @@ public class HighScoreMenu {
 		}
 	}
 
-	private void enterMainMenu() {
-	}
-
-	public void update() {
-		if (returnButton.collides(-80, -200, screenWidth, screenHeight)) {
-			if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-				System.out.println("Return button pressed!");
-				enterMainMenu();
-			}
-		}
-	}
-
-	public void render(SpriteBatch batch, ShapeRenderer sr, int mouseX, int mouseY) {
-		batch.begin();
-		renderBackground(batch);
-		batch.end();
-		sr.begin(ShapeType.Filled);
-		renderButton(sr, returnButton, mouseX, mouseY);
-		sr.end();
-		batch.begin();
-		renderText(batch);
-		batch.end();
-	}
 
 }

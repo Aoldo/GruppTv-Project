@@ -32,8 +32,6 @@ public class MenuController implements InputProcessor {
 		mouseX = Gdx.input.getX();
 		mouseY = Gdx.input.getY();
 
-		if(inHighScore)
-			scoreModel.update();
 	}
 
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
