@@ -93,7 +93,7 @@ public class GameController implements InputProcessor {
 	public void render(SpriteBatch batch, ShapeRenderer sr) {
 		GameRenderer.render(batch, sr, model);
 		if (isGameOver) {
-			gameOverModel.render(batch, sr, Gdx.input.getX(), Gdx.input.getY()); //TODO: split into m&v
+			GameOverRenderer.render(batch, sr, Gdx.input.getX(), Gdx.input.getY(), gameOverModel); //TODO: split into m&v
 		}
 	}
 
