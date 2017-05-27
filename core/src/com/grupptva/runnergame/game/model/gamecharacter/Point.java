@@ -1,8 +1,18 @@
 package com.grupptva.runnergame.game.model.gamecharacter;
 
 /**
- * Created by agnesmardh on 2017-04-26.
+ * Responsibility: Represents a point in two dimensions.
+ *
+ * Used by:
+ * @see GameCharacter
+ * @see com.grupptva.runnergame.game.model.gamecharacter.hook.AbstractHook
+ * @see com.grupptva.runnergame.game.model.gamecharacter.hook.Hook
+ * @see com.grupptva.runnergame.game.model.HookLogic
+ * @see com.grupptva.runnergame.game.model.gamecharacter.hook.IHook
+ *
+ * @Author Karl and Agnes
  */
+
 public class Point {
 	private float x;
 	private float y;
@@ -21,12 +31,6 @@ public class Point {
 		float dX = this.x - point.x;
 		float dY = this.y - point.y;
 		return (float) Math.sqrt((dX * dX) + (dY * dY));
-	}
-
-	public Point getOffsetPoint(float length, float angle) {
-		float newX = x + (float) Math.cos(angle) * length;
-		float newY = y + (float) Math.sin(angle) * length;
-		return new Point(newX, newY);
 	}
 
 	public float getX() {
