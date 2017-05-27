@@ -1,10 +1,24 @@
 package com.grupptva.runnergame.game.model.world;
 
 /**
- * Created by karlwikstrom on 2017-04-03.
+ * Created on 2017-04-03.
+ *
+ * Responsibility: Represents the world in the game and provides functionality
+ * to manipulate it.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.model.CollisionLogic
+ * @see com.grupptva.runnergame.game.model.GameLogic
+ * @see com.grupptva.runnergame.game.model.HookLogic
+ * @see com.grupptva.runnergame.game.view.GameRenderer
+ *
+ * Uses:
+ * @see Chunk
+ * @see Tile
+ *
  *
  * @author Karl 'NaN' Wikström
- * revised by Mattias
+ * Revised by: Mattias
  */
 public class WorldModel {
 

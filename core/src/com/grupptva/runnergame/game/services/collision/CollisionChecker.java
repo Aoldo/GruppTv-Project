@@ -1,7 +1,16 @@
 package com.grupptva.runnergame.game.services.collision;
 
 /**
- * Created by agnesmardh on 2017-05-16.
+ * Responsibility: It's used to check for collision between the GameCharacter and a Tile.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.model.GameLogic
+ *
+ * Uses:
+ * @see ICollisionChecker
+ * @see CollisionData
+ *
+ * @author Karl and Agnes
  */
 public class CollisionChecker implements ICollisionChecker {
 
