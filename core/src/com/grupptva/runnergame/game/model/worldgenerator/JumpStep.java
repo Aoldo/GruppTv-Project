@@ -17,9 +17,10 @@ import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
  *
  */
 class JumpStep extends GeneratorStep {
-	public JumpStep(float vx, int tileSize, GameCharacter character, Random rng, int chance) {
-		float v0y = character.getJumpInitialVelocity();
-		float a = character.getGravity();
+	public JumpStep(final float vx, final int tileSize, final GameCharacter character, final Random rng,
+			final int chance) {
+		final float v0y = character.getJumpInitialVelocity();
+		final float a = character.getGravity();
 		this.chance = chance;
 
 		this.rng = rng;
@@ -64,7 +65,7 @@ class JumpStep extends GeneratorStep {
 				}
 				totalWeights += indexWeights[i];
 			}
-			int r = rng.nextInt(totalWeights);
+			final int r = rng.nextInt(totalWeights);
 			int weightSum = 0;
 			for (int i = 0; i < indexWeights.length; i++) {
 				weightSum += indexWeights[i];
@@ -135,8 +136,9 @@ class JumpStep extends GeneratorStep {
 		//Loop through every index.
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[0].length; x++) {
-				if (tiles[y][x] == true)
+				if (tiles[y][x] == true) {
 					indexes.add(new Integer[] { x, y }); //Add index of true to return list.
+				}
 			}
 		}
 		return indexes;
@@ -158,8 +160,8 @@ class JumpStep extends GeneratorStep {
 	 *         character is at, that the character can reach by jumping.
 	 */
 	static List<Integer[]> calculateJumpLandingOffsets(float v0y, float a, int tileSize, float vx) {
-		boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx); //Grid of tiles that the character might be able to reach by jumping.
-		int halfGridHeight = jumpGrid.length / 2; //Save half of grid height, since grid height [-apexY, apexY] of jump, and character starts at 0.
+		final boolean[][] jumpGrid = calculateJumpGrid(v0y, a, tileSize, vx); //Grid of tiles that the character might be able to reach by jumping.
+		final int halfGridHeight = jumpGrid.length / 2; //Save half of grid height, since grid height [-apexY, apexY] of jump, and character starts at 0.
 		List<Integer[]> trueIndexes = getTrueIndexes(jumpGrid);
 		List<Integer[]> landingIndexes = getLandingIndexes(trueIndexes);
 
@@ -273,7 +275,7 @@ class JumpStep extends GeneratorStep {
 		List<Integer[]> result = new ArrayList<Integer[]>();
 
 		//Loops until either list is empty.
-		while (left.size() > 0 && right.size() > 0) {
+		while (!left.isEmpty() && !right.isEmpty()) {
 			//Appends the lowest value, from either list, to the result list.
 			if (left.get(0)[index] <= right.get(0)[index]) {
 				result.add(left.get(0));
@@ -284,11 +286,11 @@ class JumpStep extends GeneratorStep {
 			}
 		}
 		//Adds the remaining values to the result, only the list with things left in its loop will run.
-		while (left.size() > 0) {
+		while (!left.isEmpty()) {
 			result.add(left.get(0));
 			left.remove(0);
 		}
-		while (right.size() > 0) {
+		while (!right.isEmpty()) {
 			result.add(right.get(0));
 			right.remove(0);
 		}
@@ -327,7 +329,7 @@ class JumpStep extends GeneratorStep {
 	 *            Constant acceleration of the character, should be negative.
 	 * @return Frames to the apex.
 	 */
-	static float getFramesToApexOfJump(float v0y, float a) {
+	static float getFramesToApexOfJump(final float v0y, final float a) {
 		//v=v_0+a*t, v = 0 => t=v_0/a
 		return Math.abs(v0y / (a));
 	}
@@ -341,9 +343,9 @@ class JumpStep extends GeneratorStep {
 	 *            Constant acceleration of the character, should be negative.
 	 * @return Height of the apex.
 	 */
-	static float getRelativeHeightOfApex(float v0y, float a) {
+	static float getRelativeHeightOfApex(final float v0y, final float a) {
 		//integrate v=v_0+a*t dt <=> y = v_0*t-(a*t^2)/2
-		float t = getFramesToApexOfJump(v0y, a);
+		final float t = getFramesToApexOfJump(v0y, a);
 		return getJumpY(v0y, a, t);
 	}
 
@@ -362,12 +364,12 @@ class JumpStep extends GeneratorStep {
 	 * @return The amount of frames, from the initial value {@param y0}, to the
 	 *         sought value {@param y}.
 	 */
-	static float getFramesToYValue(float v0y, float a, float y, float y0) {
+	static float getFramesToYValue(final float v0y, final float a, final float y, final float y0) {
 		float sqrt = (float) Math.sqrt(2 * a * y - 2 * a * y0 + v0y * v0y);
 		//Get the furthest future time, ie rightmost point with that y value.
-		if (sqrt - v0y > -sqrt - v0y)
+		if (sqrt - v0y > -sqrt - v0y) {
 			sqrt *= -1;
-
+		}
 		return (sqrt - v0y) / a;
 	}
 
@@ -386,11 +388,12 @@ class JumpStep extends GeneratorStep {
 	 *            Constant X velocity of the character.
 	 * @return The size of the jump grid.
 	 */
-	private static int[] getSizeOfPossibleJumpGrid(float v0y, float a, float tileSize, float vx) {
+	private static int[] getSizeOfPossibleJumpGrid(final float v0y, final float a, final float tileSize,
+			final float vx) {
 		int[] size = new int[] { 0, 0 };
-		float maxY = getRelativeHeightOfApex(v0y, a);
+		final float maxY = getRelativeHeightOfApex(v0y, a);
 		size[1] = (int) Math.ceil(maxY / tileSize) * 2; //*2 due to going up to the apex of the jump and then down to -apex
-		float t = getFramesToYValue(v0y, a, -maxY + tileSize, 0);
+		final float t = getFramesToYValue(v0y, a, -maxY + tileSize, 0);
 
 		size[0] = (int) Math.ceil((t * vx) / tileSize);
 		return size;
@@ -405,7 +408,7 @@ class JumpStep extends GeneratorStep {
 	 *            Y.
 	 * @return An empty 2d array of booleans.
 	 */
-	private static boolean[][] createEmptyJumpGrid(int[] size) {
+	private static boolean[][] createEmptyJumpGrid(final int[] size) {
 		return new boolean[size[1]][size[0]];
 	}
 
@@ -441,7 +444,7 @@ class JumpStep extends GeneratorStep {
 	 *            The translation across X-axis
 	 * @return
 	 */
-	static float getJumpY(float v0y, float a, float t, float xTranslation) {
+	static float getJumpY(final float v0y, final float a, final float t, final float xTranslation) {
 		return (v0y * (t - xTranslation)) + ((a * (t - xTranslation) * (t - xTranslation)) / 2);
 	}
 
@@ -462,14 +465,14 @@ class JumpStep extends GeneratorStep {
 	 * @param vx
 	 * @return
 	 */
-	static boolean[][] calculateJumpGrid(float v0y, float a, float tileSize, float vx) {
+	static boolean[][] calculateJumpGrid(final float v0y, final float a, final float tileSize, final float vx) {
 		//Create a grid of false booleans. Size depends on how far the character can reach by jumping.
 		boolean[][] jumpGrid = createEmptyJumpGrid(getSizeOfPossibleJumpGrid(v0y, a, tileSize, vx));
 
 		//Calculations are done by simulating a point performing the jump and checking where it can land.
 		//Starting y position of character is in the middle of the testing grid, since possible locations are [-yApex, yApex]
 		//ie the character can gain or lose up to yApex in height.
-		float y0 = jumpGrid.length * tileSize / 2;
+		final float y0 = jumpGrid.length * tileSize / 2;
 
 		//In order to get every tile that the jump parabola intersects with, the (X or Y) coordinates between tiles are sent into the 
 		//parabolas equation. The (Y or X respectively) solution is then used to select the who use the solution as a coordinate and 
@@ -480,8 +483,8 @@ class JumpStep extends GeneratorStep {
 			float y = getJumpY(v0y, a, x / vx) + y0;
 
 			//Normalize the values so that they can be turned into indexes.
-			int normY = (int) (y / tileSize);
-			int normX = (int) (x / tileSize);
+			final int normY = (int) (y / tileSize);
+			final int normX = (int) (x / tileSize);
 
 			points.add(new float[] { normX, normY }); //Save index.
 		}
@@ -489,8 +492,8 @@ class JumpStep extends GeneratorStep {
 		//Add the tiles connected horizontally to every point.
 		int index = 0;
 		for (; index < points.size(); index++) {
-			int x = (int) points.get(index)[0];
-			int y = (int) points.get(index)[1];
+			final int x = (int) points.get(index)[0];
+			final int y = (int) points.get(index)[1];
 			//Make sure it is inside bounds.
 			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
 				//Add tiles (x,y) and (x-1,y)
@@ -502,17 +505,17 @@ class JumpStep extends GeneratorStep {
 
 		//Do y lines   _
 		//Drawing a horizontal line of second grade equation, y=ax^2+bx+c, gives 2 results
-		float framesToApex = getFramesToApexOfJump(v0y, a);
-		float framesToZero = 2 * framesToApex;
+		final float framesToApex = getFramesToApexOfJump(v0y, a);
+		final float framesToZero = 2 * framesToApex;
 		for (int y = 0; y < jumpGrid.length * tileSize; y += tileSize) {
 
-			float adjustedY = y - y0; //TODO: Figure out why this was needed.
+			final float adjustedY = y - y0; //TODO: Figure out why this was needed.
 
-			float x = getFramesToYValue(v0y, a, adjustedY, 0); //The x value of the rightmost result from drawing the line.
+			final float x = getFramesToYValue(v0y, a, adjustedY, 0); //The x value of the rightmost result from drawing the line.
 
 			//Normalize the values so that they can be turned into indexes.
-			int normY = (int) (y / tileSize);
-			int normX = (int) (vx * x / tileSize);
+			final int normY = (int) (y / tileSize);
+			final int normX = (int) (vx * x / tileSize);
 			points.add(new float[] { normX, normY }); //Save index.
 
 			//Make sure the leftmost result is inside bounds, since it looks something like this, any x past framesToZero is outside the left edge.
@@ -521,17 +524,17 @@ class JumpStep extends GeneratorStep {
 			//    |  \|
 			//    -----
 			if (x < framesToZero) {
-				float dx = x - framesToApex; //Get distance to apex from rightmost x, since leftmost x is on the opposite side of the apex.
-				float leftX = framesToApex - dx; //The value of the leftmost x result form drawing the line.
-				float normLeftX = (int) (leftX / tileSize);//Normalize the value so that it can be turned into an index.
+				final float dx = x - framesToApex; //Get distance to apex from rightmost x, since leftmost x is on the opposite side of the apex.
+				final float leftX = framesToApex - dx; //The value of the leftmost x result form drawing the line.
+				final float normLeftX = (int) (leftX / tileSize);//Normalize the value so that it can be turned into an index.
 
 				points.add(new float[] { normLeftX, normY }); //Save index.
 			}
 		}
 		//Add the tiles connected vertically to every point.
 		for (; index < points.size(); index++) {
-			int x = (int) points.get(index)[0];
-			int y = (int) points.get(index)[1];
+			final int x = (int) points.get(index)[0];
+			final int y = (int) points.get(index)[1];
 			//Make sure it is inside bounds.
 			if (x >= 0 && x < jumpGrid[0].length && y >= 0 && y < jumpGrid.length) {
 				//Add tiles (x,y) and (x,y-1)
