@@ -186,10 +186,10 @@ class JumpStep extends GeneratorStep {
 	 *            List to be sorted.
 	 * @return Sorted list.
 	 */
-	static List<Integer[]> sortJumpIndexes(List<Integer[]> jumpIndexes) {
+	static List<Integer[]> sortJumpIndexes(List<Integer[]> jumpIndexesIn) {
 		//Sort everything by ascending X, with equal X values to the left of the apex sorted by ascending Y
 		//and equals to the right of the apex by descending Y.
-		jumpIndexes = mergeSort(jumpIndexes, 0);
+		List<Integer[]> jumpIndexes = mergeSort(jumpIndexesIn, 0);
 
 		//Split at apex	
 		int currentX = 0;
@@ -308,12 +308,12 @@ class JumpStep extends GeneratorStep {
 	 *         tile.
 	 */
 	static List<Integer[]> getLandingIndexes(List<Integer[]> jumpIndexes) {
-		jumpIndexes = sortJumpIndexes(jumpIndexes);
+		List<Integer[]> sortedIndexes = sortJumpIndexes(jumpIndexes);
 
 		List<Integer[]> landingIndexes = new ArrayList<Integer[]>();
-		for (int i = jumpIndexes.size() / 2; i < jumpIndexes.size(); i++) {
-			if (jumpIndexes.get(i)[1] < jumpIndexes.get(i - 1)[1]) {
-				landingIndexes.add(jumpIndexes.get(i));
+		for (int i = sortedIndexes.size() / 2; i < sortedIndexes.size(); i++) {
+			if (sortedIndexes.get(i)[1] < sortedIndexes.get(i - 1)[1]) {
+				landingIndexes.add(sortedIndexes.get(i));
 			}
 		}
 		return landingIndexes;
