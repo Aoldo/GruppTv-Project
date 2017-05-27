@@ -4,7 +4,22 @@ import com.grupptva.runnergame.game.model.gamecharacter.hook.AbstractHook;
 import com.grupptva.runnergame.game.model.gamecharacter.hook.Hook;
 
 /**
- * Created by agnesmardh on 2017-04-21.
+ * Responsibility: Represents the character of the game and provides functionality to manipulate it.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.model.CollisionLogic
+ * @see com.grupptva.runnergame.game.model.GameLogic
+ * @see com.grupptva.runnergame.game.view.GameRenderer
+ * @see com.grupptva.runnergame.game.model.HookLogic
+ * @see com.grupptva.runnergame.game.model.worldgenerator.HookStep
+ * @see com.grupptva.runnergame.game.model.worldgenerator.JumpStep
+ * @see com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator
+ *
+ * Uses:
+ * @see Point
+ * @see AbstractHook
+ *
+ * @Author Agnes
  */
 public class GameCharacter {
 	private Point position;
