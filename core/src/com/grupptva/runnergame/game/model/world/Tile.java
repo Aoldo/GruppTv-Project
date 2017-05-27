@@ -1,7 +1,7 @@
 package com.grupptva.runnergame.game.model.world;
 
 /**
- * Created on 4/24/17.
+ * Created on 2017-04-24
  *
  * Responsibility: The Tile enum represents the data of one element in the grid
  * specified in {@link WorldModel}.
