@@ -1,7 +1,15 @@
 package com.grupptva.runnergame.game.services.collision;
 
 /**
- * Created by agnesmardh on 2017-05-19.
+ * Responsibility: Provides a method head for collision checkers.
+ *
+ * Used by:
+ * @see CollisionChecker
+ *
+ * Uses:
+ * @see CollisionData
+ *
+ * @author Karl and Agnes
  */
 public interface ICollisionChecker {
 
