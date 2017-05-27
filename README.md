@@ -13,5 +13,5 @@
 - H to activate the hook, has to attach to something above it.
 
 ### Debug
-- R to restart
+- R to restart.
 - G to enter world generator visualization, advance by pressing space.
