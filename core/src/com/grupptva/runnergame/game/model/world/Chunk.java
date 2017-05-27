@@ -3,8 +3,17 @@ package com.grupptva.runnergame.game.model.world;
 /**
  * Created on 4/24/17.
  *
- * The Chunk class represents a piece of the world. It's built up out of {@link Tile}s
- * and should be the buffer for the {@link WorldModel}.
+ * Responsibility: The Chunk class represents a piece of the world. It's built up out of
+ * {@link Tile}s and should be the buffer for the {@link WorldModel}.
+ *
+ * Used by:
+ * @see WorldModel
+ * @see com.grupptva.runnergame.game.model.GameLogic
+ * @see com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator
+ * @see com.grupptva.runnergame.game.view.GameRenderer
+ *
+ * Uses:
+ * @see Tile
  *
  * @author Karl 'NaN' Wikström
  */
