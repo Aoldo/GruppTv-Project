@@ -53,8 +53,8 @@ public class WorldGenerator {
 	 * @param character
 	 *            The character.
 	 */
-	public WorldGenerator(float vx, int tileSize, Long seed, int chunkWidth, int chunkHeight, int initY,
-			GameCharacter character) {
+	public WorldGenerator(final float vx, final int tileSize, final Long seed, final int chunkWidth, final int chunkHeight, final int initY,
+			final GameCharacter character) {
 
 		this.rng = new Random(seed);
 		this.chunkWidth = chunkWidth;
@@ -101,7 +101,7 @@ public class WorldGenerator {
 			chunkLog.add(chunk.deepCopyTiles());
 			chunk.clearPossibilities(); //Used for visualization, removes info from previous log, reduces visual bloat
 
-			int stepValue = rng.nextInt(getChanceSum()); //Randomize which kind of movement should be used next.
+			final int stepValue = rng.nextInt(getChanceSum()); //Randomize which kind of movement should be used next.
 
 			int chanceCounter = 0;
 			for (int i = 0; i < steps.size(); i++) {
@@ -163,7 +163,7 @@ public class WorldGenerator {
 	 * @param tiles
 	 * @return
 	 */
-	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(Tile[][] tiles) {
+	private com.grupptva.runnergame.game.model.world.Tile[][] convertChunkToWorldModel(final Tile[][] tiles) {
 
 		com.grupptva.runnergame.game.model.world.Tile[][] newChunk = new com.grupptva.runnergame.game.model.world.Tile[tiles[0].length][tiles.length];
 
