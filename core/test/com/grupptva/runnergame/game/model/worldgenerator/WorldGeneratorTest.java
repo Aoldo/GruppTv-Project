@@ -29,7 +29,7 @@ public class WorldGeneratorTest {
 	public void testFinalTileOnChunks() {
 		boolean noFail = true;
 		for (int i = 0; i < 50; i++) {
-			if (!generateChunk_ShouldHaveTileAtRightmostColumn()) {
+			if (!generateChunkShouldHaveTileAtRightmostColumn()) {
 				noFail = false;
 				break;
 			}
@@ -40,7 +40,7 @@ public class WorldGeneratorTest {
 	public void testFirstTileOnChunks() {
 		boolean noFail = true;
 		for (int i = 0; i < 50; i++) {
-			if (!generateChunk_ShouldHaveTileAtLeftmostColumn()) {
+			if (!generateChunkShouldHaveTileAtLeftmostColumn()) {
 				noFail = false;
 				break;
 			}
@@ -48,7 +48,7 @@ public class WorldGeneratorTest {
 		assertTrue(noFail);
 	}
 
-	private boolean generateChunk_ShouldHaveTileAtLeftmostColumn() {
+	private boolean generateChunkShouldHaveTileAtLeftmostColumn() {
 		Tile[][] chunk = generator.generateChunk().getTiles();
 	
 		int x = 0;
@@ -61,7 +61,7 @@ public class WorldGeneratorTest {
 		return false;
 	}
 
-	private boolean generateChunk_ShouldHaveTileAtRightmostColumn() {
+	private boolean generateChunkShouldHaveTileAtRightmostColumn() {
 		Tile[][] chunk = generator.generateChunk().getTiles();
 	
 		int x = chunk.length - 1;

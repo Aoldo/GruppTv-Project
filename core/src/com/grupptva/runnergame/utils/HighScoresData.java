@@ -97,15 +97,9 @@ public class HighScoresData {
 			highscores.remove(highscores.size() - 1);
 		}
 		saveHighscores();
-		printScores();
 	}
 
-	public void printScores() {
-		for (HighScore d : highscores) {
-			System.out.println(d.score + "  " + d.name);
-		}
-	}
-
+	
 	public void removeScore(HighScore h) {
 		highscores.remove(h);
 		sortHighScores();

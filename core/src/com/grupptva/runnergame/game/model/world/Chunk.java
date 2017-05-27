@@ -48,17 +48,17 @@ public class Chunk {
 		return tiles;
 	}
 	
-	public void setTiles(Tile[][] tiles) {
+	final public void setTiles(Tile[][] tiles) {
 		this.tiles = tiles;
 		setWidth(tiles.length);
 		setHeight(tiles[0].length);
 	}
 
-	public int getWidth(){
+	final public int getWidth(){
 		return width;
 	}
 	
-	private void setWidth(int width) {
+	final private void setWidth(int width) {
 		this.width = width;
 	}
 	

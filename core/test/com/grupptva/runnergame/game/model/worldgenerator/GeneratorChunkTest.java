@@ -11,7 +11,7 @@ import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
 
 public class GeneratorChunkTest {
 	@Test
-	public void deepCopyChunk_ShouldNotBeReference() {
+	public void deepCopyChunkShouldNotBeReference() {
 		GeneratorChunk chunk = new GeneratorChunk(2,2);
 
 		Tile[][] tilesCopy = chunk.deepCopyTiles();

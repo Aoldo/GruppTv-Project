@@ -20,7 +20,7 @@ package com.grupptva.runnergame.game.model.world;
  * @author Karl 'NaN' Wikström
  * Revised by: Mattias
  */
-public class WorldModel {
+public final class WorldModel {
 
 	/**
 	 * The container which contains the world separated into {@link Chunk}s.
