@@ -32,7 +32,7 @@ public class GeneratorChunk {
 		EMPTY, FULL, POSSIBLEHOOK, POSSIBLESTAND, HOOKTARGET;
 	}
 
-	public GeneratorChunk(int width, int height) {
+	public GeneratorChunk(final int width, final int height) {
 		//TODO: Failsafe if width/height < 1?
 		tiles = new Tile[height][width];
 		initTiles();
@@ -58,14 +58,15 @@ public class GeneratorChunk {
 	 * @param value
 	 *            The type of tile to set every valid chunk index to.
 	 */
-	void setValidOffsetsToValue(List<Integer[]> offsets, List<Integer> validIndexes, Integer[] currentTile,
-			Tile value) {
-		for (Integer index : validIndexes) {
-			int x = offsets.get(index)[0] + currentTile[0];
-			int y = offsets.get(index)[1] + currentTile[1];
+	void setValidOffsetsToValue(final List<Integer[]> offsets, final List<Integer> validIndexes, final Integer[] currentTile,
+			final Tile value) {
+		for (final Integer index : validIndexes) {
+			final int x = offsets.get(index)[0] + currentTile[0];
+			final int y = offsets.get(index)[1] + currentTile[1];
 
-			if (tiles[y][x] != Tile.FULL)
+			if (tiles[y][x] != Tile.FULL) {
 				tiles[y][x] = value;
+			}
 		}
 	}
 
@@ -106,8 +107,8 @@ public class GeneratorChunk {
 	 * @return True if the given index is inside of the chunks bounds, otherwise
 	 *         false.
 	 */
-	boolean isValidIndex(int x, int y) {
-		return (y < tiles.length && x < tiles[0].length && x >= 0 && y >= 0);
+	boolean isValidIndex(final int x, final int y) {
+		return y < tiles.length && x < tiles[0].length && x >= 0 && y >= 0;
 	}
 
 	/**
@@ -122,12 +123,12 @@ public class GeneratorChunk {
 	 *            The position that the offsets are in relation to.
 	 * @return An integer list with the index of every valid offset.
 	 */
-	List<Integer> getValidOffsetIndexes(List<Integer[]> offsets, Integer[] currentTile) {
-		List<Integer> validIndexes = new ArrayList<Integer>();
+	List<Integer> getValidOffsetIndexes(final List<Integer[]> offsets, final Integer[] currentTile) {
+		final List<Integer> validIndexes = new ArrayList<Integer>();
 
 		for (int i = 0; i < offsets.size(); i++) {
-			int x = offsets.get(i)[0] + currentTile[0];
-			int y = offsets.get(i)[1] + currentTile[1];
+			final int x = offsets.get(i)[0] + currentTile[0];
+			final int y = offsets.get(i)[1] + currentTile[1];
 
 			if (isValidIndex(x, y)) {
 				validIndexes.add(i);

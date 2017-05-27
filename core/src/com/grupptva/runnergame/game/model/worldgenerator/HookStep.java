@@ -25,11 +25,11 @@ class HookStep extends GeneratorStep {
 	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
 
 	public HookStep(float vx, int tileSize, GameCharacter character, Random rng, int chance) {
-		float v0y = character.getJumpInitialVelocity();
-		float a = character.getGravity();
+		 float v0y = character.getJumpInitialVelocity();
+		 float a = character.getGravity();
 
-		float angle = 1f; //TODO: Replace with character get methods when implemented.
-		float radius = 75f;
+		 float angle = 1f; //TODO: Replace with character get methods when implemented.
+		 float radius = 75f;
 
 		this.rng = rng;
 		this.chance = chance;
@@ -328,7 +328,7 @@ class HookStep extends GeneratorStep {
 		currentTileCopy[1] += offset[1];
 
 		List<Integer> validLandIndexes = chunk.getValidOffsetIndexes(landOffsets, currentTileCopy);
-		if (validLandIndexes.size() == 0) {
+		if (validLandIndexes.isEmpty()) {
 			//Failsafe to prevent infinite loop. This code is pretty much identical to failsafes in other places
 			//but turning it into a boolean method doesn't remove the if statement since it would return true
 			//if it passes the check, and that would require a new if statement in order to prevent it from ending this method early.
