@@ -24,12 +24,13 @@ class HookStep extends GeneratorStep {
 	List<Integer[]> hookAttachOffsets;
 	List<List<Integer[]>> hookLandingOffsetList = new ArrayList<List<Integer[]>>();
 
-	public HookStep(float vx, int tileSize, GameCharacter character, Random rng, int chance) {
-		 float v0y = character.getJumpInitialVelocity();
-		 float a = character.getGravity();
+	public HookStep(final float vx, final int tileSize, final GameCharacter character, final Random rng,
+			final int chance) {
+		final float v0y = character.getJumpInitialVelocity();
+		final float a = character.getGravity();
 
-		 float angle = 1f; //TODO: Replace with character get methods when implemented.
-		 float radius = 75f;
+		final float angle = 1f; //TODO: Replace with character get methods when implemented.
+		final float radius = 75f;
 
 		this.rng = rng;
 		this.chance = chance;
@@ -56,19 +57,19 @@ class HookStep extends GeneratorStep {
 	 * @return A list containing every single offset, in relation to the
 	 *         attachOffset, that the character can land on.
 	 */
-	List<Integer[]> calculateHookLandingOffsets(Integer[] attachOffset, int tileSize, float a, float v0y, float vx,
-			GameCharacter character) {
+	List<Integer[]> calculateHookLandingOffsets(final Integer[] attachOffset, final int tileSize, final float a,
+			final float v0y, final float vx, final GameCharacter character) {
 		List<Integer[]> landingOffsets = new ArrayList<Integer[]>();
 
-		float r = (float) Math
+		final float r = (float) Math
 				.sqrt(tileSize * tileSize * (attachOffset[0] * attachOffset[0] + attachOffset[1] * attachOffset[1])); //Radius of rope/distance to attachOffset
 
-		List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize); //Tiles character collide with while swinging.
+		final List<Integer[]> swingOffsets = calculateHookSwingOffsets(r, tileSize); //Tiles character collide with while swinging.
 
 		//For every tile the character touches while swinging, check which tiles the character 
 		//can land on by releasing the hook while colliding with that tile.
 		for (Integer[] swingOffset : swingOffsets) {
-			float yVel = character.getReleaseVelocity(swingOffset[0], swingOffset[1], 0, 0);
+			final float yVel = character.getReleaseVelocity(swingOffset[0], swingOffset[1], 0, 0);
 
 			if (yVel > 0) { //Prevent terrible things from happening.
 				List<Integer[]> swingLandingOffsets = JumpStep.calculateJumpLandingOffsets(yVel, a, tileSize, vx);
@@ -104,8 +105,8 @@ class HookStep extends GeneratorStep {
 	 * @param maxRadius
 	 *            The maximum radius of the hook.
 	 */
-	private void initHookOffsets(float v0y, float a, float vx, int tileSize, float angle, float maxRadius,
-			GameCharacter character) {
+	private void initHookOffsets(final float v0y, final float a, final float vx, final int tileSize, final float angle,
+			final float maxRadius, final GameCharacter character) {
 		hookAttachOffsets = calculateHookAttachOffsets(angle, maxRadius, tileSize);
 		for (Integer[] attachOffset : hookAttachOffsets) {
 			hookLandingOffsetList.add(calculateHookLandingOffsets(attachOffset, tileSize, a, v0y, vx, character));
@@ -124,12 +125,12 @@ class HookStep extends GeneratorStep {
 		//Circle equation: r^2 = x^2+y^2
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
 
-		int normR = (int) (r / tileSize);
+		final int normR = (int) (r / tileSize);
 		//Check vertical lines
 		for (float x = 0; x < r; x += tileSize) {
-			float y = getCircleY(r, x);
-			int normX = (int) (x / tileSize);
-			int normY = (int) Math.round(y / tileSize);
+			final float y = getCircleY(r, x);
+			final int normX = (int) (x / tileSize);
+			final int normY = (int) Math.round(y / tileSize);
 
 			if (normY < 0 && normX >= 1 && normY >= -normR && normX < normR) {
 				offsets.add(new Integer[] { normX, normY });
@@ -141,15 +142,16 @@ class HookStep extends GeneratorStep {
 
 		//Check horizontal lines
 		for (float y = 0; y >= -r; y -= tileSize) {
-			float x = getCircleX(r, y);
-			int normX = (int) (x / tileSize);
-			int normY = (int) Math.round(y / tileSize);
+			final float x = getCircleX(r, y);
+			final int normX = (int) (x / tileSize);
+			final int normY = (int) Math.round(y / tileSize);
 
 			if (normY < 0 && normX >= 0 && normY >= -normR && normX < normR) {
 				offsets.add(new Integer[] { normX, normY });
 			}
-			if (normY < 0 && normX >= 0 && normY - 1 >= -normR && normX < normR)
+			if (normY < 0 && normX >= 0 && normY - 1 >= -normR && normX < normR) {
 				offsets.add(new Integer[] { normX, normY - 1 });
+			}
 		}
 		removeDuplicates(offsets);
 
@@ -166,8 +168,8 @@ class HookStep extends GeneratorStep {
 	 *            X value whose Y value is wanted.
 	 * @return Lower/bottom Y value at X.
 	 */
-	float getCircleY(float r, float x) {
-		return (float) -Math.sqrt((r * r) - (x * x));
+	float getCircleY(final float r, final float x) {
+		return (float) -Math.sqrt(r * r - x * x);
 	}
 
 	/**
@@ -180,8 +182,8 @@ class HookStep extends GeneratorStep {
 	 *            Y value whose X value is wanted.
 	 * @return Right/higher X value at Y.
 	 */
-	float getCircleX(float r, float y) {
-		return (float) Math.sqrt((r * r) - (y * y));
+	float getCircleX(final float r, final float y) {
+		return (float) Math.sqrt(r * r - y * y);
 	}
 
 	/**
@@ -197,7 +199,7 @@ class HookStep extends GeneratorStep {
 	 *            The width/height of every tile.
 	 * @return A list containing every overlapped tile's offset.
 	 */
-	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius, int tileSize) {
+	List<Integer[]> calculateHookAttachOffsets(final float angle, final float maxRadius, final int tileSize) {
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
 
 		//TODO: similar to calculateJumpGrid in JumpGrid, refactor?
@@ -206,31 +208,31 @@ class HookStep extends GeneratorStep {
 		//Faster than float? 
 
 		//Check vertical lines
-		double maxX = maxRadius * Math.cos(angle);
+		final double maxX = maxRadius * Math.cos(angle);
 		for (double x = 0; x < maxX; x += tileSize) {
-			double r = (float) (x / Math.cos(angle));
-			double y = r * Math.sin(angle);
+			final double r = (float) (x / Math.cos(angle));
+			final double y = r * Math.sin(angle);
 
 			//Normalize the values to get an index/offset instead.
-			int normX = (int) (x / tileSize);
-			int normY = (int) (y / tileSize);
+			final int normX = (int) (x / tileSize);
+			final int normY = (int) (y / tileSize);
 			//Add offsets (x,y) and (x-1,y)
-			if ((normX > 1 && normY > 1)) {
+			if (normX > 1 && normY > 1) {
 				offsets.add(new Integer[] { normX, normY });
 				offsets.add(new Integer[] { normX - 1, normY });
 			}
 		}
 		//Check horizontal lines
-		float maxY = (float) (maxRadius * Math.sin(angle));
+		final float maxY = (float) (maxRadius * Math.sin(angle));
 		for (double y = 0; y < maxY; y += tileSize) {
-			double r = (float) (y / Math.sin(angle));
-			double x = r * Math.cos(angle);
+			final double r = (float) (y / Math.sin(angle));
+			final double x = r * Math.cos(angle);
 
 			//Normalize the values to get an index/offset instead.
-			int normX = (int) (x / tileSize);
-			int normY = (int) (y / tileSize);
+			final int normX = (int) (x / tileSize);
+			final int normY = (int) (y / tileSize);
 			//Add offsets (x,y) and (x,y-1)
-			if ((normX > 1 && normY > 1)) {
+			if (normX > 1 && normY > 1) {
 				offsets.add(new Integer[] { normX, normY });
 				offsets.add(new Integer[] { normX, normY - 1 });
 			}
@@ -268,7 +270,6 @@ class HookStep extends GeneratorStep {
 		createPlatform(chunk, currentTile);
 	}
 
-
 	@Override
 	public void step(GeneratorChunk chunk, Integer[] currentTile, List<Tile[][]> chunkLog) {
 		List<Integer> validHookAttachIndexes = chunk.getValidOffsetIndexes(hookAttachOffsets, currentTile);
@@ -297,7 +298,7 @@ class HookStep extends GeneratorStep {
 	 */
 	private boolean hookStepPart1(GeneratorChunk chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
 			Integer[] currentTileCopy) {
-		if (validHookAttachIndexes.size() == 0) {
+		if (validHookAttachIndexes.isEmpty()) {
 			//Failsafe to prevent infinite loop. This code is pretty much identical to failsafes in other places
 			//but turning it into a boolean method doesn't remove the if statement since it would return true
 			//if it passes the check, and that would require a new if statement in order to prevent it from ending this method early.
@@ -320,7 +321,7 @@ class HookStep extends GeneratorStep {
 	 */
 	private void hookStepPart2(GeneratorChunk chunk, Integer[] currentTile, List<Integer> validHookAttachIndexes,
 			Integer[] currentTileCopy) {
-		int randomIndex = rng.nextInt(validHookAttachIndexes.size());
+		final int randomIndex = rng.nextInt(validHookAttachIndexes.size());
 		Integer[] offset = hookAttachOffsets.get(validHookAttachIndexes.get(randomIndex));
 		List<Integer[]> landOffsets = hookLandingOffsetList.get(randomIndex);
 
