@@ -10,7 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by agnesmardh on 2017-05-19.
+ * Responsibility: Checks for, and handles, collisions between a GameCharacter and a Tile.
+ *
+ * Used by:
+ * @see GameLogic
+ *
+ * Uses:
+ * @see GameCharacter
+ * @see WorldModel
+ * @see ICollisionChecker
+ * @see CollisionData
+ *
+ * @Author Karl and Agnes
  */
 public class CollisionLogic {
 	private GameCharacter gameCharacter;
@@ -28,17 +39,13 @@ public class CollisionLogic {
 
 	public void handlePossibleCollision() {
 		getGameCharacter().setCollidingWithGround(false);
-		// 1) Calculate which column the character is in
 		int characterColumnNumber = calculateWhichColumnCharacterIsIn();
-		// 2) Get columns to check
 		List<Tile[]> columnsToCheck = getColumnsToCheck(characterColumnNumber);
-		// 3) Check collision with those columns
 		float firstColumnXValue = getWorld().getPosition() + characterColumnNumber * getTileSize();
 		handleCollisionWithColumns(columnsToCheck, firstColumnXValue);
 	}
 
 	List<Tile[]> getColumnsToCheck(int characterColumnNumber) {
-		// 1) Get the column that the character is in and the one after that
 		List<Tile[]> columnsToCheck = new ArrayList<Tile[]>();
 		columnsToCheck.add(getWorld().getColumn(characterColumnNumber + 1));
 		columnsToCheck.add(getWorld().getColumn(characterColumnNumber + 2));
