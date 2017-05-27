@@ -7,10 +7,27 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 import com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator;
 import com.grupptva.runnergame.game.services.collision.CollisionChecker;
 import com.grupptva.runnergame.game.services.collision.ICollisionChecker;
-
 /**
- * @author Mattias revised by Karl, Luka and Agnes
+ * Responsibility: Handle the broad logic of the game.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.controller.GameController
+ * @see com.grupptva.runnergame.game.view.GameRenderer
+ *
+ * Uses:
+ * @see GameCharacter
+ * @see WorldModel
+ * @see WorldGenerator
+ * @see ICollisionChecker
+ * @see CollisionLogic
+ * @see HookLogic
+ * @see Chunk
+ * @see Tile
+ *
+ * @author Mattias
+ * Revised by: Karl, Luka and Agnes
  */
+
 public class GameLogic {
 	// private character
 	public GameCharacter character;
