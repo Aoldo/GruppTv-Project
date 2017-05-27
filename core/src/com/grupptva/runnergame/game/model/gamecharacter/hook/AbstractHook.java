@@ -3,7 +3,16 @@ package com.grupptva.runnergame.game.model.gamecharacter.hook;
 import com.grupptva.runnergame.game.model.gamecharacter.Point;
 
 /**
- * Created by agnesmardh on 2017-05-20.
+ * Responsibility: Represents the core data for extension of this class.
+ *
+ * Used by:
+ * @see Hook
+ *
+ * Uses:
+ * @see Point
+ * @see IHook
+ *
+ * @Author Karl and Agnes
  */
 public abstract class AbstractHook implements IHook {
 

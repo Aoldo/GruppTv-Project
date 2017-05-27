@@ -3,8 +3,17 @@ package com.grupptva.runnergame.game.model.gamecharacter.hook;
 import com.grupptva.runnergame.game.model.gamecharacter.Point;
 
 /**
- * Created by agnesmardh on 2017-05-20.
+ * Responsibility: Represents the movement of a GameCharacter when it's using a Hook.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.model.gamecharacter.GameCharacter
+ *
+ * Uses:
+ * @see Point
+ *
+ * @Author Karl and Agnes
  */
+
 public class Hook extends AbstractHook {
 
 	@Override

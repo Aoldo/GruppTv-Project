@@ -3,9 +3,7 @@ package com.grupptva.runnergame.game.model.gamecharacter.hook;
 import com.grupptva.runnergame.game.model.gamecharacter.Point;
 
 /**
- * @author Karl and Agnes
- *
- * Responsibility: Define methods for hooks
+ * Responsibility: Define methods for hooks.
  *
  * Used by:
  * @see AbstractHook
@@ -13,6 +11,7 @@ import com.grupptva.runnergame.game.model.gamecharacter.Point;
  * Uses:
  * @see Point
  *
+ * @Author Karl and Agnes
  */
 
 public interface IHook {
