@@ -3,11 +3,20 @@ package com.grupptva.runnergame.game.view;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
 import com.grupptva.runnergame.game.model.GameOverMenu;
 import com.grupptva.runnergame.utils.Button;
 
 /**
- * 
+ * Responsibility: Renders the game over dialog
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.controller.GameController
+ *
+ * Uses:
+ * @see GameOverMenu
+ * @see Button
+ *
  * @author Luka Revised by Mattias
  * 
  */
