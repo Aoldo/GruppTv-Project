@@ -4,11 +4,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import com.grupptva.runnergame.menu.model.HighScoreMenu;
 import com.grupptva.runnergame.menu.model.MainMenu;
 import com.grupptva.runnergame.menu.view.MenuRenderer;
+
+
 /**
- * 
+ * Responsibility: Handles input for the menus.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.modulesystem.MenuModuleAdapter
+ *
+ * Uses:
+ * @see HighScoreMenu
+ * @see MenuRenderer
+ * @see MainMenu
+ *
+ *
  * @author Luka
  * Revised by Mattias
  */
