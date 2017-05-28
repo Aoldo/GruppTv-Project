@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.grupptva.runnergame.utils.Button;
 
 /**
- * Responsibility: Creates the main menu components
+ * Responsibility: Creates the main menu components.
  *
  * Used by:
  * @see com.grupptva.runnergame.menu.controller.MenuController

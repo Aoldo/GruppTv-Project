@@ -3,13 +3,22 @@ package com.grupptva.runnergame.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 import com.grupptva.runnergame.utils.Button;
 
 /**
- * 
+ * Responsibility: Represents the game over dialog.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.controller.GameController
+ * @see com.grupptva.runnergame.game.view.GameOverRenderer
+ *
+ * Uses:
+ * @see Button
+ *
+ *
  * @author Luka
  * Revised by Mattias
- *
  */
 public class GameOverMenu {
 

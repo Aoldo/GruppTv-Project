@@ -1,12 +1,20 @@
 package com.grupptva.runnergame.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * 
- * @author Luka
+ * Responsibility: Represents a button
  *
+ * Used by:
+ * @see com.grupptva.runnergame.game.model.GameOverMenu
+ * @see com.grupptva.runnergame.menu.model.HighScoreMenu
+ * @see com.grupptva.runnergame.menu.model.MainMenu
+ * @see com.grupptva.runnergame.game.view.GameOverRenderer
+ * @see com.grupptva.runnergame.menu.view.MenuRenderer
+ *
+ *
+ * @author Luka
+ * Revised bt Karl
  */
 public class Button {
 
@@ -41,18 +49,6 @@ public class Button {
 			}
 		}
 		return false;
-	}
-
-	public boolean collides2(float x, float y, float xwidth, Integer screenWidth,
-			Integer screenHeight) {
-		if (((Gdx.input.getX() < (screenWidth / 2 + x + xwidth))
-				&& !(Gdx.input.getX() < screenWidth / 2 + x))
-				&& (((Gdx.input.getY() < ((screenHeight / 2 - y))))
-						&& !(Gdx.input.getY() < (((screenHeight / 2 - y))) - 40))) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
 import com.grupptva.runnergame.game.model.GameLogic;
 import com.grupptva.runnergame.game.model.gamecharacter.GameCharacter;
 import com.grupptva.runnergame.game.model.world.Chunk;
@@ -11,7 +12,21 @@ import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
 
 /**
- * Created by Karl 'NaN' Wikström on 2017-05-03.
+ * Created on 2017-05-03.
+ *
+ * Responsibility: Renders the game.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.controller.GameController
+ *
+ * Uses:
+ * @see com.grupptva.runnergame.game.model.GameLogic
+ * @see com.grupptva.runnergame.game.model.gamecharacter.GameCharacter
+ * @see com.grupptva.runnergame.game.model.world.Chunk
+ * @see com.grupptva.runnergame.game.model.world.Tile
+ * @see com.grupptva.runnergame.game.model.world.WorldModel
+ *
+ * @author Karl
  * Revised by Mattias
  * 
  * Uses:

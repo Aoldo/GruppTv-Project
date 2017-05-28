@@ -4,11 +4,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import com.grupptva.runnergame.menu.model.HighScoreMenu;
 import com.grupptva.runnergame.menu.model.MainMenu;
 import com.grupptva.runnergame.menu.view.MenuRenderer;
+
+
 /**
- * 
+ * Responsibility: Handles input for the menus.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.modulesystem.MenuModuleAdapter
+ *
+ * Uses:
+ * @see HighScoreMenu
+ * @see MenuRenderer
+ * @see MainMenu
+ *
+ *
  * @author Luka
  * Revised by Mattias
  */
@@ -39,26 +52,23 @@ public class MenuController implements InputProcessor {
 		if (!inHighScore)
 			MenuRenderer.render(batch, sr, model, mouseX, mouseY);
 		else
-			scoreModel.render(batch, sr, mouseX, mouseY); //TODO: Split scoreModel into m&v
+			scoreModel.render(batch, sr, mouseX, mouseY);
 	}
 
 	int mouseX, mouseY;
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -66,7 +76,6 @@ public class MenuController implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
 		hasPressed = true;
 		return false;
 	}
@@ -108,19 +117,16 @@ public class MenuController implements InputProcessor {
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

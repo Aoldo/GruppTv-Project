@@ -7,8 +7,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.grupptva.runnergame.debug.GeneratorVisualizer_DEBUG;
 import com.grupptva.runnergame.modulesystem.GameModuleAdapter;
 import com.grupptva.runnergame.modulesystem.MenuModuleAdapter;
@@ -16,8 +16,21 @@ import com.grupptva.runnergame.modulesystem.ModuleAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- * 
+ * Responsibility: Runs the application.
+ *
+ * Used by:
+ * @see DesktopLauncher
+ *
+ * Uses:
+ * @see com.grupptva.runnergame.debug.GeneratorVisualizer_DEBUG
+ * @see com.grupptva.runnergame.modulesystem.GameModuleAdapter
+ * @see com.grupptva.runnergame.modulesystem.MenuModuleAdapter
+ * @see com.grupptva.runnergame.modulesystem.ModuleAdapter
+ * @see com.badlogic.gdx.graphics.glutils.ShapeRenderer
+ *
+ *
  * @author Mattias
+ * Revised by Karl
  *
  *Uses:
  *@see com.grupptva.runnergame.modulesystem.ModuleAdapter
@@ -29,7 +42,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class RunnerGame extends ApplicationAdapter {
 	ShapeRenderer sr;
 	SpriteBatch batch;
-	Texture img;
 
 	final double fastestTimeStep = 0.0041666; //240 fps
 	final double slowestTimeStep = 0.0166666; //60 fps
