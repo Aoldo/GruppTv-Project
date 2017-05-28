@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -35,8 +36,6 @@ public class MainMenu {
 	public Integer screenWidth = Gdx.graphics.getWidth();
 	public Integer screenHeight = Gdx.graphics.getHeight();
 
-	// private static ArrayList<MenuButton> menuButtons = new ArrayList<MenuButton>();
-
 	public MainMenu(Integer screenWidth, Integer screenHeight) {
 
 		this.screenWidth = screenWidth;
@@ -44,7 +43,7 @@ public class MainMenu {
 
 		buttons = new BitmapFont();
 
-		img = new Texture(Gdx.files.internal("bg.png"));
+		img = new Texture(Gdx.files.internal("core" + System.getProperty("file.separator") + "assets" + System.getProperty("file.separator") + "bg-final.png"));
 
 		buttonTitles = new HashMap();
 		buttonTitles.put("startgame", "Start Game");
