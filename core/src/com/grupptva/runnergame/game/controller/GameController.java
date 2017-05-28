@@ -2,10 +2,10 @@ package com.grupptva.runnergame.game.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import com.grupptva.runnergame.game.model.GameLogic;
 import com.grupptva.runnergame.game.model.GameOverMenu;
 import com.grupptva.runnergame.game.view.GameOverRenderer;
@@ -14,8 +14,18 @@ import com.grupptva.runnergame.utils.HighScore;
 import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
- * The controller class for the entire game module. Handles input aswell as
- * telling the model & view to update.
+ * Responsibility: Handles input as well as telling the model & view to update.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.modulesystem.GameModuleAdapter
+ *
+ * Uses:
+ * @see com.grupptva.runnergame.game.model.GameLogic
+ * @see com.grupptva.runnergame.game.model.GameOverMenu
+ * @see com.grupptva.runnergame.game.view.GameOverRenderer
+ * @see com.grupptva.runnergame.game.view.GameRenderer
+ * @see com.grupptva.runnergame.utils.HighScore
+ * @see com.grupptva.runnergame.utils.HighScoresData
  * 
  * @author Mattias
  *
