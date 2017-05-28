@@ -18,6 +18,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * 
  * @author Mattias
  *
+ * Uses:
+ * @see WorldGenerator
+ * 
+ * Used by:
+ * @see RunnerGame
+ * 
  */
 public class GeneratorVisualizer_DEBUG implements ModuleAdapter {
 	WorldGenerator generator;
