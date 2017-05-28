@@ -10,7 +10,7 @@ package com.grupptva.runnergame.game.model.gamecharacter;
  * @see com.grupptva.runnergame.game.model.HookLogic
  * @see com.grupptva.runnergame.game.model.gamecharacter.hook.IHook
  *
- * @Author Karl and Agnes
+ * @Author Agnes
  */
 
 public class Point {
