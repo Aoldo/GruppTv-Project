@@ -12,7 +12,7 @@ import com.grupptva.runnergame.game.model.world.Tile;
 import com.grupptva.runnergame.game.model.world.WorldModel;
 
 /**
- * Created by Karl 'NaN' Wikström on 2017-05-03.
+ * Created on 2017-05-03.
  *
  * Responsibility: Renders the game.
  *
