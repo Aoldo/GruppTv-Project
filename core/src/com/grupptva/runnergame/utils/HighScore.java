@@ -1,5 +1,15 @@
 package com.grupptva.runnergame.utils;
 
+/**
+ * Responsibility: Represent a high score with score and score holder.
+ *
+ * Used by:
+ * @see HighScoresData
+ * @see com.grupptva.runnergame.game.controller.GameController
+ *
+ *
+ * @author Luka
+ */
 public class HighScore {
 
 	int score;
