@@ -28,14 +28,6 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
  *
  * @author Karl
  * Revised by Mattias
- * 
- * Uses:
- * @see com.grupptva.runnergame.game.model.gamecharacter.GameCharacter
- * @see com.grupptva.runnergame.game.model.world.WorldModel
- * @see com.grupptva.runnergame.game.model.GameLogic
- * 
- * Used by:
- * @see com.grupptva.runnergame.game.controller.GameController
  */
 public final class GameRenderer {
 	private GameRenderer() //Class only has methods.

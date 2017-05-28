@@ -28,15 +28,6 @@ import com.grupptva.runnergame.utils.HighScoresData;
  * @see com.grupptva.runnergame.utils.HighScoresData
  * 
  * @author Mattias
- * 
- * Uses:
- * @see com.grupptva.runnergame.game.model.GameLogic
- * @see com.grupptva.runnergame.game.model.GameOverMenu
- * @see com.grupptva.runnergame.game.view.GameRenderer
- * @see com.grupptva.runnergame.game.view.GameOverRenderer
- * 
- * Used by:
- * @see com.grupptva.runnergame.modulesystem.GameModuleAdapter
  *
  */
 public class GameController implements InputProcessor {
