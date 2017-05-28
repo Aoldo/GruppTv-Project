@@ -19,6 +19,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * 
  * @author Mattias
  *
+ *Uses:
+ *@see ModuleAdapter
+ *@see MenuModuleAdapter
+ *@see GameModuleAdapter
+ *
+ *
  */
 public class RunnerGame extends ApplicationAdapter {
 	ShapeRenderer sr;
