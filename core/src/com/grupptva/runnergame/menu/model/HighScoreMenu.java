@@ -74,7 +74,7 @@ public class HighScoreMenu {
 		highScoresString = "Highscores";
 		scores = "";
 
-		img = new Texture(Gdx.files.internal("bg.png"));
+		img = new Texture(Gdx.files.internal("core" + System.getProperty("file.separator") + "assets" + System.getProperty("file.separator") + "bg.png"));
 		
 		layout = new GlyphLayout(font, highScoresString);
 		textWidth = layout.width;
