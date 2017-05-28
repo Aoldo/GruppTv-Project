@@ -1,5 +1,12 @@
 package com.grupptva.runnergame.utils;
 
+/**
+ * Creates an highscore object holding a name and a score.
+ * 
+ * @author lukamrkonjic
+ *
+ */
+
 public class HighScore {
 
 	int score;

@@ -2,7 +2,6 @@ package com.grupptva.runnergame.game.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,7 +13,7 @@ import com.grupptva.runnergame.utils.HighScore;
 import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
- * The controller class for the entire game module. Handles input aswell as
+ * The controller class for the entire game module. Handles input as well as
  * telling the model & view to update.
  * 
  * @author Mattias
@@ -28,7 +27,7 @@ public class GameController implements InputProcessor {
 	private final int jumpKeyCode;
 	private final int resetKeyCode;
 	boolean isGameOver = false;
-	
+
 	public GameController(int hookKeyCode, int jumpKeyCode, int resetKeyCode) {
 		Gdx.input.setInputProcessor(this);
 

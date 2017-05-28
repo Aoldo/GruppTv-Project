@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.grupptva.runnergame.utils.Button;
 
 /**
+ * Creates all the necessary parts for the gameover menu, including buttons and button labels. 
  * 
  * @author Luka
  * Revised by Mattias

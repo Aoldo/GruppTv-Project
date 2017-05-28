@@ -7,6 +7,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.grupptva.runnergame.menu.model.MainMenu;
 import com.grupptva.runnergame.utils.Button;
 
+/**
+ * Renders the main menu compontents.
+ * 
+ * @author lukamrkonjic
+ *
+ */
+
 public final class MenuRenderer {
 	private MenuRenderer(){ //Class only contains methods
 	}

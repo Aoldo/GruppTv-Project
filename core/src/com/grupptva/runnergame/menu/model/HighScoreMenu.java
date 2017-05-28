@@ -14,23 +14,16 @@ import com.grupptva.runnergame.utils.Button;
 import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
+ * Creates and renders all highscore menu components including buttons, titles and the highscore table.
  * 
  * @author Luka
  * Revised by Mattias
  *
  */
 public class HighScoreMenu {
-
-	//metod i konstruktorn
-	//logik
-
 	public Button returnButton;
 
 	Texture img;
-
-	//TODO: Move to HighScoresData
-	//int highScores[] = new int[10];
-	//String[] names = new String[10];
 
 	BitmapFont font;
 	BitmapFont headerFont;
@@ -39,7 +32,6 @@ public class HighScoreMenu {
 	int hFontWidth;
 
 	final int maxScoreCount = 10;
-	/////////////////////////////
 
 	private String returnString;
 	private String highScoresString;
@@ -117,6 +109,4 @@ public class HighScoreMenu {
 					(330 - 20 * i));
 		}
 	}
-
-
 }

@@ -7,6 +7,7 @@ import com.grupptva.runnergame.game.model.GameOverMenu;
 import com.grupptva.runnergame.utils.Button;
 
 /**
+ * Renders all the gameover menu compontents.
  * 
  * @author Luka Revised by Mattias
  * 

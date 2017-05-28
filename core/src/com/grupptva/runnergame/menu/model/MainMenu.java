@@ -11,11 +11,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.grupptva.runnergame.utils.Button;
 
 /**
+ * Creates all the necessary parts for the mainmenu, including buttons and button labels. 
  * 
  * @author Luka revised by Mattias
  */
+
 public class MainMenu {
-	//TODO: Turn the BitmapFonts and the Strings into arrays
 	Map<String, String> buttonTitles;
 	Map<String, BitmapFont> buttonBF;
 

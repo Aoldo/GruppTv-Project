@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 /**
+ * Creates a button with desired width, height and length. Also handles button collision.
  * 
  * @author Luka
  *
@@ -15,7 +16,6 @@ public class Button {
 
 	public Button(int x, int y, int width, int height, Color pressed,
 			Color notPressed) {
-		//menuButtons.add(this);
 		this.x = x;
 		this.y = y;
 		this.width = width;

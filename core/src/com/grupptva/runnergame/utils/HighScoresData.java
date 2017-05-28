@@ -1,27 +1,25 @@
 package com.grupptva.runnergame.utils;
 
+/**
+ * HighScoreData is responsible for handling all highscore data, in other words saving,
+ * loading, adding removing highscore data in general.
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-//public class HighScoresData implements Comparable<HighScoresData> {
 public class HighScoresData {
 
 	final int maxScoreCount = 10;
 
-	// int highScores[] = new int[maxScoreCount];
-	// String[] names = new String[maxScoreCount];
-
 	Preferences prefs = Gdx.app.getPreferences("HookITHighScores");
 
-	// HighScore[] highscores = new HighScore[maxScoreCount];
 	List<HighScore> highscores = new ArrayList<HighScore>();
 
 	public HighScoresData() {
-		// initScores();
-		// initHighScore();
 		loadHighscores();
 	}
 
