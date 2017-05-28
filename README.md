@@ -2,7 +2,7 @@
 
 ## Git usernames
 - Mattias "Aoldo" Torstensson
-- Karl "MrLinker" Wikström
+- Karl Wikström = MrLinker, karl, nan
 - Agnes "agnesmardh" Mårdh
 - Luka "LukaMrkonjic" Mrkonjic
 
