@@ -6,7 +6,17 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-//public class HighScoresData implements Comparable<HighScoresData> {
+/**
+ * Responsibility: Save, load and sort the high scores.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.game.controller.GameController
+ * @see com.grupptva.runnergame.menu.model.HighScoreMenu
+ *
+ *
+ * @author Luka
+ *
+ */
 public class HighScoresData {
 
 	final int maxScoreCount = 10;
