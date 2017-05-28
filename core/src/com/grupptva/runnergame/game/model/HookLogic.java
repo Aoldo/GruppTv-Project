@@ -10,7 +10,22 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by agnesmardh on 2017-05-20. Revised by Mattias & Karl
+ * Created on 2017-05-20.
+ *
+ * Responsibility: Handle logic for casting the hook.
+ *
+ * Used by:
+ * @see GameLogic
+ *
+ * Uses:
+ * @see GameCharacter
+ * @see Point
+ * @see Tile
+ * @see WorldModel
+ *
+ *
+ * @author Agnes and Karl
+ * Revised by Mattias
  */
 public class HookLogic {
 	private GameCharacter gameCharacter;
