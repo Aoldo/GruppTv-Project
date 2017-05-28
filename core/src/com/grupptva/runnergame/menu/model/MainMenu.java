@@ -44,7 +44,7 @@ public class MainMenu {
 
 		buttons = new BitmapFont();
 
-		img = new Texture(Gdx.files.internal("bg-final.png"));
+		img = new Texture(Gdx.files.internal("core" + System.getProperty("file.separator") + "assets" + System.getProperty("file.separator") + "bg-final.png"));
 
 		buttonTitles = new HashMap();
 		buttonTitles.put("startgame", "Start Game");

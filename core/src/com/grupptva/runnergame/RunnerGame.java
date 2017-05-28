@@ -41,7 +41,7 @@ public class RunnerGame extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		sound = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
+		sound = Gdx.audio.newSound(Gdx.files.internal("core" + System.getProperty("file.separator") + "assets" + System.getProperty("file.separator") + "music.mp3"));
 		sound.loop();
 		sound.play();
 		batch = new SpriteBatch();
