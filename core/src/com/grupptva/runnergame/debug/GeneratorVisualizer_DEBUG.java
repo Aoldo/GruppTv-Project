@@ -19,7 +19,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @author Mattias
  *
  * Uses:
- * @see WorldGenerator
+ * @see com.grupptva.runnergame.game.model.worldgenerator.WorldGenerator
  * 
  * Used by:
  * @see RunnerGame

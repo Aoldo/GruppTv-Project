@@ -13,6 +13,15 @@ import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
  * 
  * @author Mattias
  *
+ * Uses:
+ * @see GeneratorChunk
+ * @see GeneratorStep
+ * @see HookStep
+ * @see JumpStep
+ * 
+ * Used by:
+ * @see GameLogic
+ * 
  */
 public class WorldGenerator {
 	private List<GeneratorStep> steps = new ArrayList<GeneratorStep>();

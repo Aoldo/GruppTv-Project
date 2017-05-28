@@ -13,6 +13,14 @@ import com.grupptva.runnergame.game.model.world.WorldModel;
 /**
  * Created by Karl 'NaN' Wikström on 2017-05-03.
  * Revised by Mattias
+ * 
+ * Uses:
+ * @see com.grupptva.runnergame.game.model.gamecharacter.GameCharacter
+ * @see com.grupptva.runnergame.game.model.world.WorldModel
+ * @see com.grupptva.runnergame.game.model.GameLogic
+ * 
+ * Used by:
+ * @see com.grupptva.runnergame.game.controller.GameController
  */
 public final class GameRenderer {
 	private GameRenderer() //Class only has methods.

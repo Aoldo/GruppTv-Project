@@ -15,7 +15,11 @@ import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
  * This class depends on JumpStep's methods that calculate where the character
  * can land after jumping.
  * 
+ * Uses:
  * @see JumpStep
+ * 
+ * Used by:
+ * @see WorldGenerator
  * 
  * @author Mattias
  * 

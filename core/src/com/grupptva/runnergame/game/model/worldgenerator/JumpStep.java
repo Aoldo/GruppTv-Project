@@ -14,6 +14,12 @@ import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;
  * jump from one platform to another.
  * 
  * @author Mattias
+ * 
+ * Uses:
+ * @see GeneratorStep
+ * 
+ * Used by:
+ * @see WorldGenerator
  *
  */
 class JumpStep extends GeneratorStep {

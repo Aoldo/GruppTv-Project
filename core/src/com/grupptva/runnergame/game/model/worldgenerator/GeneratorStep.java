@@ -21,6 +21,13 @@ import com.grupptva.runnergame.game.model.worldgenerator.GeneratorChunk.Tile;;
  * there not being enough space left in the chunk being generated.
  * 
  * @author Mattias
+ * 
+ * Implemented by:
+ * @see HookStep
+ * @see JumpStep
+ * 
+ * Used by:
+ * @see WorldGenerator
  *
  */
 abstract class GeneratorStep {
