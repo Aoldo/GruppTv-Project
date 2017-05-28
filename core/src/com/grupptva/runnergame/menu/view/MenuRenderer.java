@@ -4,9 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
 import com.grupptva.runnergame.menu.model.MainMenu;
 import com.grupptva.runnergame.utils.Button;
 
+/**
+ * Responsibility: Render the main menu.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.menu.controller.MenuController
+ *
+ * Uses:
+ * @see MainMenu
+ * @see Button
+ *
+ *
+ * @author Luka
+ */
 public final class MenuRenderer {
 	private MenuRenderer(){ //Class only contains methods
 	}
