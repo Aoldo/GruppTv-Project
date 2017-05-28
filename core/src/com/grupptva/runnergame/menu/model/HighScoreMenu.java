@@ -1,7 +1,6 @@
 package com.grupptva.runnergame.menu.model;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,36 +9,34 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
 import com.grupptva.runnergame.utils.Button;
 import com.grupptva.runnergame.utils.HighScoresData;
 
 /**
- * 
+ * Responsibility: Represents the high score menu.
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.menu.controller.MenuController
+ *
+ * Uses:
+ * @see Button
+ * @see HighScoresData
+ *
+ *
  * @author Luka
  * Revised by Mattias
  *
  */
 public class HighScoreMenu {
 
-	//metod i konstruktorn
-	//logik
-
 	public Button returnButton;
 
 	Texture img;
 
-	//TODO: Move to HighScoresData
-	//int highScores[] = new int[10];
-	//String[] names = new String[10];
-
 	BitmapFont font;
 	BitmapFont headerFont;
 	BitmapFont highscoresFont;
-
-	int hFontWidth;
-
-	final int maxScoreCount = 10;
-	/////////////////////////////
 
 	private String returnString;
 	private String highScoresString;
