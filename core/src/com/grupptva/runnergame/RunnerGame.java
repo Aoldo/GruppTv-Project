@@ -70,7 +70,7 @@ public class RunnerGame extends ApplicationAdapter {
 
 		debugTimeStep();
 		
-		Gdx.graphics.setTitle(String.valueOf(Gdx.graphics.getRawDeltaTime()));
+		//Gdx.graphics.setTitle(String.valueOf(Gdx.graphics.getRawDeltaTime()));
 
 		
 		while (timeAccumulator > currentTimeStep) { //Fixed timestep.
