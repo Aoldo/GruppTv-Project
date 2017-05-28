@@ -4,24 +4,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.grupptva.runnergame.utils.Button;
 
 /**
- * 
+ * Responsibility: Creates the main menu components
+ *
+ * Used by:
+ * @see com.grupptva.runnergame.menu.controller.MenuController
+ * @see com.grupptva.runnergame.menu.view.MenuRenderer
+ *
+ * Uses:
+ * @see Button
+ *
  * @author Luka revised by Mattias
  */
 public class MainMenu {
-	//TODO: Turn the BitmapFonts and the Strings into arrays
 	Map<String, String> buttonTitles;
-	Map<String, BitmapFont> buttonBF;
 
 	public BitmapFont buttons;
-
-	boolean hasPressed = false;
 
 	public String startGameString;
 	public String highScoresString;
