@@ -44,8 +44,6 @@ public class HookLogic {
 		attachOffsets = calculateHookAttachOffsets(angle, radius, tileSize);
 	}
 
-	//TODO: Totally not a copy of the method in HookStep as an emergency fix:
-	//TODO: refactor so there isn't duplicate code.
 	List<Integer[]> calculateHookAttachOffsets(float angle, float maxRadius,
 			int tileSize) {
 		List<Integer[]> offsets = new ArrayList<Integer[]>();
@@ -80,7 +78,6 @@ public class HookLogic {
 				offsets.add(new Integer[] { normX, normY - 1 });
 			}
 		}
-		//TODO: removeDuplicates(offsets);
 
 		//By sorting the offsets by the distance to the offset
 		//they can be looped through in order in order to 
